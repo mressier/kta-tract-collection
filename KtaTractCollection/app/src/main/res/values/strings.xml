@@ -7,4 +7,10 @@
     <string name="tract_date_title">Discovery Date</string>
     <string name="tract_comments_title">Comments</string>
     <string name="tract_comments_hint">Anything special to tell about this ?</string>
+
+    <!--  Basics  -->
+    <string name="i_understand">I understand</string>
+    <string name="ok">OK</string>
+    <string name="no_thanks">No thanks</string>
+
 </resources>

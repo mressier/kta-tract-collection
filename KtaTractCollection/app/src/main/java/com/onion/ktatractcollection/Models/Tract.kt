@@ -4,6 +4,6 @@ import java.util.*
 
 class Tract(
     val id: UUID = UUID.randomUUID(),
-    val author: String = "",
-    val discoveryDate: Date = Date(),
-    val comment: String) {}
+    var author: String = "",
+    var discoveryDate: Date = Date(),
+    var comment: String = "") {}

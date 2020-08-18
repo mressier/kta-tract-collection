@@ -8,8 +8,9 @@
 
     <TextView
         android:id="@+id/author_text"
-        android:layout_width="379dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:labelFor="@id/author_text_field"
         android:text="@string/tract_author_title"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -17,19 +18,22 @@
 
     <EditText
         android:id="@+id/author_text_field"
-        android:layout_width="379dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints="author"
         android:ems="10"
         android:hint="@string/tract_author_hint"
         android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/author_text"
-        android:autofillHints="" />
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/date_text"
-        android:layout_width="379dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:labelFor="@id/date_button"
         android:text="@string/tract_date_title"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -37,7 +41,7 @@
 
     <Button
         android:id="@+id/date_button"
-        android:layout_width="379dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="20 janvier 2018"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -46,8 +50,9 @@
 
     <TextView
         android:id="@+id/comments_text"
-        android:layout_width="379dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:labelFor="@id/comments_text_field"
         android:text="@string/tract_comments_title"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -55,14 +60,15 @@
 
     <EditText
         android:id="@+id/comments_text_field"
-        android:layout_width="379dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/tract_comments_hint"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/comments_text" />
+        app:layout_constraintTop_toBottomOf="@+id/comments_text"
+        android:autofillHints="comments" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

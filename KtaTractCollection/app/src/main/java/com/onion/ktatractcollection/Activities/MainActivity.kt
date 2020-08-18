@@ -1,7 +1,8 @@
-package com.onion.ktatractcollection
+package com.onion.ktatractcollection.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.onion.ktatractcollection.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
