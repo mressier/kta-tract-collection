@@ -9,14 +9,20 @@
         android:id="@+id/tractFragment"
         android:name="com.onion.ktatractcollection.Fragments.Tract.TractFragment"
         android:label="tract_fragment"
-        tools:layout="@layout/tract_fragment" />
+        tools:layout="@layout/tract_fragment" >
+        <argument
+            android:name="crimeId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/tractListFragment"
         android:name="com.onion.ktatractcollection.Fragments.TractList.TractListFragment"
         android:label="fragment_tract_list"
         tools:layout="@layout/fragment_tract_list" >
         <action
-            android:id="@+id/action_tractListFragment_to_tractFragment"
-            app:destination="@id/tractFragment" />
+            android:id="@+id/show_tract"
+            app:destination="@id/tractFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 </navigation>

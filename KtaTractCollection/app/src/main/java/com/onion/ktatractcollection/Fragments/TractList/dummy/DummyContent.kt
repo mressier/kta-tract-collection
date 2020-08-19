@@ -16,12 +16,7 @@ object DummyContent {
      */
     val ITEMS: MutableList<Tract> = ArrayList()
 
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
-    val ITEM_MAP: MutableMap<String, Tract> = HashMap()
-
-    private val COUNT = 5
+    private const val COUNT = 5
 
     init {
         // Add some sample items.

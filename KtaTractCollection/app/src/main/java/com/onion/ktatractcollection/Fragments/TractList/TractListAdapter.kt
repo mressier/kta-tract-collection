@@ -8,14 +8,16 @@ import android.widget.TextView
 import com.onion.ktatractcollection.R
 
 import com.onion.ktatractcollection.Models.Tract
+import java.text.DateFormat
 
 /**
  * [RecyclerView.Adapter] that can display a [Tract].
  * TODO: Replace the implementation with code for your data type.
  */
-class MyTractRecyclerViewAdapter(
-    private val values: List<Tract>
-) : RecyclerView.Adapter<MyTractRecyclerViewAdapter.ViewHolder>() {
+class TractListAdapter(
+    private val values: List<Tract>,
+    private val callbacks: TractListFragment.Callbacks?
+) : RecyclerView.Adapter<TractListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -25,18 +27,19 @@ class MyTractRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id.toString()
-        holder.contentView.text = item.comment
+        holder.authorText.text = item.author
+        holder.dateText.text = DateFormat.getDateInstance(DateFormat.SHORT).format(item.discoveryDate)
+        holder.itemView.setOnClickListener { callbacks?.onTractSelected(item.id) }
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.findViewById(R.id.item_number)
-        val contentView: TextView = view.findViewById(R.id.content)
+        val authorText: TextView = view.findViewById(R.id.author_text)
+        val dateText: TextView = view.findViewById(R.id.date_text)
 
         override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+            return super.toString() + " '" + authorText.text + "'"
         }
     }
 }
