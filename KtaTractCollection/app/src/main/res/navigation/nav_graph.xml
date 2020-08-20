@@ -11,7 +11,7 @@
         android:label="tract_fragment"
         tools:layout="@layout/tract_fragment" >
         <argument
-            android:name="crimeId"
+            android:name="tractId"
             app:argType="string" />
     </fragment>
     <fragment

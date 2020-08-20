@@ -17,16 +17,15 @@ import java.util.*
 
 class TractFragment : Fragment(), DatePickerFragment.Callbacks {
 
+    /**
+     * Requests, Parameters, Dialog, ...
+     */
     private enum class Requests {
         DATE
     }
 
     private enum class Dialogs(val description: String) {
-        DATE("dateDialog")
-    }
-
-    companion object {
-        fun newInstance() = TractFragment()
+        DATE("date_dialog")
     }
 
     /**
@@ -38,8 +37,21 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var commentsTextField: EditText
 
     /* View Model */
-    private lateinit var viewModel: TractViewModel
-    private var tract = Tract()
+    private val tractViewModel: TractViewModel by lazy {
+        ViewModelProvider(this).get(TractViewModel::class.java)
+    }
+    private lateinit var tract: Tract
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        tract = Tract()
+
+        arguments?.let {
+            val args = TractFragmentArgs.fromBundle(it)
+            args.tractId?.let { tractId -> tractViewModel.loadTract(UUID.fromString(tractId)) }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,10 +62,22 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        tractViewModel.tract.observe(
+            viewLifecycleOwner,
+            { tract ->
+                tract?.let {
+                    this.tract = it
+                    updateView(it)
+                }
+            }
+        )
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(TractViewModel::class.java)
-        tract = viewModel.tract
         updateView(tract)
     }
 
@@ -64,7 +88,7 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
 
     override fun onStop() {
         super.onStop()
-        viewModel.tract = tract
+        tractViewModel.saveTract(tract)
     }
 
     /**
@@ -110,6 +134,10 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         dateButton = view.findViewById(R.id.date_button)
         commentsTextField = view.findViewById(R.id.comments_text_field)
     }
+
+    /**
+     * Callbakcs
+     */
 
     override fun onDateSelected(date: Date) {
         tract.discoveryDate = date

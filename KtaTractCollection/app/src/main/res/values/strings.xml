@@ -8,6 +8,9 @@
     <string name="tract_comments_title">Comments</string>
     <string name="tract_comments_hint">Anything special to tell about this ?</string>
 
+    <!--  Menus  -->
+    <string name="new_tract">New tract</string>
+
     <!--  Basics  -->
     <string name="i_understand">I understand</string>
     <string name="ok">OK</string>
