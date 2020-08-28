@@ -4,11 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ListAdapter
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
 import java.util.*
@@ -35,6 +36,9 @@ class TractListFragment : Fragment() {
     }
 
     private lateinit var tractRecyclerView: RecyclerView
+    private lateinit var noTractImageView: ImageView
+    private lateinit var noTractButton: Button
+
     private lateinit var tractAdapter: TractListAdapter
 
     /**
@@ -52,24 +56,14 @@ class TractListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_tract_list, container, false)
         setupRecyclerView(view)
+        setupNoTractView(view)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewModelObserver()
-    }
-
-    private fun setupViewModelObserver() {
-        tractListViewModel.tracts.observe(
-            viewLifecycleOwner,
-            { items ->
-                items?.let {
-                    Log.i("TAG", "Got items ${items.size}")
-                    updateUI(items)
-                }
-            }
-        )
+        setupButtonListener()
     }
 
     override fun onAttach(context: Context) {
@@ -90,13 +84,17 @@ class TractListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.new_tract -> {
-                val tract = Tract()
-                tractListViewModel.saveTract(tract)
-                callbacks?.onTractSelected(tract.id)
+                launchTractCreation()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun launchTractCreation() {
+        val tract = Tract()
+        tractListViewModel.saveTract(tract)
+        callbacks?.onTractSelected(tract.id)
     }
 
     /**
@@ -105,6 +103,10 @@ class TractListFragment : Fragment() {
     private fun updateUI(tracts: List<Tract>) {
         tractAdapter.submitList(tracts)
         tractAdapter.notifyDataSetChanged()
+        
+        val noTractVisibility = if (tracts.isNotEmpty()) { View.GONE } else { View.VISIBLE }
+        noTractButton.visibility = noTractVisibility
+        noTractImageView.visibility = noTractVisibility
     }
 
     /**
@@ -117,7 +119,36 @@ class TractListFragment : Fragment() {
 
         tractRecyclerView.adapter = tractAdapter
         tractRecyclerView.layoutManager = GridLayoutManager(context, 2)
+    }
 
+    private fun setupNoTractView(view: View) {
+        noTractImageView = view.findViewById(R.id.no_tract_image)
+        noTractButton = view.findViewById(R.id.no_tract_button)
+
+        noTractImageView.visibility = View.GONE
+        noTractButton.visibility = View.GONE
+    }
+
+    /**
+     * Listener
+     */
+
+    private fun setupViewModelObserver() {
+        tractListViewModel.tracts.observe(
+            viewLifecycleOwner,
+            { items ->
+                items?.let {
+                    Log.i("TAG", "Got items ${items.size}")
+                    updateUI(items)
+                }
+            }
+        )
+    }
+
+    private fun setupButtonListener() {
+        noTractButton.setOnClickListener {
+            launchTractCreation()
+        }
     }
 
 }

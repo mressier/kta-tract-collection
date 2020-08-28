@@ -10,6 +10,7 @@
 
     <!--  Menus  -->
     <string name="new_tract">New tract</string>
+    <string name="no_tract_list">No tract yet...</string>
 
     <!--  Basics  -->
     <string name="i_understand">I understand</string>
