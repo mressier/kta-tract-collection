@@ -22,4 +22,8 @@ class TractListViewModel: ViewModel() {
         tractRepository.addTract(tract)
     }
 
+    fun deleteTract(tract: Tract) {
+        tractRepository.deleteTract(tract)
+    }
+
 }

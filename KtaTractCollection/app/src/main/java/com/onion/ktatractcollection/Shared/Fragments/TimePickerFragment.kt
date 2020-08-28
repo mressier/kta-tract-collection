@@ -15,8 +15,8 @@ private const val minuteId = "minute_id"
  * Instantiate with:
  *
  * DatePickerFragment.newInstance(crime.date).apply {
- *  setTargetFragment(this@MyFragmentFragment, REQUEST_DATE)
- *  show(this@CrimeFragment.requireFragmentManager(), DIALOG_DATE)
+ *  setTargetFragment(this@MyFragment, REQUEST_DATE)
+ *  show(this@MyFragment.requireFragmentManager(), DIALOG_DATE)
  * }
  *
  * And implement Callback method:

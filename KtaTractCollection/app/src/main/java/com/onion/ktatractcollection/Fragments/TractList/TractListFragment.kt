@@ -1,29 +1,41 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
+import com.onion.ktatractcollection.Fragments.Tract.TractFragment
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
+import com.onion.ktatractcollection.Shared.Fragments.DatePickerFragment
 import java.util.*
 
 /**
  * A fragment representing a list of Items.
  */
-class TractListFragment : Fragment() {
+class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Callbacks {
 
     /**
      * Required interface for hosting activities
      */
     interface Callbacks {
         fun onTractSelected(tractId: UUID)
+    }
+
+    enum class Requests {
+        TRACT_ACTION
+    }
+
+    enum class Dialogs {
+        TRACT_ACTION
     }
 
     /**
@@ -115,7 +127,7 @@ class TractListFragment : Fragment() {
 
     private fun setupRecyclerView(view: View) {
         tractRecyclerView = view.findViewById(R.id.tract_list)
-        tractAdapter = TractListAdapter(callbacks)
+        tractAdapter = TractListAdapter(this)
 
         tractRecyclerView.adapter = tractAdapter
         tractRecyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -150,5 +162,26 @@ class TractListFragment : Fragment() {
             launchTractCreation()
         }
     }
+
+    /**
+     * Callbacks
+     */
+
+    override fun onTractSelected(tractId: UUID) {
+        callbacks?.onTractSelected(tractId)
+    }
+
+    override fun onTractLongSelected(tractId: UUID) {
+        TractDialogFragment.newInstance(tractId).apply {
+            setTargetFragment(this@TractListFragment, Requests.TRACT_ACTION.ordinal)
+            show(this@TractListFragment.requireFragmentManager(), Dialogs.TRACT_ACTION.name)
+        }
+    }
+
+    override fun onDelete(tractId: UUID) {
+        tractListViewModel.deleteTract(Tract(id = tractId))
+        Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_LONG).show()
+    }
+
 
 }

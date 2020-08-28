@@ -19,7 +19,7 @@ private const val dateMaxId = "date_max_id"
  *
  * DatePickerFragment.newInstance(date).apply {
  *  setTargetFragment(this@MyFragment, REQUEST_DATE)
- *  show(this@CrimeFragment.requireFragmentManager(), DIALOG_DATE)
+ *  show(this@MyFragment.requireFragmentManager(), DIALOG_DATE)
  * }
  *
  * And implement Callback method:

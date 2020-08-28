@@ -18,4 +18,5 @@ class MainActivity : AppCompatActivity(), TractListFragment.Callbacks {
         val action = TractListFragmentDirections.showTract(tractId.toString())
         findNavController(R.id.nav_host_fragment).navigate(action)
     }
+
 }

@@ -8,13 +8,22 @@
     <string name="tract_comments_title">Comments</string>
     <string name="tract_comments_hint">Anything special to tell about this ?</string>
 
+    <!--  Tract List  -->
+    <string name="no_tract_list">No tract yet…</string>
+
     <!--  Menus  -->
     <string name="new_tract">New tract</string>
-    <string name="no_tract_list">No tract yet...</string>
+    <string name="save_tract">Save tract</string>
+
+    <!--  AlertDialog  -->
+    <string name="tract_dialog_title">Tract actions</string>
+    <string name="delete_tract">Delete the tract</string>
+    <string name="delete_tract_success">Your tract has been successfully deleted</string>
 
     <!--  Basics  -->
     <string name="i_understand">I understand</string>
     <string name="ok">OK</string>
     <string name="no_thanks">No thanks</string>
+    <string name="delete">Delete</string>
 
 </resources>
