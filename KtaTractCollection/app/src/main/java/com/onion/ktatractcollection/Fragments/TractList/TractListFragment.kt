@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
-import com.onion.ktatractcollection.shared.tools.KeyboardUtils
 import java.util.*
 
 /**
@@ -111,7 +110,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
      * Update
      */
     private fun updateUI(tracts: List<Tract>) {
-        tractAdapter.submitList(tracts)
+        tractAdapter.submitList(tractListViewModel.getAsTractListItems(tracts))
         tractAdapter.notifyDataSetChanged()
         
         val noTractVisibility = if (tracts.isNotEmpty()) { View.GONE } else { View.VISIBLE }

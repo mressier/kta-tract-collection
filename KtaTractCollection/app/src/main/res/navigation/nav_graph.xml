@@ -9,7 +9,7 @@
         android:id="@+id/tractFragment"
         android:name="com.onion.ktatractcollection.Fragments.Tract.TractFragment"
         android:label="tract_fragment"
-        tools:layout="@layout/tract_fragment" >
+        tools:layout="@layout/fragment_tract" >
         <argument
             android:name="tractId"
             app:argType="string" />

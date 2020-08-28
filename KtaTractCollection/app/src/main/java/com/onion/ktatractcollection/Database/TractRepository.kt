@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.onion.ktatractcollection.Models.Tract
+import java.io.File
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Executors
@@ -25,20 +26,25 @@ class TractRepository private constructor(context: Context) {
 
     private val executor = Executors.newSingleThreadExecutor()
 
+    private val filesDir = context.applicationContext.filesDir
+
     /**
      * Methods
      */
-    // Implement database access functions
+
     fun getTracts(): LiveData<List<Tract>> = tractDao.getTracts()
 
     fun getTract(id: UUID): LiveData<Tract?> = tractDao.getTract(id)
 
-    fun updateTract(tract: Tract) {
-        executor.execute() { tractDao.updateTract(tract) }
-    }
+    fun getPhotoFile(tract: Tract): File = File(filesDir, tract.photoFilename)
+
 
     fun addTract(tract: Tract) {
         executor.execute() { tractDao.addTract(tract) }
+    }
+
+    fun updateTract(tract: Tract) {
+        executor.execute() { tractDao.updateTract(tract) }
     }
 
     fun deleteTract(tract: Tract) {

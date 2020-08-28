@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,6 +12,8 @@ import com.onion.ktatractcollection.Fragments.TractList.TractListAdapter.TractVi
 import com.onion.ktatractcollection.R
 
 import com.onion.ktatractcollection.Models.Tract
+import com.onion.ktatractcollection.shared.tools.bindPhotoFromFile
+import java.io.File
 import java.text.DateFormat
 import java.util.*
 
@@ -24,7 +27,7 @@ interface TractListCallbacks {
  */
 class TractListAdapter(
     private val callbacks: TractListCallbacks?
-) : ListAdapter<Tract, TractViewHolder>(DiffUtilCallback()) {
+) : ListAdapter<TractListItem, TractViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TractViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -34,7 +37,7 @@ class TractListAdapter(
 
     override fun onBindViewHolder(holder: TractViewHolder, position: Int) {
         val item = getItem(position)
-        println(item)
+
         holder.bind(item)
     }
 
@@ -48,18 +51,40 @@ class TractListAdapter(
          */
         private val authorText: TextView = view.findViewById(R.id.author_text)
         private val dateText: TextView = view.findViewById(R.id.date_text)
+        private val pictureView: ImageView = view.findViewById(R.id.image_view)
 
         override fun toString(): String {
             return super.toString() + " '" + authorText.text + "'"
         }
 
-        fun bind(tract: Tract) {
+        /**
+         * Bind
+         */
+
+        fun bind(tractItem: TractListItem) {
+            updateTract(tractItem.tract)
+            updateTractImage(tractItem.photoFile)
+        }
+
+        private fun updateTract(tract: Tract) {
             authorText.text = tract.author
             dateText.text = DateFormat.getDateInstance(DateFormat.SHORT).format(tract.discoveryDate)
+            setupClickListener(tract)
+        }
+
+        private fun setupClickListener(tract: Tract) {
             itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
             itemView.setOnLongClickListener {
                 callbacks?.onTractLongSelected(tract.id)
                 true
+            }
+        }
+
+        private fun updateTractImage(photo: File) {
+            pictureView.viewTreeObserver.addOnGlobalLayoutListener {
+                pictureView.bindPhotoFromFile(photo, R.drawable.ic_launcher_foreground)
+                pictureView.setBackgroundResource(R.color.colorPrimaryDark)
+                pictureView.viewTreeObserver.removeOnGlobalLayoutListener { }
             }
         }
     }
@@ -67,13 +92,13 @@ class TractListAdapter(
     /**
      * Diff
      */
-    class DiffUtilCallback: DiffUtil.ItemCallback<Tract>() {
-        override fun areItemsTheSame(oldItem: Tract, newItem: Tract): Boolean {
-            return oldItem.id == newItem.id
+    class DiffUtilCallback: DiffUtil.ItemCallback<TractListItem>() {
+        override fun areItemsTheSame(oldItem: TractListItem, newItem: TractListItem): Boolean {
+            return oldItem.tract.id == newItem.tract.id
         }
 
-        override fun areContentsTheSame(oldItem: Tract, newItem: Tract): Boolean {
-            return  oldItem == newItem
+        override fun areContentsTheSame(oldItem: TractListItem, newItem: TractListItem): Boolean {
+            return oldItem.tract == newItem.tract
         }
     }
 }

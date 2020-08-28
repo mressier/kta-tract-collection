@@ -10,12 +10,11 @@
         android:id="@+id/author_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:labelFor="@id/author_text_field"
         android:text="@string/tract_author_title"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <EditText
         android:id="@+id/author_text_field"
@@ -25,8 +24,9 @@
         android:ems="10"
         android:hint="@string/tract_author_hint"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/author_text"
+        app:layout_constraintStart_toStartOf="@+id/author_text"
         app:layout_constraintTop_toBottomOf="@+id/author_text"
         tools:ignore="LabelFor" />
 
@@ -34,25 +34,29 @@
         android:id="@+id/date_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:labelFor="@id/date_button"
         android:text="@string/tract_date_title"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="@+id/author_text_field"
+        app:layout_constraintStart_toStartOf="@+id/author_text"
         app:layout_constraintTop_toBottomOf="@+id/author_text_field" />
 
     <Button
         android:id="@+id/date_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:drawableStart="@android:drawable/ic_menu_my_calendar"
         android:text="20 janvier 2018"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="@+id/date_text"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/date_text" />
 
     <TextView
         android:id="@+id/comments_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:labelFor="@id/comments_text_field"
         android:text="@string/tract_comments_title"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -63,13 +67,13 @@
         android:id="@+id/comments_text_field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints="comments"
         android:ems="10"
         android:hint="@string/tract_comments_hint"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/comments_text"
-        android:autofillHints="comments" />
+        app:layout_constraintTop_toBottomOf="@+id/comments_text" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -93,12 +97,30 @@
         app:layout_constraintGuide_end="16dp" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/picture_view"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@android:drawable/ic_menu_report_image"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/author_text"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <Button
+        android:id="@+id/picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@android:drawable/ic_menu_camera"
+        android:text="take picture"
+        app:layout_constraintBottom_toBottomOf="@+id/date_button"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/picture_view" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

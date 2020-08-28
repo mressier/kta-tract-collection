@@ -20,6 +20,7 @@ fun getScaledBitmap(path: String, view: View): Bitmap {
 }
 
 fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitmap {
+
     // Read in the dimensions of the image on disk
     var options = BitmapFactory.Options()
     options.inJustDecodeBounds = true

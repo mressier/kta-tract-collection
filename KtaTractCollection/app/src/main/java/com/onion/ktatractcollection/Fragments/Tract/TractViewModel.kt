@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.onion.ktatractcollection.Database.TractRepository
 import com.onion.ktatractcollection.Models.Tract
+import java.io.File
 import java.util.*
 
 class TractViewModel : ViewModel() {
@@ -31,5 +32,9 @@ class TractViewModel : ViewModel() {
 
     fun saveTract(tract: Tract) {
         tractRepository.updateTract(tract)
+    }
+
+    fun getPhotoFile(tract: Tract): File {
+        return tractRepository.getPhotoFile(tract)
     }
 }
