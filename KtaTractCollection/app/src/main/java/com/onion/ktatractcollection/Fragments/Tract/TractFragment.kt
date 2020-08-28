@@ -8,7 +8,7 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
-import com.onion.ktatractcollection.shared.Fragments.DatePickerFragment
+import com.onion.ktatractcollection.shared.fragments.DatePickerFragment
 import com.onion.ktatractcollection.shared.tools.KeyboardUtils
 import com.onion.ktatractcollection.shared.tools.TextChangedWatcher
 import java.text.DateFormat

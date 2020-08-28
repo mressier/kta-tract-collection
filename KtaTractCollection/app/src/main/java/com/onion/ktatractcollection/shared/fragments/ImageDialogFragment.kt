@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.shared.Fragments
+package com.onion.ktatractcollection.shared.fragments
 
 import android.app.Dialog
 import android.graphics.Bitmap

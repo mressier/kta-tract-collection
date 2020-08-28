@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.shared.Fragments
+package com.onion.ktatractcollection.shared.fragments
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
