@@ -8,8 +8,9 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
-import com.onion.ktatractcollection.Shared.Fragments.DatePickerFragment
-import com.onion.ktatractcollection.Shared.Tools.TextChangedWatcher
+import com.onion.ktatractcollection.shared.Fragments.DatePickerFragment
+import com.onion.ktatractcollection.shared.tools.KeyboardUtils
+import com.onion.ktatractcollection.shared.tools.TextChangedWatcher
 import java.text.DateFormat
 import java.util.*
 
@@ -102,6 +103,7 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.save_tract_item -> {
+                KeyboardUtils.hideKeyboard(requireActivity())
                 requireActivity().onBackPressed()
                 true
             }

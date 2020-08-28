@@ -1,6 +1,5 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
-import com.onion.ktatractcollection.Fragments.Tract.TractFragment
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
-import com.onion.ktatractcollection.Shared.Fragments.DatePickerFragment
+import com.onion.ktatractcollection.shared.tools.KeyboardUtils
 import java.util.*
 
 /**

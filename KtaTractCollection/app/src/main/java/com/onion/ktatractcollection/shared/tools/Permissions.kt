@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.Shared.Tools
+package com.onion.ktatractcollection.shared.tools
 
 import android.app.AlertDialog
 import android.content.Context

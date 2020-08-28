@@ -1,18 +1,13 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
-import android.telecom.Call
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.onion.ktatractcollection.R
-import com.onion.ktatractcollection.Shared.Fragments.DatePickerFragment
-import kotlinx.coroutines.flow.callbackFlow
 import java.util.*
 
 class TractDialogFragment: DialogFragment() {

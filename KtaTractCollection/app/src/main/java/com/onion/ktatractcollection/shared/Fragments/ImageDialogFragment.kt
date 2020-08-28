@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.Shared.Fragments
+package com.onion.ktatractcollection.shared.Fragments
 
 import android.app.Dialog
 import android.graphics.Bitmap
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
-import com.onion.ktatractcollection.Shared.Tools.getScaledBitmap
+import com.onion.ktatractcollection.shared.tools.getScaledBitmap
 import com.onion.ktatractcollection.R
 import java.io.File
 

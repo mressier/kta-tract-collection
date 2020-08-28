@@ -1,8 +1,7 @@
-package com.onion.ktatractcollection.Shared.Fragments
+package com.onion.ktatractcollection.shared.Fragments
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 
