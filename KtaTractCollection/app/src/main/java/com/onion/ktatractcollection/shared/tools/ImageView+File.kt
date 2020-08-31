@@ -6,7 +6,7 @@ import java.io.File
 
 fun ImageView.bindPhotoFromFile(file: File, defaultResourceId: Int) {
     if (file.exists()) {
-        val bitmap = getScaledBitmap(file.path, this)
+        val bitmap = decodeSampledBitmapFromFile(file.path, this)
         this.setImageBitmap(bitmap)
     } else {
         this.setImageResource(defaultResourceId)

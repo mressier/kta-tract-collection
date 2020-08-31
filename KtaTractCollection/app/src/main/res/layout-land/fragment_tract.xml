@@ -56,12 +56,11 @@
         android:id="@+id/comments_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:labelFor="@id/comments_text_field"
         android:text="@string/tract_comments_title"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/picture_button" />
+        app:layout_constraintEnd_toEndOf="@+id/author_text"
+        app:layout_constraintStart_toStartOf="@+id/author_text"
+        app:layout_constraintTop_toBottomOf="@+id/date_button" />
 
     <EditText
         android:id="@+id/comments_text_field"
@@ -71,8 +70,8 @@
         android:ems="10"
         android:hint="@string/tract_comments_hint"
         android:inputType="textMultiLine"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="@+id/author_text"
+        app:layout_constraintStart_toStartOf="@+id/author_text"
         app:layout_constraintTop_toBottomOf="@+id/comments_text" />
 
     <androidx.constraintlayout.widget.Guideline

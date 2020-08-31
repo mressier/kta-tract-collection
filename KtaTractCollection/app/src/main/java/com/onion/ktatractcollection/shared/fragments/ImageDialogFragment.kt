@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.onion.ktatractcollection.shared.tools.getScaledBitmap
 import com.onion.ktatractcollection.R
+import com.onion.ktatractcollection.shared.tools.decodeSampledBitmapFromFile
 import java.io.File
 
 private const val fileId = "file_id"
@@ -59,7 +60,7 @@ class ImageDialogFragment: DialogFragment() {
 
     private fun updatePhoto() {
         if (photoFile.exists()) {
-            val bitmap = getScaledBitmap(photoFile.path, requireActivity())
+            val bitmap = decodeSampledBitmapFromFile(photoFile.path, photoView)
             updatePhotoView(bitmap)
         } else {
             photoView.setImageDrawable(null)

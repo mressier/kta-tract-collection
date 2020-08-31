@@ -5,6 +5,6 @@
     <item
         android:id="@+id/save_tract_item"
         android:icon="@drawable/ic_baseline_check_24"
-        android:title="Item"
+        android:title="@string/save_tract"
         app:showAsAction="ifRoom|withText" />
 </menu>

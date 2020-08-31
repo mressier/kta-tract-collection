@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -44,7 +45,8 @@ class TractListAdapter(
     /**
      * View Holder
      */
-    inner class TractViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class TractViewHolder(view: View) : RecyclerView.ViewHolder(view),
+        ViewTreeObserver.OnGlobalLayoutListener {
 
         /**
          * Properties
@@ -53,10 +55,11 @@ class TractListAdapter(
         private val dateText: TextView = view.findViewById(R.id.date_text)
         private val pictureView: ImageView = view.findViewById(R.id.image_view)
 
+        private lateinit var photo: File
+
         override fun toString(): String {
             return super.toString() + " '" + authorText.text + "'"
         }
-
         /**
          * Bind
          */
@@ -68,6 +71,7 @@ class TractListAdapter(
 
         private fun updateTract(tract: Tract) {
             authorText.text = tract.author
+            authorText.visibility = if (tract.author.isBlank()) { View.GONE } else { View.VISIBLE }
             dateText.text = DateFormat.getDateInstance(DateFormat.SHORT).format(tract.discoveryDate)
             setupClickListener(tract)
         }
@@ -81,12 +85,18 @@ class TractListAdapter(
         }
 
         private fun updateTractImage(photo: File) {
-            pictureView.viewTreeObserver.addOnGlobalLayoutListener {
-                pictureView.bindPhotoFromFile(photo, R.drawable.ic_launcher_foreground)
-                pictureView.setBackgroundResource(R.color.colorPrimaryDark)
-                pictureView.viewTreeObserver.removeOnGlobalLayoutListener { }
-            }
+            this.photo = photo
+            pictureView.viewTreeObserver.addOnGlobalLayoutListener(this)
         }
+
+        /**
+         * Layout
+         */
+        override fun onGlobalLayout() {
+            pictureView.bindPhotoFromFile(photo, R.drawable.ic_no_tract_photo)
+            pictureView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+        }
+
     }
 
     /**
@@ -101,4 +111,5 @@ class TractListAdapter(
             return oldItem.tract == newItem.tract
         }
     }
+
 }

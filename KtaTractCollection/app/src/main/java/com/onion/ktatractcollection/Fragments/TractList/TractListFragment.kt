@@ -110,10 +110,19 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
      * Update
      */
     private fun updateUI(tracts: List<Tract>) {
-        tractAdapter.submitList(tractListViewModel.getAsTractListItems(tracts))
+        updateTractListUI(tractListViewModel.getAsTractListItems(tracts))
+    }
+
+    private fun updateTractListUI(tractListItems: List<TractListItem>) {
+        val previousTracts = tractAdapter.currentList
+
+        tractAdapter.submitList(tractListItems)
         tractAdapter.notifyDataSetChanged()
-        
-        val noTractVisibility = if (tracts.isNotEmpty()) { View.GONE } else { View.VISIBLE }
+
+        if (previousTracts.isNotEmpty() && tractListItems.isNotEmpty()) { return }
+
+        val noTractVisibility =
+            if (tractListItems.isNotEmpty()) { View.GONE } else { View.VISIBLE }
         noTractButton.visibility = noTractVisibility
         noTractImageView.visibility = noTractVisibility
     }
@@ -177,8 +186,15 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
     override fun onDelete(tractId: UUID) {
         tractListViewModel.deleteTract(Tract(id = tractId))
+
+        val currentTracts = tractAdapter.currentList
+        val newTracts = currentTracts.filter { it.tract.id != tractId }
+        updateTractListUI(newTracts)
+
         Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_LONG).show()
     }
 
-
+    /**
+     * Tools
+     */
 }

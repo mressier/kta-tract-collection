@@ -18,12 +18,12 @@
         android:id="@+id/no_tract_image"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_kta_tract_no_tract___essai_1"
+        android:src="@drawable/ic_no_tract_image"
         app:layout_constraintBottom_toTopOf="@+id/no_tract_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_kta_tract_no_tract___essai_1" />
+        tools:srcCompat="@drawable/ic_no_tract_image" />
 
     <Button
         android:id="@+id/no_tract_button"
@@ -31,10 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@color/transparent"
-        android:drawableBottom="@drawable/ic_add_icon"
-        android:drawableTint="@color/black"
+        android:drawableBottom="@drawable/ic_add_tract_2"
         android:text="@string/no_tract_list"
-        android:textColor="@color/black"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="@+id/tract_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

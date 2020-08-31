@@ -84,11 +84,10 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
 
         tractViewModel.tract.observe(
             viewLifecycleOwner,
-            { tract ->
-                tract?.let {
-                    updateTract(it)
-                    updateUI()
-                }
+            {
+                val tract = it ?: Tract()
+                updateTract(tract)
+                updateUI()
             }
         )
     }
@@ -155,8 +154,7 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     }
 
     private fun updatePhoto() {
-        pictureView.bindPhotoFromFile(tractPhotoFile, R.drawable.ic_launcher_foreground)
-        pictureView.setBackgroundResource(R.color.colorPrimaryDark)
+        pictureView.bindPhotoFromFile(tractPhotoFile, R.drawable.ic_no_tract_photo)
     }
 
     /**
