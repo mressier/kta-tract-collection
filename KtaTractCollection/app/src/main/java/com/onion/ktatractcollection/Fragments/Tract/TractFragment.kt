@@ -11,10 +11,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
+import com.onion.ktatractcollection.Fragments.TractPictures.PicturesFragment
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.DatePickerFragment
+import com.onion.ktatractcollection.shared.fragments.ImageDialogFragment
 import com.onion.ktatractcollection.shared.tools.*
 import java.io.File
 import java.text.DateFormat
@@ -30,7 +33,8 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     }
 
     private enum class Dialogs(val description: String) {
-        DATE("date_dialog")
+        DATE("date_dialog"),
+        PICTURE("picture_dialog")
     }
 
     /**
@@ -42,6 +46,7 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var commentsTextField: EditText
     private lateinit var pictureView: ImageView
     private lateinit var pictureButton: Button
+//    private lateinit var picturesFragment: RecyclerView
 
     /* View Model */
     private val tractViewModel: TractViewModel by lazy {
@@ -161,6 +166,8 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(pictureView)
+
+        pictureView.isEnabled = tractPhotoFile.exists()
     }
 
     /**
@@ -171,7 +178,8 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         setupAuthorListener()
         setupCommentsListener()
         setupDateListener()
-        setupPictureListener()
+        setupPictureButtonListener()
+        setupPictureViewListener()
     }
 
     private fun setupDateListener() {
@@ -192,13 +200,21 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         commentsTextField.addTextChangedListener(commentsWatcher)
     }
 
-    private fun setupPictureListener() {
+    private fun setupPictureButtonListener() {
         pictureButton.setOnClickListener {
             startActivity(cameraIntent)
         }
     }
 
+    private fun setupPictureViewListener() {
+        pictureView.setOnClickListener {
+            val intent = ImageDialogFragment.newInstance(tractPhotoFile)
+            intent.show(requireActivity().supportFragmentManager, Dialogs.PICTURE.description)
+        }
+    }
+
     private fun setupOutlets(view: View) {
+//        picturesFragment = view.findViewById(R.id.pictures_fragment)
         authorTextField = view.findViewById(R.id.author_text_field)
         dateButton = view.findViewById(R.id.date_button)
         commentsTextField = view.findViewById(R.id.comments_text_field)

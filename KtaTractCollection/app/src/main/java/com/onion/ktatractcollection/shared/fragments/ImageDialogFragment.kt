@@ -1,7 +1,6 @@
 package com.onion.ktatractcollection.shared.fragments
 
 import android.app.Dialog
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.R
-import com.onion.ktatractcollection.shared.tools.decodeSampledBitmapFromFile
 import java.io.File
 
 private const val fileId = "file_id"
@@ -62,7 +60,6 @@ class ImageDialogFragment: DialogFragment() {
         Glide.with(context)
             .load(photoFile.path)
             .asBitmap()
-            .centerCrop()
             .into(photoView)
     }
 
