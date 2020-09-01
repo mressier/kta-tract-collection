@@ -10,12 +10,11 @@
         android:id="@+id/pictures_fragment"
         android:name="com.onion.ktatractcollection.Fragments.TractPictures.PicturesFragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:layout="@layout/fragment_pictures_item_list"
-        tools:visibility="invisible" />
+        tools:layout="@layout/fragment_pictures_item_list" />
 
     <TextView
         android:id="@+id/author_text"

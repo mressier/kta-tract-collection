@@ -46,7 +46,7 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var commentsTextField: EditText
     private lateinit var pictureView: ImageView
     private lateinit var pictureButton: Button
-//    private lateinit var picturesFragment: RecyclerView
+    private lateinit var picturesFragment: Fragment
 
     /* View Model */
     private val tractViewModel: TractViewModel by lazy {
@@ -148,6 +148,7 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
 
         pictureButton.isEnabled =
             requireActivity().isIntentAvailable(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY)
+        setupFragments()
     }
 
     private fun updateTract(tract: Tract) {
@@ -214,12 +215,25 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     }
 
     private fun setupOutlets(view: View) {
-//        picturesFragment = view.findViewById(R.id.pictures_fragment)
         authorTextField = view.findViewById(R.id.author_text_field)
         dateButton = view.findViewById(R.id.date_button)
         commentsTextField = view.findViewById(R.id.comments_text_field)
         pictureView = view.findViewById(R.id.picture_view)
         pictureButton = view.findViewById(R.id.picture_button)
+    }
+
+    private fun setupFragments() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentContainer = fragmentManager.findFragmentById(R.id.pictures_fragment)
+
+        if (fragmentContainer == null) {
+            val fragment = PicturesFragment.newInstance(tract.id)
+
+            fragmentManager
+                .beginTransaction()
+                .add(R.id.pictures_fragment, fragment)
+                .commit()
+        }
     }
 
     /**
