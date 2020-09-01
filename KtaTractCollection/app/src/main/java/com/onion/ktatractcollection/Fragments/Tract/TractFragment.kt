@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.DatePickerFragment
@@ -154,7 +155,12 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     }
 
     private fun updatePhoto() {
-        pictureView.bindPhotoFromFile(tractPhotoFile, R.drawable.ic_no_tract_photo)
+        Glide.with(context)
+            .load(tractPhotoFile)
+            .asBitmap()
+            .centerCrop()
+            .placeholder(R.drawable.ic_no_tract_photo)
+            .into(pictureView)
     }
 
     /**

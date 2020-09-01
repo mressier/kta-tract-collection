@@ -1,21 +1,13 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
+import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.onion.ktatractcollection.Fragments.TractList.TractListAdapter.TractViewHolder
 import com.onion.ktatractcollection.R
-
 import com.onion.ktatractcollection.Models.Tract
-import com.onion.ktatractcollection.shared.tools.bindPhotoFromFile
-import java.io.File
-import java.text.DateFormat
 import java.util.*
 
 interface TractListCallbacks {
@@ -27,76 +19,19 @@ interface TractListCallbacks {
  * [RecyclerView.Adapter] that can display a [Tract].
  */
 class TractListAdapter(
-    private val callbacks: TractListCallbacks?
-) : ListAdapter<TractListItem, TractViewHolder>(DiffUtilCallback()) {
+    private val context: Context,
+    private val callbacks: TractListCallbacks?,
+    ) : ListAdapter<TractListItem, TractViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TractViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_tract_list_item, parent, false)
-        return TractViewHolder(view)
+        return TractViewHolder(view, context, callbacks)
     }
 
     override fun onBindViewHolder(holder: TractViewHolder, position: Int) {
         val item = getItem(position)
-
         holder.bind(item)
-    }
-
-    /**
-     * View Holder
-     */
-    inner class TractViewHolder(view: View) : RecyclerView.ViewHolder(view),
-        ViewTreeObserver.OnGlobalLayoutListener {
-
-        /**
-         * Properties
-         */
-        private val authorText: TextView = view.findViewById(R.id.author_text)
-        private val dateText: TextView = view.findViewById(R.id.date_text)
-        private val pictureView: ImageView = view.findViewById(R.id.image_view)
-
-        private lateinit var photo: File
-
-        override fun toString(): String {
-            return super.toString() + " '" + authorText.text + "'"
-        }
-        /**
-         * Bind
-         */
-
-        fun bind(tractItem: TractListItem) {
-            updateTract(tractItem.tract)
-            updateTractImage(tractItem.photoFile)
-        }
-
-        private fun updateTract(tract: Tract) {
-            authorText.text = tract.author
-            authorText.visibility = if (tract.author.isBlank()) { View.GONE } else { View.VISIBLE }
-            dateText.text = DateFormat.getDateInstance(DateFormat.SHORT).format(tract.discoveryDate)
-            setupClickListener(tract)
-        }
-
-        private fun setupClickListener(tract: Tract) {
-            itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
-            itemView.setOnLongClickListener {
-                callbacks?.onTractLongSelected(tract.id)
-                true
-            }
-        }
-
-        private fun updateTractImage(photo: File) {
-            this.photo = photo
-            pictureView.viewTreeObserver.addOnGlobalLayoutListener(this)
-        }
-
-        /**
-         * Layout
-         */
-        override fun onGlobalLayout() {
-            pictureView.bindPhotoFromFile(photo, R.drawable.ic_no_tract_photo)
-            pictureView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-        }
-
     }
 
     /**

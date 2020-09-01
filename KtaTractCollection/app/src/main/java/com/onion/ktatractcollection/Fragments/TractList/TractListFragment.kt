@@ -133,10 +133,10 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
     private fun setupRecyclerView(view: View) {
         tractRecyclerView = view.findViewById(R.id.tract_list)
-        tractAdapter = TractListAdapter(this)
+        tractAdapter = TractListAdapter(requireContext(), this)
 
         tractRecyclerView.adapter = tractAdapter
-        tractRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        tractRecyclerView.layoutManager = GridLayoutManager(context, 1)
     }
 
     private fun setupNoTractView(view: View) {

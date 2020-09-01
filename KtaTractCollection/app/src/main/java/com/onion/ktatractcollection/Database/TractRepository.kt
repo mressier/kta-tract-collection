@@ -9,9 +9,9 @@ import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Executors
 
-private const val DATABASE_NAME = "tract-repository"
-
 class TractRepository private constructor(context: Context) {
+
+    private val DATABASE_NAME = "tract-repository"
 
     /**
      * Properties
