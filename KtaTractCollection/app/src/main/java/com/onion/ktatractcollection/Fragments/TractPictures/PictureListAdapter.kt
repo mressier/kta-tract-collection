@@ -8,28 +8,34 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.onion.ktatractcollection.Fragments.TractList.TractListItem
+import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.R
 
 import java.io.File
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
- */
-class TractPicturesAdapter(
-    private val context: Context
-) : ListAdapter<File, TractPictureViewHolder>(DiffUtilCallback()) {
+class PictureListAdapter(
+    private val context: Context,
+    private val callbacks: PictureListCallbacks
+) : ListAdapter<File, PictureItemViewHolder>(DiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TractPictureViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_pictures_item, parent, false)
-        return TractPictureViewHolder(view, context)
+        return PictureItemViewHolder(view, context, callbacks)
     }
 
-    override fun onBindViewHolder(holder: TractPictureViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+    override fun getItemCount(): Int {
+        return super.getItemCount() + 1
+    }
+
+
+    override fun onBindViewHolder(holder: PictureItemViewHolder, position: Int) {
+        if (position == itemCount - 1) {
+            holder.bindButton()
+        } else {
+            val item = getItem(position)
+            holder.bind(item)
+        }
     }
 
     /**
@@ -43,13 +49,5 @@ class TractPicturesAdapter(
         override fun areContentsTheSame(oldItem: File, newItem: File): Boolean {
             return oldItem == newItem
         }
-    }
-}
-
-class TractPictureViewHolder(view: View, context: Context) : RecyclerView.ViewHolder(view) {
-    val pictureView: ImageView = view.findViewById(R.id.picture_view)
-
-    fun bind(photo: File) {
-        // bind...
     }
 }

@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
+    android:orientation="horizontal"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".Fragments.TractPictures.PicturesFragment"
-    tools:listitem="@layout/fragment_pictures_item"
-    android:orientation="horizontal"/>
+    tools:context=".Fragments.TractPictures.PicturesListFragment"
+    tools:listitem="@layout/fragment_pictures_item" />

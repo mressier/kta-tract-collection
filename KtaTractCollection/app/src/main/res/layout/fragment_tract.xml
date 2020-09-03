@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/pictures_fragment"
-        android:name="com.onion.ktatractcollection.Fragments.TractPictures.PicturesFragment"
+        android:name="com.onion.ktatractcollection.Fragments.TractPictures.PicturesListFragment"
         android:layout_width="0dp"
         android:layout_height="200dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -112,16 +112,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp" />
 
-    <ImageView
-        android:id="@+id/picture_view"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:adjustViewBounds="true"
-        android:src="@android:drawable/ic_menu_report_image"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
-
     <Button
         android:id="@+id/picture_button"
         style="@style/Widget.AppCompat.Button"
@@ -132,6 +122,6 @@
         android:text="Take picture"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/picture_view" />
+        app:layout_constraintTop_toBottomOf="@+id/pictures_fragment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

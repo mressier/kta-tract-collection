@@ -2,22 +2,20 @@ package com.onion.ktatractcollection.Fragments.Tract
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Picture
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import androidx.core.content.FileProvider
+import androidx.fragment.app.findFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.onion.ktatractcollection.Fragments.TractPictures.PicturesListFragment
 import com.onion.ktatractcollection.Models.Tract
-import com.onion.ktatractcollection.Fragments.TractPictures.PicturesFragment
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.DatePickerFragment
-import com.onion.ktatractcollection.shared.fragments.ImageDialogFragment
 import com.onion.ktatractcollection.shared.tools.*
 import java.io.File
 import java.text.DateFormat
@@ -44,9 +42,8 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var authorTextField: EditText
     private lateinit var dateButton: Button
     private lateinit var commentsTextField: EditText
-    private lateinit var pictureView: ImageView
     private lateinit var pictureButton: Button
-    private lateinit var picturesFragment: Fragment
+    private lateinit var picturesFragment: PicturesListFragment
 
     /* View Model */
     private val tractViewModel: TractViewModel by lazy {
@@ -55,10 +52,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var tract: Tract
     private lateinit var tractPhotoFile: File
     private lateinit var tractPhotoUri: Uri
-
-    private val cameraIntent: Intent by lazy {
-        requireActivity().buildCameraIntent(tractPhotoUri)
-    }
 
     /**
      * View Life Cycle
@@ -107,15 +100,15 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         super.onStop()
         tractViewModel.saveTract(tract)
     }
-
-    override fun onDetach() {
-        super.onDetach()
-        revokeCameraPermission()
-    }
-
-    private fun revokeCameraPermission() {
-        requireActivity().revokeUriPermission(tractPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-    }
+//
+//    override fun onDetach() {
+//        super.onDetach()
+//        revokeCameraPermission()
+//    }
+//
+//    private fun revokeCameraPermission() {
+//        requireActivity().revokeUriPermission(tractPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+//    }
 
     /**
      * Menu
@@ -145,30 +138,15 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         authorTextField.setText(tract.author)
         dateButton.text = DateFormat.getDateInstance(DateFormat.LONG).format(tract.discoveryDate)
         commentsTextField.setText(tract.comment)
-
-        pictureButton.isEnabled =
-            requireActivity().isIntentAvailable(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY)
-        setupFragments()
     }
 
     private fun updateTract(tract: Tract) {
         this.tract = tract
-        this.tractPhotoFile = tractViewModel.getPhotoFile(tract)
-        this.tractPhotoUri = FileProvider.getUriForFile(requireActivity(),
-            "com.onion.android.ktatractcollection.fileprovider",
-            tractPhotoFile)
-        updatePhoto()
-    }
-
-    private fun updatePhoto() {
-        Glide.with(context)
-            .load(tractPhotoFile)
-            .asBitmap()
-            .centerCrop()
-            .placeholder(R.drawable.ic_no_tract_photo)
-            .into(pictureView)
-
-        pictureView.isEnabled = tractPhotoFile.exists()
+//        this.tractPhotoFile = tractViewModel.getPhotoFile(tract)
+//        this.tractPhotoUri = FileProvider.getUriForFile(requireActivity(),
+//            "com.onion.android.ktatractcollection.fileprovider",
+//            tractPhotoFile)
+        picturesFragment.updateTract(tract.id)
     }
 
     /**
@@ -180,7 +158,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         setupCommentsListener()
         setupDateListener()
         setupPictureButtonListener()
-        setupPictureViewListener()
     }
 
     private fun setupDateListener() {
@@ -202,37 +179,21 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     }
 
     private fun setupPictureButtonListener() {
-        pictureButton.setOnClickListener {
-            startActivity(cameraIntent)
-        }
-    }
-
-    private fun setupPictureViewListener() {
-        pictureView.setOnClickListener {
-            val intent = ImageDialogFragment.newInstance(tractPhotoFile)
-            intent.show(requireActivity().supportFragmentManager, Dialogs.PICTURE.description)
-        }
+//        pictureButton.setOnClickListener {
+//            startActivity(cameraIntent)
+//        }
     }
 
     private fun setupOutlets(view: View) {
         authorTextField = view.findViewById(R.id.author_text_field)
         dateButton = view.findViewById(R.id.date_button)
         commentsTextField = view.findViewById(R.id.comments_text_field)
-        pictureView = view.findViewById(R.id.picture_view)
         pictureButton = view.findViewById(R.id.picture_button)
-    }
 
-    private fun setupFragments() {
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentContainer = fragmentManager.findFragmentById(R.id.pictures_fragment)
-
-        if (fragmentContainer == null) {
-            val fragment = PicturesFragment.newInstance(tract.id)
-
-            fragmentManager
-                .beginTransaction()
-                .add(R.id.pictures_fragment, fragment)
-                .commit()
+        val fragmentContainer = childFragmentManager.findFragmentById(R.id.pictures_fragment)
+        println(fragmentContainer)
+        if (fragmentContainer is PicturesListFragment) {
+            picturesFragment = fragmentContainer
         }
     }
 
