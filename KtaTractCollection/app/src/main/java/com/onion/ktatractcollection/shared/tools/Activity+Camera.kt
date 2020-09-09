@@ -31,6 +31,6 @@ fun Activity.buildCameraIntent(photoUri: Uri): Intent {
     val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-    grantCameraPermissionsForIntent(cameraIntent, photoUri)
+//    grantCameraPermissionsForIntent(cameraIntent, photoUri)
     return cameraIntent
 }

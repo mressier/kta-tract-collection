@@ -20,6 +20,10 @@
     <string name="delete_tract">Delete the tract</string>
     <string name="delete_tract_success">Your tract has been successfully deleted</string>
 
+    <!--  Permissions  -->
+    <string name="camera_permission_description">We should access to your camera to take a picture of the tract</string>
+    <string name="camera_permission_denied">Camera access not granted. Go to app settings to enable it.</string>
+
     <!--  Basics  -->
     <string name="i_understand">I understand</string>
     <string name="ok">OK</string>

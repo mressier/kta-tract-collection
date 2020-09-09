@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.onion.ktatractcollection.Models.Tract
+import com.onion.ktatractcollection.Models.TractPicture
 import java.io.File
 import java.lang.IllegalStateException
 import java.util.*
@@ -29,15 +30,12 @@ class TractRepository private constructor(context: Context) {
     private val filesDir = context.applicationContext.filesDir
 
     /**
-     * Methods
+     * Tract Methods
      */
 
     fun getTracts(): LiveData<List<Tract>> = tractDao.getTracts()
 
     fun getTract(id: UUID): LiveData<Tract?> = tractDao.getTract(id)
-
-    fun getPhotoFile(tract: Tract): File = File(filesDir, tract.photoFilename)
-
 
     fun addTract(tract: Tract) {
         executor.execute() { tractDao.addTract(tract) }
@@ -49,6 +47,26 @@ class TractRepository private constructor(context: Context) {
 
     fun deleteTract(tract: Tract) {
         executor.execute() { tractDao.deleteTract(tract) }
+    }
+
+    /**
+     * Pictures
+     */
+
+    fun getPictures(tractId: UUID): LiveData<List<TractPicture>> =
+        tractDao.getPicturesForTract(tractId)
+
+    fun getPicturesFile(pictures: List<TractPicture>): List<File> =
+        pictures.map { getPictureFile(it.photoFilename) }
+
+    fun getPictureFile(filename: String): File = File(filesDir, filename)
+
+    fun addPicture(picture: TractPicture) {
+        executor.execute() { tractDao.addPicture(picture) }
+    }
+
+    fun deletePicture(picture: TractPicture) {
+        executor.execute() { tractDao.deletePicture(picture) }
     }
 
     /**

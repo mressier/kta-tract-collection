@@ -1,5 +1,6 @@
 package com.onion.ktatractcollection.Fragments.TractPictures
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -12,41 +13,44 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import com.onion.ktatractcollection.Fragments.Tract.TractViewModel
-import com.onion.ktatractcollection.Models.Tract
+import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.ImageDialogFragment
-import com.onion.ktatractcollection.shared.tools.buildCameraIntent
-import com.onion.ktatractcollection.shared.tools.isIntentAvailable
+import com.onion.ktatractcollection.shared.tools.*
 import java.io.File
 import java.util.*
-
+import java.util.jar.Manifest
 
 interface PictureListCallbacks {
     fun onPictureSelected(picture: File)
     fun onLastButtonSelected()
 }
 
+internal enum class REQUESTS {
+    CAMERA_PERMISSION,
+    CAMERA_INTENT
+}
+
 /**
  * A fragment representing a list of Items.
  */
-class PicturesListFragment : Fragment(), PictureListCallbacks {
+class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGrantedCallbacks {
 
     /**
      * Properties
      */
     private lateinit var tractId: UUID
-    private lateinit var photoFile: File
-    private lateinit var photoUri: Uri
+    private lateinit var photoFiles: List<File>
 
     /* View Model */
-    private val tractViewModel: TractViewModel by lazy {
-        ViewModelProvider(this).get(TractViewModel::class.java)
+    private val picturesViewModel: TractPicturesViewModel by lazy {
+        ViewModelProvider(this).get(TractPicturesViewModel::class.java)
     }
 
-    private val cameraIntent: Intent by lazy {
-        requireActivity().buildCameraIntent(photoUri)
-    }
+    /* Camera */
+    private var cameraIntent: Intent? = null
+    private var pictureUri: Uri? = null
+    private var picture: TractPicture? = null
 
     /* Outlets */
     private lateinit var recyclerView: RecyclerView
@@ -85,8 +89,57 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
         revokeCameraPermission()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUESTS.CAMERA_INTENT.ordinal) {
+                picturesViewModel.savePicture(picture!!) // TODO
+                revokeCameraPermission()
+                picture = null
+                pictureUri = null
+                cameraIntent = null
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    /**
+     * Permission
+     */
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUESTS.CAMERA_PERMISSION.ordinal -> {
+                checkGrantResultForPermission(
+                    android.Manifest.permission.CAMERA,
+                    permissions,
+                    grantResults,
+                    this
+                )
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onPermissionGranted(permission: String) {
+        startCameraIntent(pictureUri ?: generatePhotoUriForTract())
+    }
+
+    override fun onPermissionDenied(permission: String) {
+        println("canceled")
+    }
+
+    override fun onPermissionDeniedForever(permission: String) {
+        requireContext().showPermissionAlwaysDeniedExplanation(
+            getString(R.string.camera_permission_denied)
+        )
+    }
+
     private fun revokeCameraPermission() {
-        requireActivity().revokeUriPermission(photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        requireActivity().revokeUriPermission(pictureUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
     }
 
     /**
@@ -94,28 +147,84 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
      */
     fun updateTract(tractId: UUID) {
         this.tractId = tractId
-        tractViewModel.loadTract(tractId)
+        picturesViewModel.loadPicturesForTractId(tractId)
     }
 
     private fun updateUI() {
-        adapter.submitList(listOf(photoFile, photoFile, photoFile, photoFile, photoFile, photoFile, photoFile))
+        adapter.submitList(photoFiles)
     }
 
     /**
      * Setup
      */
+
     private fun setupViewModel() {
-        tractViewModel.tract.observe(
+        picturesViewModel.pictures.observe(
             viewLifecycleOwner,
             {
-                val tract = it ?: Tract()
-                photoFile = tractViewModel.getPhotoFile(tract)
-                photoUri = FileProvider.getUriForFile(requireActivity(),
-                    "com.onion.android.ktatractcollection.fileprovider",
-                    photoFile)
+                val pictures = it ?: listOf()
+                photoFiles = picturesViewModel.convertPicturesToFile(pictures)
+
                 updateUI()
             }
         )
+    }
+
+    /**
+     * Callbacks
+     */
+
+    override fun onPictureSelected(picture: File) {
+        val intent = ImageDialogFragment.newInstance(picture)
+        intent.show(requireActivity().supportFragmentManager, "show_picture") // TODO: add dialogs enum
+    }
+
+    override fun onLastButtonSelected() {
+        startCameraIntent(generatePhotoUriForTract())
+    }
+
+    private fun generatePhotoUriForTract(): Uri {
+        val picture = TractPicture(tractId = tractId)
+        val file = picturesViewModel.convertPictureToFile(picture)
+
+        val photoUri = FileProvider.getUriForFile(
+            requireActivity(),
+            "com.onion.android.ktatractcollection.fileprovider",
+            file
+        )
+
+        this.picture = picture
+
+        return photoUri
+    }
+
+    /**
+     * Camera
+     */
+
+    private fun startCameraIntent(photoUri: Uri) {
+        val cameraIntent = requireActivity().buildCameraIntent(photoUri)
+        val permission = android.Manifest.permission.CAMERA
+
+        if (!requireActivity().isIntentAvailable(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY)) {
+            Toast.makeText(context, "No camera available", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!requireContext().permissionIsGranted(permission)) {
+            requestPermissionWithRationale(
+                requireContext(),
+                getString(R.string.camera_permission_description),
+                permission,
+                REQUESTS.CAMERA_PERMISSION.ordinal
+            ) { println("canceled") }
+            return
+        }
+
+        this.pictureUri = photoUri
+        this.cameraIntent = cameraIntent
+
+        startActivityForResult(cameraIntent, REQUESTS.CAMERA_INTENT.ordinal) // TODO: add request item
     }
 
     /**
@@ -133,17 +242,4 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
             }
     }
 
-    override fun onPictureSelected(picture: File) {
-        val intent = ImageDialogFragment.newInstance(picture)
-        intent.show(requireActivity().supportFragmentManager, "show_picture") // TODO: add dialogs enum
-    }
-
-    override fun onLastButtonSelected() {
-        if (!requireActivity().isIntentAvailable(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY)) {
-            Toast.makeText(context, "No camera available", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        startActivity(cameraIntent)
-    }
 }

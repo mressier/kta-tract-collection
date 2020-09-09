@@ -50,8 +50,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         ViewModelProvider(this).get(TractViewModel::class.java)
     }
     private lateinit var tract: Tract
-    private lateinit var tractPhotoFile: File
-    private lateinit var tractPhotoUri: Uri
 
     /**
      * View Life Cycle
@@ -100,15 +98,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         super.onStop()
         tractViewModel.saveTract(tract)
     }
-//
-//    override fun onDetach() {
-//        super.onDetach()
-//        revokeCameraPermission()
-//    }
-//
-//    private fun revokeCameraPermission() {
-//        requireActivity().revokeUriPermission(tractPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-//    }
 
     /**
      * Menu
@@ -142,10 +131,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
 
     private fun updateTract(tract: Tract) {
         this.tract = tract
-//        this.tractPhotoFile = tractViewModel.getPhotoFile(tract)
-//        this.tractPhotoUri = FileProvider.getUriForFile(requireActivity(),
-//            "com.onion.android.ktatractcollection.fileprovider",
-//            tractPhotoFile)
         picturesFragment.updateTract(tract.id)
     }
 
@@ -157,7 +142,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         setupAuthorListener()
         setupCommentsListener()
         setupDateListener()
-        setupPictureButtonListener()
     }
 
     private fun setupDateListener() {
@@ -178,12 +162,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         commentsTextField.addTextChangedListener(commentsWatcher)
     }
 
-    private fun setupPictureButtonListener() {
-//        pictureButton.setOnClickListener {
-//            startActivity(cameraIntent)
-//        }
-    }
-
     private fun setupOutlets(view: View) {
         authorTextField = view.findViewById(R.id.author_text_field)
         dateButton = view.findViewById(R.id.date_button)
@@ -191,7 +169,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         pictureButton = view.findViewById(R.id.picture_button)
 
         val fragmentContainer = childFragmentManager.findFragmentById(R.id.pictures_fragment)
-        println(fragmentContainer)
         if (fragmentContainer is PicturesListFragment) {
             picturesFragment = fragmentContainer
         }

@@ -1,0 +1,12 @@
+Kta Tract
+
+TODO:
+- Scroll on write (author & comment disappear under keyboard)
+- Picture display (crop or center or anything else but something working)
+- Select picture from galery
+- Accessibility
+
+DOING
+- Handle several pictures for one tract on database
+
+DONE

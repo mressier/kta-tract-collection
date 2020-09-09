@@ -34,7 +34,4 @@ class TractViewModel : ViewModel() {
         tractRepository.updateTract(tract)
     }
 
-    fun getPhotoFile(tract: Tract): File {
-        return tractRepository.getPhotoFile(tract)
-    }
 }

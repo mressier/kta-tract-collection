@@ -15,6 +15,8 @@ import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
 import java.util.*
 
+private const val TAG = "TractListFragment"
+
 /**
  * A fragment representing a list of Items.
  */
@@ -110,10 +112,11 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
      * Update
      */
     private fun updateUI(tracts: List<Tract>) {
-        updateTractListUI(tractListViewModel.getAsTractListItems(tracts))
+        tractListViewModel.saveAsTractsWithPicture(tracts)
+        updateTractListUI(tractListViewModel.tractsWithPicture)
     }
 
-    private fun updateTractListUI(tractListItems: List<TractListItem>) {
+    private fun updateTractListUI(tractListItems: List<TractWithPicture>) {
         val previousTracts = tractAdapter.currentList
 
         tractAdapter.submitList(tractListItems)
@@ -156,11 +159,30 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
             viewLifecycleOwner,
             { items ->
                 items?.let {
-                    Log.i("TAG", "Got items ${items.size}")
-                    updateUI(items)
+                    Log.i("TAG", "Got items ${it.size}")
+                    updateUI(it)
+                    setupImagesForTracts(it)
                 }
             }
         )
+    }
+
+    private fun setupImagesForTracts(tracts: List<Tract>) {
+        tractListViewModel.saveAsTractsWithPicture(tracts)
+
+        for (index in tracts.indices) {
+            tractListViewModel.getPictures(tracts[index]).observe(
+                viewLifecycleOwner,
+                { items ->
+                    val firstPicture = items.firstOrNull()
+                    tractListViewModel.addPictureToTractItem(index, firstPicture)
+
+                    Log.i(TAG, "Tract ${tracts[index].id} - Got picture ${firstPicture}")
+
+                    updateTractListUI(tractListViewModel.tractsWithPicture)
+                }
+            )
+        }
     }
 
     private fun setupButtonListener() {

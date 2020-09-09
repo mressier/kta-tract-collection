@@ -21,7 +21,7 @@ interface TractListCallbacks {
 class TractListAdapter(
     private val context: Context,
     private val callbacks: TractListCallbacks?,
-    ) : ListAdapter<TractListItem, TractViewHolder>(DiffUtilCallback()) {
+    ) : ListAdapter<TractWithPicture, TractViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TractViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -37,13 +37,15 @@ class TractListAdapter(
     /**
      * Diff
      */
-    class DiffUtilCallback: DiffUtil.ItemCallback<TractListItem>() {
-        override fun areItemsTheSame(oldItem: TractListItem, newItem: TractListItem): Boolean {
+    class DiffUtilCallback: DiffUtil.ItemCallback<TractWithPicture>() {
+        override fun areItemsTheSame(oldItem: TractWithPicture, newItem: TractWithPicture): Boolean {
             return oldItem.tract.id == newItem.tract.id
         }
 
-        override fun areContentsTheSame(oldItem: TractListItem, newItem: TractListItem): Boolean {
-            return oldItem.tract == newItem.tract
+        override fun areContentsTheSame(oldItem: TractWithPicture, newItem: TractWithPicture): Boolean {
+            return oldItem.tract.author == newItem.tract.author
+                    && oldItem.tract.discoveryDate == newItem.tract.discoveryDate
+                    && oldItem.pictureFile == newItem.pictureFile
         }
     }
 

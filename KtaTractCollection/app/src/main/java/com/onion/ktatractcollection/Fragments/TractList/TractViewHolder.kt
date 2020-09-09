@@ -31,9 +31,9 @@ class TractViewHolder(
      * Bind
      */
 
-    fun bind(tractItem: TractListItem) {
+    fun bind(tractItem: TractWithPicture) {
         updateTract(tractItem.tract)
-        updateTractImage(tractItem.photoFile)
+        updateTractImage(tractItem.pictureFile)
     }
 
     private fun updateTract(tract: Tract) {
@@ -51,7 +51,7 @@ class TractViewHolder(
         }
     }
 
-    private fun updateTractImage(photo: File) {
+    private fun updateTractImage(photo: File?) {
         Glide.with(context)
             .load(photo)
             .asBitmap()

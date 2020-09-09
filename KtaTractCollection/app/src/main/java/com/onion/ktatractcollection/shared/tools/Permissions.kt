@@ -6,6 +6,35 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.onion.ktatractcollection.R
+import java.security.Permission
+
+/**
+ * Granted Result
+ */
+
+interface PermissionGrantedCallbacks {
+    fun onPermissionGranted(permission: String)
+    fun onPermissionDenied(permission: String)
+    fun onPermissionDeniedForever(permission: String)
+}
+
+fun Fragment.checkGrantResultForPermission(permission: String,
+                                           permissions: Array<out String>,
+                                           grantResults: IntArray,
+                                           callback: PermissionGrantedCallbacks
+) {
+    when {
+        permissionHasBeenGranted(permission, permissions, grantResults) -> {
+            callback.onPermissionGranted(permission)
+        }
+        permissionIsAlwaysDenied(permission) -> {
+            callback.onPermissionDeniedForever(permission)
+        }
+        else -> {
+            callback.onPermissionDenied(permission)
+        }
+    }
+}
 
 /**
  * Granted permissions
