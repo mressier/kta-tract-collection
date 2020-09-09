@@ -60,6 +60,7 @@ class ImageDialogFragment: DialogFragment() {
         Glide.with(context)
             .load(photoFile.path)
             .asBitmap()
+            .placeholder(R.drawable.ic_no_tract_photo)
             .into(photoView)
     }
 

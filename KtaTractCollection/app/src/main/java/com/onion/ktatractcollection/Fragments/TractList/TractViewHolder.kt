@@ -33,7 +33,7 @@ class TractViewHolder(
 
     fun bind(tractItem: TractWithPicture) {
         updateTract(tractItem.tract)
-        updateTractImage(tractItem.pictureFile)
+        updateTractImage(tractItem.picturesFile.firstOrNull())
     }
 
     private fun updateTract(tract: Tract) {

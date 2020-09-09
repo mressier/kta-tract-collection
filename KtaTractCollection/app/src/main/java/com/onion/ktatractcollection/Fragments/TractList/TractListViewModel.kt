@@ -6,8 +6,9 @@ import com.onion.ktatractcollection.Database.TractRepository
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import java.io.File
+import java.util.*
 
-class TractWithPicture(val tract: Tract, var pictureFile: File? = null) {}
+class TractWithPicture(val tract: Tract, var picturesFile: List<File> = listOf()) {}
 
 class TractListViewModel: ViewModel() {
 
@@ -30,23 +31,26 @@ class TractListViewModel: ViewModel() {
     }
 
     fun deleteTract(tract: Tract) {
+        getSavedTractWithPictures(tract.id)?.picturesFile?.let {
+            tractRepository.deletePicturesFiles(it)
+        }
         tractRepository.deleteTract(tract)
     }
 
     fun saveAsTractsWithPicture(tracts: List<Tract>) {
-        val oldTractWithPictures = tractsWithPicture
-
-        tractsWithPicture = tracts.map { tract ->
-            val oldPicture = oldTractWithPictures.find { it.tract.id == tract.id }?.pictureFile
-            TractWithPicture(tract, oldPicture)
+        val newTractsWithPicture = tracts.map { tract ->
+            val oldPicture = getSavedTractWithPictures(tract.id)?.picturesFile
+            TractWithPicture(tract, oldPicture ?: listOf())
         }
+
+        tractsWithPicture = newTractsWithPicture
     }
 
-    fun addPictureToTractItem(tractIndex: Int, picture: TractPicture?) {
+    fun addPicturesToTractItem(tractIndex: Int, pictures: List<TractPicture>) {
         if (tractIndex < 0 || tractIndex >= tractsWithPicture.size) { return }
 
-        val pictureFile = picture?.let { convertPictureToFile(it) }
-        tractsWithPicture[tractIndex].pictureFile = pictureFile
+        val picturesFile = pictures.map { convertPictureToFile(it) }
+        tractsWithPicture[tractIndex].picturesFile = picturesFile
     }
 
     /**
@@ -59,6 +63,10 @@ class TractListViewModel: ViewModel() {
 
     private fun convertPictureToFile(picture: TractPicture): File {
         return tractRepository.getPictureFile(picture.photoFilename)
+    }
+
+    private fun getSavedTractWithPictures(tractId: UUID): TractWithPicture? {
+        return tractsWithPicture.find { it.tract.id == tractId }
     }
 
 }

@@ -46,7 +46,10 @@ class TractRepository private constructor(context: Context) {
     }
 
     fun deleteTract(tract: Tract) {
-        executor.execute() { tractDao.deleteTract(tract) }
+        executor.execute() {
+            tractDao.deleteTract(tract)
+            tractDao.deletePicturesForTract(tract.id)
+        }
     }
 
     /**
@@ -61,12 +64,21 @@ class TractRepository private constructor(context: Context) {
 
     fun getPictureFile(filename: String): File = File(filesDir, filename)
 
+    fun deletePicturesFiles(files: List<File>) {
+        executor.execute() {
+            files.forEach { it.delete() }
+        }
+    }
+
     fun addPicture(picture: TractPicture) {
         executor.execute() { tractDao.addPicture(picture) }
     }
 
     fun deletePicture(picture: TractPicture) {
-        executor.execute() { tractDao.deletePicture(picture) }
+        executor.execute() {
+            getPictureFile(picture.photoFilename).delete()
+            tractDao.deletePicture(picture)
+        }
     }
 
     /**

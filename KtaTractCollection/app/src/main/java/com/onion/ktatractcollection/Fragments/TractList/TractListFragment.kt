@@ -174,10 +174,9 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
             tractListViewModel.getPictures(tracts[index]).observe(
                 viewLifecycleOwner,
                 { items ->
-                    val firstPicture = items.firstOrNull()
-                    tractListViewModel.addPictureToTractItem(index, firstPicture)
+                    tractListViewModel.addPicturesToTractItem(index, items)
 
-                    Log.i(TAG, "Tract ${tracts[index].id} - Got picture ${firstPicture}")
+                    Log.i(TAG, "Tract ${tracts[index].id} - Got pictures $items")
 
                     updateTractListUI(tractListViewModel.tractsWithPicture)
                 }

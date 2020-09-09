@@ -45,7 +45,7 @@ class TractListAdapter(
         override fun areContentsTheSame(oldItem: TractWithPicture, newItem: TractWithPicture): Boolean {
             return oldItem.tract.author == newItem.tract.author
                     && oldItem.tract.discoveryDate == newItem.tract.discoveryDate
-                    && oldItem.pictureFile == newItem.pictureFile
+                    && oldItem.picturesFile == newItem.picturesFile
         }
     }
 

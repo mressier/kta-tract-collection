@@ -39,4 +39,7 @@ interface TractDao {
     @Delete
     fun deletePicture(picture: TractPicture)
 
+    @Query("DELETE FROM tractpicture WHERE tractId=(:tractId)")
+    fun deletePicturesForTract(tractId: UUID)
+
 }
