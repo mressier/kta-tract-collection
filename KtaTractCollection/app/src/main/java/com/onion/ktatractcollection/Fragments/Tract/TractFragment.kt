@@ -42,7 +42,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var authorTextField: EditText
     private lateinit var dateButton: Button
     private lateinit var commentsTextField: EditText
-    private lateinit var pictureButton: Button
     private lateinit var picturesFragment: PicturesListFragment
 
     /* View Model */
@@ -166,7 +165,6 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
         authorTextField = view.findViewById(R.id.author_text_field)
         dateButton = view.findViewById(R.id.date_button)
         commentsTextField = view.findViewById(R.id.comments_text_field)
-        pictureButton = view.findViewById(R.id.picture_button)
 
         val fragmentContainer = childFragmentManager.findFragmentById(R.id.pictures_fragment)
         if (fragmentContainer is PicturesListFragment) {
