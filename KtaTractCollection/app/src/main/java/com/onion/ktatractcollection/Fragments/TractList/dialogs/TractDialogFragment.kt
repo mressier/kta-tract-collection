@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.Fragments.TractList
+package com.onion.ktatractcollection.Fragments.TractList.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
@@ -64,7 +64,7 @@ class TractDialogFragment: DialogFragment() {
     private fun setupListeners() {
         deleteButton.setOnClickListener {
             targetFragment?.let { fragment ->
-                (fragment as TractDialogFragment.Callbacks).onDelete(tractId)
+                (fragment as Callbacks).onDelete(tractId)
                 dismiss()
             }
         }

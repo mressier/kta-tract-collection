@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
+import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractDialogFragment
+import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListDialogFragment
+import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParametersViewModel
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
 import java.util.*
@@ -44,6 +47,11 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private val tractListViewModel: TractListViewModel by lazy {
         ViewModelProvider(this).get(TractListViewModel::class.java)
     }
+
+    private val parametersViewModel: TractListParametersViewModel by lazy {
+        ViewModelProvider(this).get(TractListParametersViewModel::class.java)
+    }
+
 
     private lateinit var tractRecyclerView: RecyclerView
     private lateinit var noTractImageView: ImageView
@@ -116,7 +124,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
      * Update
      */
     private fun updateUI() {
-        val tracts = tractListViewModel.getDisplayedTracts(currentTracts)
+        val tracts = parametersViewModel.getDisplayedTracts(currentTracts)
         tractListViewModel.saveAsTractsWithPicture(tracts)
         updateTractListUI(tractListViewModel.tractsWithPicture)
     }
@@ -174,7 +182,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     }
 
     private fun setupImagesForTracts() {
-        val tracts = tractListViewModel.getDisplayedTracts(currentTracts)
+        val tracts = parametersViewModel.getDisplayedTracts(currentTracts)
         tractListViewModel.saveAsTractsWithPicture(tracts)
 
         for (tractId in tracts.map { it.id }) {
@@ -209,7 +217,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     }
 
     private fun showTractListDialog() {
-        TractListDialogFragment.newInstance(tractListViewModel.parameters).apply {
+        TractListDialogFragment.newInstance(parametersViewModel.parameters).apply {
             setTargetFragment(this@TractListFragment, REQUEST_TRACT_LIST_ACTION)
             show(this@TractListFragment.requireFragmentManager(), DIALOG_TRACT_LIST_ACTION)
         }
@@ -236,7 +244,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     }
 
     override fun onParameterSelected(parameters: TractListParameters) {
-        tractListViewModel.parameters = parameters
+        parametersViewModel.parameters = parameters
         updateUI()
     }
 

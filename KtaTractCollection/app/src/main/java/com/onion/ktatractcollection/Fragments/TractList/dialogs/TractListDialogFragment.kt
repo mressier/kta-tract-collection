@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.Fragments.TractList
+package com.onion.ktatractcollection.Fragments.TractList.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
+import com.onion.ktatractcollection.Fragments.TractList.TractListParameters
+import com.onion.ktatractcollection.Fragments.TractList.TractListViewModel
 import com.onion.ktatractcollection.R
 
 private const val SORT_OPTION_ID = "sort_option_id"
@@ -33,7 +35,9 @@ class TractListDialogFragment : DialogFragment() {
     private lateinit var radioButtons: List<RadioButton>
     private lateinit var validateButton: Button
 
-    private lateinit var parameter: TractListParameters
+    private val parametersViewModel: TractListParametersViewModel by lazy {
+        ViewModelProvider(this).get(TractListParametersViewModel::class.java)
+    }
 
     /**
      * View Life Cycle
@@ -60,7 +64,7 @@ class TractListDialogFragment : DialogFragment() {
         val sort =
             arguments?.getSerializable(SORT_OPTION_ID) as TractListParameters.Sort
 
-        parameter = TractListParameters().apply { sortOption = sort }
+        parametersViewModel.parameters = TractListParameters().apply { sortOption = sort }
         return super.onCreateDialog(savedInstanceState)
     }
 
@@ -94,14 +98,14 @@ class TractListDialogFragment : DialogFragment() {
             val button: RadioButton = group.findViewById(checkedId)
             val index = radioButtons.indexOf(button)
             val selected = TractListParameters.Sort.values().get(index)
-            parameter.sortOption = selected
+            parametersViewModel.sortOption = selected
         }
     }
 
     private fun setupValidateButtonListener() {
         validateButton.setOnClickListener {
             targetFragment?.let { fragment ->
-                (fragment as TractListDialogFragment.Callbacks).onParameterSelected(parameter)
+                (fragment as Callbacks).onParameterSelected(parametersViewModel.parameters)
                 dismiss()
             }
         }
@@ -111,7 +115,7 @@ class TractListDialogFragment : DialogFragment() {
      * Update
      */
     private fun updateUI() {
-        val buttonId = radioButtons.get(parameter.sortOption.ordinal).id
+        val buttonId = radioButtons[parametersViewModel.sortOption.ordinal].id
         if (buttonId != radioGroup.checkedRadioButtonId) {
             radioGroup.check(buttonId)
         }

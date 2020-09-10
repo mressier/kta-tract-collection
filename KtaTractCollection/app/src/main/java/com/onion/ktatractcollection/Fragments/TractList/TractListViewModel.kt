@@ -39,12 +39,6 @@ class TractListViewModel: ViewModel() {
         tractsWithPicture = tractsWithPicture.filter { it.tract.id != tract.id }
     }
 
-    var parameters = TractListParameters()
-
-    fun getDisplayedTracts(tracts: List<Tract>): List<Tract> {
-        return parameters.sortOption.sortTractListMethod(tracts)
-    }
-
     /**
      * Pictures
      */
