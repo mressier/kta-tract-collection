@@ -10,21 +10,18 @@ import androidx.fragment.app.DialogFragment
 import com.onion.ktatractcollection.R
 import java.util.*
 
+private const val ARGUMENT_TRACT_ID = "tract_id"
+
 class TractDialogFragment: DialogFragment() {
 
     interface Callbacks {
         fun onDelete(tractId: UUID)
     }
 
-    enum class ArgumentsKey {
-        TRACT_ID
-    }
-
     /**
      * Properties
      */
 
-    private lateinit var callbacks: Callbacks
     private lateinit var tractId: UUID
 
     private lateinit var deleteButton: Button
@@ -50,7 +47,7 @@ class TractDialogFragment: DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val tractString = arguments?.getSerializable(ArgumentsKey.TRACT_ID.name) as String
+        val tractString = arguments?.getSerializable(ARGUMENT_TRACT_ID) as String
         tractId = UUID.fromString(tractString)
 
         return super.onCreateDialog(savedInstanceState)
@@ -82,7 +79,7 @@ class TractDialogFragment: DialogFragment() {
     companion object {
         fun newInstance(tractId: UUID): TractDialogFragment {
             val args = Bundle()
-            args.putSerializable(ArgumentsKey.TRACT_ID.name, tractId.toString())
+            args.putSerializable(ARGUMENT_TRACT_ID, tractId.toString())
 
             val fragment = TractDialogFragment()
             fragment.arguments = args

@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/sort_list"
+        android:icon="@drawable/ic_sort_icon"
+        android:title="@string/sort_tract_list"
+        app:showAsAction="ifRoom|withText" />
+    <item
         android:id="@+id/new_tract"
         android:icon="@drawable/ic_add_icon"
         android:title="@string/new_tract"

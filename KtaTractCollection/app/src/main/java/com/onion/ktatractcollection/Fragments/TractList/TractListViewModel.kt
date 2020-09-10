@@ -22,7 +22,7 @@ class TractListViewModel: ViewModel() {
      */
 
     /** Tract list saved locally **/
-    var tracts = tractRepository.getTracts()
+    val tracts: LiveData<List<Tract>> = tractRepository.getTracts()
 
     var tractsWithPicture: List<TractWithPicture> = listOf()
 
@@ -35,7 +35,19 @@ class TractListViewModel: ViewModel() {
             tractRepository.deletePicturesFiles(it)
         }
         tractRepository.deleteTract(tract)
+
+        tractsWithPicture = tractsWithPicture.filter { it.tract.id != tract.id }
     }
+
+    var parameters = TractListParameters()
+
+    fun getDisplayedTracts(tracts: List<Tract>): List<Tract> {
+        return parameters.sortOption.sortTractListMethod(tracts)
+    }
+
+    /**
+     * Pictures
+     */
 
     fun saveAsTractsWithPicture(tracts: List<Tract>) {
         val newTractsWithPicture = tracts.map { tract ->
@@ -46,19 +58,13 @@ class TractListViewModel: ViewModel() {
         tractsWithPicture = newTractsWithPicture
     }
 
-    fun addPicturesToTractItem(tractIndex: Int, pictures: List<TractPicture>) {
-        if (tractIndex < 0 || tractIndex >= tractsWithPicture.size) { return }
-
+    fun addPicturesToTractItem(tractId: UUID, pictures: List<TractPicture>) {
         val picturesFile = pictures.map { convertPictureToFile(it) }
-        tractsWithPicture[tractIndex].picturesFile = picturesFile
+        tractsWithPicture.find { it.tract.id == tractId }?.picturesFile = picturesFile
     }
 
-    /**
-     * Pictures
-     */
-
-    fun getPictures(tract: Tract): LiveData<List<TractPicture>> {
-        return tractRepository.getPictures(tract.id)
+    fun getPictures(tractId: UUID): LiveData<List<TractPicture>> {
+        return tractRepository.getPictures(tractId)
     }
 
     private fun convertPictureToFile(picture: TractPicture): File {

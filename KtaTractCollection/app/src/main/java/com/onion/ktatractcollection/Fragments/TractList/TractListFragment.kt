@@ -17,24 +17,23 @@ import java.util.*
 
 private const val TAG = "TractListFragment"
 
+private const val REQUEST_TRACT_ACTION = 0
+private const val REQUEST_TRACT_LIST_ACTION = 1
+
+private const val DIALOG_TRACT_ACTION = "dialog_tract_action"
+private const val DIALOG_TRACT_LIST_ACTION = "dialog_tract_list_action"
+
+
 /**
  * A fragment representing a list of Items.
  */
-class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Callbacks {
+class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Callbacks, TractListDialogFragment.Callbacks {
 
     /**
      * Required interface for hosting activities
      */
     interface Callbacks {
         fun onTractSelected(tractId: UUID)
-    }
-
-    enum class Requests {
-        TRACT_ACTION
-    }
-
-    enum class Dialogs {
-        TRACT_ACTION
     }
 
     /**
@@ -51,6 +50,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private lateinit var noTractButton: Button
 
     private lateinit var tractAdapter: TractListAdapter
+    private lateinit var currentTracts: List<Tract>
 
     /**
      * View Life Cycle
@@ -98,6 +98,10 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
                 launchTractCreation()
                 true
             }
+            R.id.sort_list -> {
+                showTractListDialog()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -111,7 +115,8 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     /**
      * Update
      */
-    private fun updateUI(tracts: List<Tract>) {
+    private fun updateUI() {
+        val tracts = tractListViewModel.getDisplayedTracts(currentTracts)
         tractListViewModel.saveAsTractsWithPicture(tracts)
         updateTractListUI(tractListViewModel.tractsWithPicture)
     }
@@ -160,23 +165,25 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
             { items ->
                 items?.let {
                     Log.i("TAG", "Got items ${it.size}")
-                    updateUI(it)
-                    setupImagesForTracts(it)
+                    currentTracts = items
+                    updateUI()
+                    setupImagesForTracts()
                 }
             }
         )
     }
 
-    private fun setupImagesForTracts(tracts: List<Tract>) {
+    private fun setupImagesForTracts() {
+        val tracts = tractListViewModel.getDisplayedTracts(currentTracts)
         tractListViewModel.saveAsTractsWithPicture(tracts)
 
-        for (index in tracts.indices) {
-            tractListViewModel.getPictures(tracts[index]).observe(
+        for (tractId in tracts.map { it.id }) {
+            tractListViewModel.getPictures(tractId).observe(
                 viewLifecycleOwner,
                 { items ->
-                    tractListViewModel.addPicturesToTractItem(index, items)
+                    tractListViewModel.addPicturesToTractItem(tractId, items)
 
-                    Log.i(TAG, "Tract ${tracts[index].id} - Got pictures $items")
+                    Log.i(TAG, "Tract $tractId - Got pictures $items")
 
                     updateTractListUI(tractListViewModel.tractsWithPicture)
                 }
@@ -191,6 +198,24 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     }
 
     /**
+     * Dialogs
+     */
+
+    private fun showTractDialog(tractId: UUID) {
+        TractDialogFragment.newInstance(tractId).apply {
+            setTargetFragment(this@TractListFragment, REQUEST_TRACT_ACTION)
+            show(this@TractListFragment.requireFragmentManager(), DIALOG_TRACT_ACTION)
+        }
+    }
+
+    private fun showTractListDialog() {
+        TractListDialogFragment.newInstance(tractListViewModel.parameters).apply {
+            setTargetFragment(this@TractListFragment, REQUEST_TRACT_LIST_ACTION)
+            show(this@TractListFragment.requireFragmentManager(), DIALOG_TRACT_LIST_ACTION)
+        }
+    }
+
+    /**
      * Callbacks
      */
 
@@ -199,23 +224,20 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     }
 
     override fun onTractLongSelected(tractId: UUID) {
-        TractDialogFragment.newInstance(tractId).apply {
-            setTargetFragment(this@TractListFragment, Requests.TRACT_ACTION.ordinal)
-            show(this@TractListFragment.requireFragmentManager(), Dialogs.TRACT_ACTION.name)
-        }
+        showTractDialog(tractId)
     }
 
     override fun onDelete(tractId: UUID) {
         tractListViewModel.deleteTract(Tract(id = tractId))
 
-        val currentTracts = tractAdapter.currentList
-        val newTracts = currentTracts.filter { it.tract.id != tractId }
-        updateTractListUI(newTracts)
+        updateTractListUI(tractListViewModel.tractsWithPicture)
 
         Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_LONG).show()
     }
 
-    /**
-     * Tools
-     */
+    override fun onParameterSelected(parameters: TractListParameters) {
+        tractListViewModel.parameters = parameters
+        updateUI()
+    }
+
 }
