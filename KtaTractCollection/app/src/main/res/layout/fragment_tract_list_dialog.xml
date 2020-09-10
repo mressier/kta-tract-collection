@@ -9,7 +9,6 @@
 
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -17,12 +16,24 @@
         android:text="@string/tract_sort_dialog_title" />
 
     <RadioGroup
-        android:id="@+id/radio_group"
+        android:id="@+id/sort_by_radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" >
 
     </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/tract_sort_order_dialog_title" />
+
+    <RadioGroup
+        android:id="@+id/sort_order_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/validate_button"

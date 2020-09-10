@@ -12,10 +12,10 @@ import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.onion.ktatractcollection.Fragments.TractList.TractListParameters
-import com.onion.ktatractcollection.Fragments.TractList.TractListViewModel
 import com.onion.ktatractcollection.R
 
-private const val SORT_OPTION_ID = "sort_option_id"
+private const val PARAM_SORT_BY_ID = "sort_by_id"
+private const val PARAM_SORT_ORDER_ID = "sort_order_id"
 
 /**
  * A simple [Fragment] subclass.
@@ -31,8 +31,10 @@ class TractListDialogFragment : DialogFragment() {
     /**
      * Properties
      */
-    private lateinit var radioGroup: RadioGroup
-    private lateinit var radioButtons: List<RadioButton>
+    private lateinit var sortByRadioGroup: RadioGroup
+    private lateinit var sortByRadioButtons: List<RadioButton>
+    private lateinit var sortOrderRadioGroup: RadioGroup
+    private lateinit var sortOrderRadioButtons: List<RadioButton>
     private lateinit var validateButton: Button
 
     private val parametersViewModel: TractListParametersViewModel by lazy {
@@ -63,46 +65,70 @@ class TractListDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (savedInstanceState == null) {
-            val sort =
-                arguments?.getSerializable(SORT_OPTION_ID) as TractListParameters.Sort
-            parametersViewModel.sortOption = sort
+            parametersViewModel.sortBy =
+                arguments?.getSerializable(PARAM_SORT_BY_ID) as TractListParameters.SortBy
+            parametersViewModel.sortOrder =
+                arguments?.getSerializable(PARAM_SORT_ORDER_ID) as TractListParameters.SortOrder
         }
 
         return super.onCreateDialog(savedInstanceState)
     }
 
     /**
-     * Setup
+     * Setup View
      */
 
     private fun setupView(view: View) {
-        radioGroup = view.findViewById(R.id.radio_group)
+        sortByRadioGroup = view.findViewById(R.id.sort_by_radio_group)
+        sortOrderRadioGroup = view.findViewById(R.id.sort_order_radio_group)
         validateButton = view.findViewById(R.id.validate_button)
-        setupRadioButtons(radioGroup)
+
+        sortByRadioButtons = setupRadioButtons(
+            sortByRadioGroup,
+            TractListParameters.SortBy.values().map { it.stringId }
+        )
+        sortOrderRadioButtons = setupRadioButtons(
+            sortOrderRadioGroup,
+            TractListParameters.SortOrder.values().map { it.stringId }
+        )
     }
 
-    private fun setupRadioButtons(radioGroup: RadioGroup) {
-        val buttonsValue = TractListParameters.Sort.values()
-        radioButtons = buttonsValue.map { value ->
+    private fun setupRadioButtons(
+        radioGroup: RadioGroup,
+        valuesStringId: List<Int>
+    ): List<RadioButton> {
+        return valuesStringId.map { value ->
             val button =
-                RadioButton(requireContext()).apply { setText(value.stringId) }
+                RadioButton(requireContext()).apply { setText(value) }
             radioGroup.addView(button)
             button
         }
     }
 
+    /**
+     * Setup Listeners
+     */
     private fun setupListeners() {
-        setupRadioGroupListener()
+        setupSortByRadioGroupListener()
+        setupSortOrderRadioGroupListener()
         setupValidateButtonListener()
     }
 
-    private fun setupRadioGroupListener() {
-        radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            val button: RadioButton = group.findViewById(checkedId)
-            val index = radioButtons.indexOf(button)
-            val selected = TractListParameters.Sort.values().get(index)
+    private fun setupSortByRadioGroupListener() {
+        sortByRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            val index = getCheckedRadioButtonIndex(group, sortByRadioButtons, checkedId)
+            val selected = TractListParameters.SortBy.values()[index]
 
-            parametersViewModel.sortOption = selected
+            parametersViewModel.sortBy = selected
+        }
+    }
+
+    private fun setupSortOrderRadioGroupListener() {
+        sortOrderRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            val index = getCheckedRadioButtonIndex(group, sortOrderRadioButtons, checkedId)
+            val selected = TractListParameters.SortOrder.values()[index]
+
+            parametersViewModel.sortOrder = selected
         }
     }
 
@@ -123,10 +149,35 @@ class TractListDialogFragment : DialogFragment() {
      * Update
      */
     private fun updateUI() {
-        val buttonId = radioButtons[parametersViewModel.sortOption.ordinal].id
+        updateRadioButtonChecked(
+            sortByRadioGroup,
+            sortByRadioButtons,
+            parametersViewModel.sortBy.ordinal
+        )
+        updateRadioButtonChecked(
+            sortOrderRadioGroup,
+            sortOrderRadioButtons,
+            parametersViewModel.sortOrder.ordinal
+        )
+    }
+
+    private fun updateRadioButtonChecked(radioGroup: RadioGroup, radioButtons: List<RadioButton>, checkIndex: Int) {
+        val buttonId = radioButtons[checkIndex].id
         if (buttonId != radioGroup.checkedRadioButtonId) {
             radioGroup.check(buttonId)
         }
+    }
+
+    /**
+     * Tools
+     */
+    private fun getCheckedRadioButtonIndex(
+        radioGroup: RadioGroup,
+        radioButtons: List<RadioButton>,
+        checkedId: Int
+    ): Int {
+        val button: RadioButton = radioGroup.findViewById(checkedId)
+        return radioButtons.indexOf(button)
     }
 
     /**
@@ -138,7 +189,8 @@ class TractListDialogFragment : DialogFragment() {
         fun newInstance(parameter: TractListParameters) =
             TractListDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(SORT_OPTION_ID, parameter.sortOption)
+                    putSerializable(PARAM_SORT_BY_ID, parameter.sortOption)
+                    putSerializable(PARAM_SORT_ORDER_ID, parameter.sortOrder)
                 }
             }
     }

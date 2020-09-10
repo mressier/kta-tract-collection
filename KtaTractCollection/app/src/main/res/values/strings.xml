@@ -21,9 +21,12 @@
     <string name="delete_tract">Delete the tract</string>
     <string name="delete_tract_success">Your tract has been successfully deleted</string>
     <string name="tract_sort_dialog_title">Sort list by …</string>
+    <string name="tract_sort_order_dialog_title">Sort order</string>
+    <string name="tract_sort_default">Default (by add date)</string>
     <string name="tract_sort_author">Author</string>
     <string name="tract_sort_discovery_date">Discovery date</string>
-    <string name="tract_sort_default">Default</string>
+    <string name="sort_order_ascending">Ascending</string>
+    <string name="sort_order_descending">Descending</string>
 
     <!--  Permissions  -->
     <string name="camera_permission_description">We should access to your camera to take a picture of the tract</string>
