@@ -58,7 +58,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private lateinit var noTractButton: Button
 
     private lateinit var tractAdapter: TractListAdapter
-    private lateinit var currentTracts: List<Tract>
+    private var currentTracts: List<Tract> = listOf()
 
     /**
      * View Life Cycle

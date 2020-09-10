@@ -22,16 +22,14 @@ import java.io.File
 import java.util.*
 
 private const val TAG = "PicturesListFragment"
+private const val REQUEST_CAMERA_PERMISSION = 0
+private const val REQUEST_CAMERA_INTENT = 1
+
 
 interface PictureListCallbacks {
     fun onPictureSelected(picture: File)
     fun onLastButtonSelected()
     fun onDeleteButtonSelected(picture: File)
-}
-
-internal enum class REQUESTS {
-    CAMERA_PERMISSION,
-    CAMERA_INTENT
 }
 
 /**
@@ -66,6 +64,8 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (savedInstanceState != null) { return }
+
         arguments?.let {
            updateTract(UUID.fromString(it.getString("tract_id")))
         }
@@ -94,7 +94,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUESTS.CAMERA_INTENT.ordinal) {
+            if (requestCode == REQUEST_CAMERA_INTENT) {
                 picturesViewModel.savePicture(picture!!) // TODO
                 revokeCameraPermission()
                 picture = null
@@ -115,7 +115,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
         grantResults: IntArray
     ) {
         when (requestCode) {
-            REQUESTS.CAMERA_PERMISSION.ordinal -> {
+            REQUEST_CAMERA_PERMISSION -> {
                 checkGrantResultForPermission(
                     android.Manifest.permission.CAMERA,
                     permissions,
@@ -213,28 +213,33 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
      */
 
     private fun startCameraIntent(photoUri: Uri) {
-        val cameraIntent = requireActivity().buildCameraIntent(photoUri)
-        val permission = android.Manifest.permission.CAMERA
+        if (shouldWaitForCameraPermission()) { return }
 
+        val cameraIntent = requireActivity().buildCameraIntent(photoUri)
         if (!requireActivity().isIntentAvailable(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY)) {
             Toast.makeText(context, "No camera available", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (!requireContext().permissionIsGranted(permission)) {
-            requestPermissionWithRationale(
-                requireContext(),
-                getString(R.string.camera_permission_description),
-                permission,
-                REQUESTS.CAMERA_PERMISSION.ordinal
-            ) { println("canceled") }
             return
         }
 
         this.pictureUri = photoUri
         this.cameraIntent = cameraIntent
 
-        startActivityForResult(cameraIntent, REQUESTS.CAMERA_INTENT.ordinal) // TODO: add request item
+        startActivityForResult(cameraIntent, REQUEST_CAMERA_INTENT)
+    }
+
+    private fun shouldWaitForCameraPermission(): Boolean {
+        val permission = android.Manifest.permission.CAMERA
+
+        if (!requireContext().permissionIsGranted(permission)) {
+            requestPermissionWithRationale(
+                requireContext(),
+                getString(R.string.camera_permission_description),
+                permission,
+                REQUEST_CAMERA_PERMISSION
+            ) { println("canceled") }
+            return true
+        }
+        return false
     }
 
     /**

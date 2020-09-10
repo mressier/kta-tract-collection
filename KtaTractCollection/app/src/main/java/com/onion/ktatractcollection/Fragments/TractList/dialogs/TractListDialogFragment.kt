@@ -56,15 +56,18 @@ class TractListDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        println("onViewCreated()")
         setupListeners()
         updateUI()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val sort =
-            arguments?.getSerializable(SORT_OPTION_ID) as TractListParameters.Sort
+        if (savedInstanceState == null) {
+            val sort =
+                arguments?.getSerializable(SORT_OPTION_ID) as TractListParameters.Sort
+            parametersViewModel.sortOption = sort
+        }
 
-        parametersViewModel.parameters = TractListParameters().apply { sortOption = sort }
         return super.onCreateDialog(savedInstanceState)
     }
 
@@ -98,16 +101,21 @@ class TractListDialogFragment : DialogFragment() {
             val button: RadioButton = group.findViewById(checkedId)
             val index = radioButtons.indexOf(button)
             val selected = TractListParameters.Sort.values().get(index)
+
             parametersViewModel.sortOption = selected
         }
     }
 
     private fun setupValidateButtonListener() {
         validateButton.setOnClickListener {
-            targetFragment?.let { fragment ->
-                (fragment as Callbacks).onParameterSelected(parametersViewModel.parameters)
-                dismiss()
-            }
+            onParametersSelected(parametersViewModel.parameters)
+            dismiss()
+        }
+    }
+
+    private fun onParametersSelected(parameters: TractListParameters) {
+        targetFragment?.let { fragment ->
+            (fragment as Callbacks).onParameterSelected(parameters)
         }
     }
 

@@ -11,7 +11,7 @@ fun Activity.grantCameraPermission(info: ResolveInfo, photoUri: Uri) {
     grantUriPermission(
         info.activityInfo.packageName,
         photoUri,
-        android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
     )
 }
 
@@ -22,6 +22,7 @@ fun Activity.grantCameraPermissionsForIntent(intent: Intent, photoUri: Uri) {
             PackageManager.MATCH_DEFAULT_ONLY
         )
 
+    println(cameraActivities)
     for (info in cameraActivities) {
         grantCameraPermission(info, photoUri)
     }
@@ -31,6 +32,7 @@ fun Activity.buildCameraIntent(photoUri: Uri): Intent {
     val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-//    grantCameraPermissionsForIntent(cameraIntent, photoUri)
+    cameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+    grantCameraPermissionsForIntent(cameraIntent, photoUri)
     return cameraIntent
 }
