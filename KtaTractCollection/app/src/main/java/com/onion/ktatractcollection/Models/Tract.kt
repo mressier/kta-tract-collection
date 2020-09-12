@@ -18,18 +18,6 @@ data class Tract(
     /* Date when tract has been discovered */
     var discoveryDate: Date = Date(),
     /* Date figuring on the tract */
-    var tractDateYear: Int? = null,
-    var tractDateMonth: Int? = null,
-    var tractDateDay: Int? = null,
+    var dating: Date? = null,
     /* Comments about the tract */
-    var comment: String = "") {
-
-    val tractDate: Date?
-        get() {
-            return tractDateYear?.let { year ->
-                val calendar = Calendar.getInstance()
-                calendar.set(year, tractDateMonth ?: 1, tractDateDay ?: 1)
-                calendar.time
-            }
-        }
-}
+    var comment: String = "") {}

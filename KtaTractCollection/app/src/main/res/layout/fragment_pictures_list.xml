@@ -10,5 +10,5 @@
     android:layout_marginRight="16dp"
     android:orientation="horizontal"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".Fragments.TractPictures.PicturesListFragment"
+    tools:context=".Fragments.PicturesList.PicturesListFragment"
     tools:listitem="@layout/fragment_pictures_item" />

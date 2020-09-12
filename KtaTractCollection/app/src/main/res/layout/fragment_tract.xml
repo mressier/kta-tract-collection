@@ -25,10 +25,10 @@
 
             <fragment
                 android:id="@+id/pictures_fragment"
-                android:name="com.onion.ktatractcollection.Fragments.TractPictures.PicturesListFragment"
+                android:name="com.onion.ktatractcollection.Fragments.PicturesList.PicturesListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                tools:layout="@layout/fragment_pictures_item_list" />
+                tools:layout="@layout/fragment_pictures_list" />
 
             <TextView
                 android:id="@+id/author_text"
@@ -52,21 +52,39 @@
                 tools:ignore="LabelFor" />
 
             <TextView
-                android:id="@+id/date_text"
+                android:id="@+id/discovery_date_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:labelFor="@id/date_button"
-                android:text="@string/tract_date_title" />
+                android:labelFor="@id/discovery_date_button"
+                android:text="@string/tract_discovery_date_title" />
 
             <Button
-                android:id="@+id/date_button"
+                android:id="@+id/discovery_date_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_baseline_image_search_24"
+                android:drawablePadding="5dp"
+                android:text="20 janvier 2018"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/dating_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:labelFor="@id/discovery_date_button"
+                android:text="@string/tract_dating_title" />
+
+            <Button
+                android:id="@+id/dating_button"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_baseline_calendar_today_24"
                 android:drawablePadding="5dp"
-                android:text="20 janvier 2018"
+                android:text="20 octobre 1996"
                 android:textAlignment="viewStart" />
 
             <TextView

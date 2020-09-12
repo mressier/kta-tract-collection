@@ -59,10 +59,9 @@ class TractRepository private constructor(context: Context) {
     fun getPictures(tractId: UUID): LiveData<List<TractPicture>> =
         tractDao.getPicturesForTract(tractId)
 
-    fun getPicturesFile(pictures: List<TractPicture>): List<File> =
-        pictures.map { getPictureFile(it.photoFilename) }
-
     fun getPictureFile(filename: String): File = File(filesDir, filename)
+
+//    fun getExternalPictureFile(filename: String): File = File(globalFilesDir.first(), filename)
 
     fun deletePicturesFiles(files: List<File>) {
         executor.execute() {
@@ -76,7 +75,9 @@ class TractRepository private constructor(context: Context) {
 
     fun deletePicture(picture: TractPicture) {
         executor.execute() {
-            getPictureFile(picture.photoFilename).delete()
+            if (!picture.isFromDevice) {
+                getPictureFile(picture.photoFilename).delete()
+            }
             tractDao.deletePicture(picture)
         }
     }

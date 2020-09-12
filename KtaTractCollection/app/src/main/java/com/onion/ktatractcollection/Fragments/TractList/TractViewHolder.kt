@@ -21,7 +21,8 @@ class TractViewHolder(
      * Properties
      */
     private val authorText: TextView = view.findViewById(R.id.author_text)
-    private val dateText: TextView = view.findViewById(R.id.date_text)
+    private val discoveryDateText: TextView = view.findViewById(R.id.discovery_date_text)
+    private val datingText: TextView = view.findViewById(R.id.dating_text)
     private val pictureView: ImageView = view.findViewById(R.id.image_view)
 
     override fun toString(): String {
@@ -32,16 +33,24 @@ class TractViewHolder(
      */
 
     fun bind(tractItem: TractWithPicture) {
+        updateTractImage(tractItem)
         updateTract(tractItem.tract)
-        updateTractImage(tractItem.picturesFile.firstOrNull())
+        setupClickListener(tractItem.tract)
     }
 
     private fun updateTract(tract: Tract) {
         authorText.text = tract.author
         authorText.visibility = if (tract.author.isBlank()) { View.GONE } else { View.VISIBLE }
-        dateText.text = DateFormat.getDateInstance(DateFormat.SHORT).format(tract.discoveryDate)
-        setupClickListener(tract)
+
+        val dateInstance = DateFormat.getDateInstance(DateFormat.SHORT)
+        discoveryDateText.text = context.getString(R.string.tract_found_on)
+            .format(dateInstance.format(tract.discoveryDate))
+        tract.dating?.let {
+            datingText.text =
+                context.getString(R.string.tract_dating_from).format(dateInstance.format(it))
+        } ?: run { datingText.text = "" }
     }
+
 
     private fun setupClickListener(tract: Tract) {
         itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
@@ -51,7 +60,9 @@ class TractViewHolder(
         }
     }
 
-    private fun updateTractImage(photo: File?) {
+    private fun updateTractImage(tractItem: TractWithPicture) {
+        val photo = tractItem.picturesFile.firstOrNull()
+
         Glide.with(context)
             .load(photo)
             .asBitmap()

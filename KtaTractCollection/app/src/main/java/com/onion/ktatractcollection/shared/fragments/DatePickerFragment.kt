@@ -8,8 +8,9 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
-private const val dateId = "date_id"
-private const val dateMaxId = "date_max_id"
+private const val PARAM_DATE_ID = "date_id"
+private const val PARAM_DATE_MAX_ID = "date_max_id"
+private const val PARAM_REQUEST_ID = "request_id"
 
 /**
  * DatePickerFragment
@@ -32,16 +33,24 @@ class DatePickerFragment: DialogFragment() {
      */
 
     interface Callbacks {
-        fun onDateSelected(date: Date)
+        fun onDateSelected(date: Date, requestId: Int)
     }
+
+    /**
+     * Properties
+     */
+
+    private var requestId: Int = 0
 
     /**
      * Listener
      */
+
     private val dateListener = OnDateSetListener { _: DatePicker, year: Int, month: Int, day: Int ->
         val resultDate: Date = GregorianCalendar(year, month, day).time
         targetFragment?.let { fragment ->
-            (fragment as Callbacks).onDateSelected(resultDate)
+            println(targetRequestCode)
+            (fragment as Callbacks).onDateSelected(resultDate, requestId)
         }
     }
 
@@ -50,8 +59,9 @@ class DatePickerFragment: DialogFragment() {
      */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val calendar = Calendar.getInstance()
-        val dateArgument = arguments?.getSerializable(dateId) as? Date
-        val dateMaxArgument = arguments?.getSerializable(dateMaxId) as? Date
+        val dateArgument = arguments?.getSerializable(PARAM_DATE_ID) as? Date
+        val dateMaxArgument = arguments?.getSerializable(PARAM_DATE_MAX_ID) as? Date
+        requestId = arguments?.getInt(PARAM_REQUEST_ID) ?: 0
 
         dateArgument?.let { date -> calendar.time = date }
 
@@ -73,11 +83,15 @@ class DatePickerFragment: DialogFragment() {
      */
 
     companion object {
-        fun newInstance(date: Date? = null,
-            dateMax: Date? = null): DatePickerFragment {
+        fun newInstance(
+            date: Date? = null,
+            dateMax: Date? = null,
+            requestId: Int
+        ): DatePickerFragment {
             val args = Bundle().apply {
-                putSerializable(dateId, date)
-                putSerializable(dateMaxId, dateMax)
+                putSerializable(PARAM_DATE_ID, date)
+                putSerializable(PARAM_DATE_MAX_ID, dateMax)
+                putSerializable(PARAM_REQUEST_ID, requestId)
             }
             return DatePickerFragment().apply { arguments = args }
         }

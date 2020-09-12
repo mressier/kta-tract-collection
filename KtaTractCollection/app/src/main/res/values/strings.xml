@@ -4,12 +4,15 @@
     <!--  Tract  -->
     <string name="tract_author_title">Author</string>
     <string name="tract_author_hint">Who has done this tract ?</string>
-    <string name="tract_date_title">Discovery Date</string>
+    <string name="tract_discovery_date_title">Discovery Date</string>
+    <string name="tract_dating_title">Dating of the tract</string>
     <string name="tract_comments_title">Comments</string>
     <string name="tract_comments_hint">Anything special to tell about this ?</string>
 
     <!--  Tract List  -->
     <string name="no_tract_list">No tract yet…</string>
+    <string name="tract_dating_from">Dating from %1$s</string>
+    <string name="tract_found_on">Found on %1$s</string>
 
     <!--  Menus  -->
     <string name="new_tract">New tract</string>
@@ -20,13 +23,18 @@
     <string name="tract_dialog_title">Tract actions</string>
     <string name="delete_tract">Delete the tract</string>
     <string name="delete_tract_success">Your tract has been successfully deleted</string>
+
     <string name="tract_sort_dialog_title">Sort list by …</string>
     <string name="tract_sort_order_dialog_title">Sort order</string>
-    <string name="tract_sort_default">Default (by add date)</string>
+    <string name="tract_sort_default">Default (most recently added first)</string>
     <string name="tract_sort_author">Author</string>
     <string name="tract_sort_discovery_date">Discovery date</string>
+    <string name="tract_sort_dating">Date</string>
     <string name="sort_order_ascending">Ascending</string>
     <string name="sort_order_descending">Descending</string>
+
+    <string name="take_picture">Take a picture</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
 
     <!--  Permissions  -->
     <string name="camera_permission_description">We should access to your camera to take a picture of the tract</string>
@@ -38,5 +46,7 @@
     <string name="no_thanks">No thanks</string>
     <string name="delete">Delete</string>
     <string name="validate">Validate</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

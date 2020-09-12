@@ -1,5 +1,6 @@
-package com.onion.ktatractcollection.Fragments.TractPictures
+package com.onion.ktatractcollection.Fragments.PicturesList
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -30,12 +31,23 @@ class TractPicturesViewModel: ViewModel() {
      * Methods
      */
 
-    fun convertPicturesToFile(pictures: List<TractPicture>): List<File> {
-        return tractRepository.getPicturesFile(pictures)
+    fun convertPicturesToPath(pictures: List<TractPicture>): List<String> {
+        return pictures.map { convertPictureToPath(it) }
     }
 
-    fun convertPictureToFile(picture: TractPicture): File {
-        return tractRepository.getPictureFile(picture.photoFilename)
+    fun convertPictureToPath(picture: TractPicture): String {
+        return if (picture.isFromDevice) { picture.photoFilename }
+        else {
+            val file = convertPictureToFile(picture)
+            file.path
+        }
+    }
+
+    fun convertPictureToFile(picture: TractPicture): File =
+        tractRepository.getPictureFile(picture.photoFilename)
+
+    fun convertPictureToUri(picture: TractPicture): Uri {
+        return Uri.parse(picture.photoFilename)
     }
 
     fun loadPicturesForTractId(id: UUID) {

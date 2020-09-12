@@ -1,7 +1,6 @@
 package com.onion.ktatractcollection.Fragments.TractList.dialogs
 
 import androidx.lifecycle.ViewModel
-import com.onion.ktatractcollection.Fragments.TractList.TractListParameters
 import com.onion.ktatractcollection.Models.Tract
 
 class TractListParametersViewModel: ViewModel() {

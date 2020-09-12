@@ -11,7 +11,6 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.onion.ktatractcollection.Fragments.TractList.TractListParameters
 import com.onion.ktatractcollection.R
 
 private const val PARAM_SORT_BY_ID = "sort_by_id"
@@ -58,7 +57,6 @@ class TractListDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        println("onViewCreated()")
         setupListeners()
         updateUI()
     }

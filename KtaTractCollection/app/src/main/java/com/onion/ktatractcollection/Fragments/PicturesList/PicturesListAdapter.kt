@@ -1,22 +1,18 @@
-package com.onion.ktatractcollection.Fragments.TractPictures
+package com.onion.ktatractcollection.Fragments.PicturesList
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.R
 
 import java.io.File
 
-class PictureListAdapter(
+class PicturesListAdapter(
     private val context: Context,
     private val callbacks: PictureListCallbacks
-) : ListAdapter<File, PictureItemViewHolder>(DiffUtilCallback()) {
+) : ListAdapter<String, PictureItemViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureItemViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -41,12 +37,12 @@ class PictureListAdapter(
     /**
      * Diff
      */
-    class DiffUtilCallback: DiffUtil.ItemCallback<File>() {
-        override fun areItemsTheSame(oldItem: File, newItem: File): Boolean {
+    class DiffUtilCallback: DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: File, newItem: File): Boolean {
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
     }

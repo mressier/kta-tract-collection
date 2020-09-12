@@ -11,7 +11,8 @@ import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.R
 import java.io.File
 
-private const val fileId = "file_id"
+private const val PARAM_FILE_ID = "file_id"
+private const val PARAM_PATH_ID = "path_id"
 
 class ImageDialogFragment: DialogFragment() {
 
@@ -19,7 +20,8 @@ class ImageDialogFragment: DialogFragment() {
      * Properties
      */
     /* Parameters */
-    private lateinit var photoFile: File
+    private var photoFile: File? = null
+    private var photoPath: String? = null
 
     /* Outlets */
     private lateinit var photoView: ImageView
@@ -28,8 +30,12 @@ class ImageDialogFragment: DialogFragment() {
      * View Life Cycle
      */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val fileArgument = arguments?.getSerializable(fileId) as? File
-        fileArgument?.let { this.photoFile = fileArgument }
+        val fileArgument = arguments?.getSerializable(PARAM_FILE_ID) as? File
+        val pathArgument = arguments?.getSerializable(PARAM_PATH_ID) as? String
+        fileArgument?.let {
+            this.photoFile = fileArgument
+            this.photoPath = pathArgument
+        }
 
         return super.onCreateDialog(savedInstanceState)
     }
@@ -53,12 +59,14 @@ class ImageDialogFragment: DialogFragment() {
     }
     
     private fun updateUI() {
-        updatePhoto()
+        photoFile?.path ?: photoPath ?.let {path ->
+            updatePhoto(path)
+        }
     }
 
-    private fun updatePhoto() {
+    private fun updatePhoto(path: String) {
         Glide.with(context)
-            .load(photoFile.path)
+            .load(path)
             .asBitmap()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(photoView)
@@ -68,9 +76,16 @@ class ImageDialogFragment: DialogFragment() {
      * Static methods
      */
     companion object {
-        fun newInstance(file: File): ImageDialogFragment {
+        fun newInstanceFile(file: File): ImageDialogFragment {
             val args = Bundle().apply {
-                putSerializable(fileId, file)
+                putSerializable(PARAM_FILE_ID, file)
+            }
+            return ImageDialogFragment().apply { arguments = args }
+        }
+
+        fun newInstancePath(path: String): ImageDialogFragment {
+            val args = Bundle().apply {
+                putSerializable(PARAM_PATH_ID, path)
             }
             return ImageDialogFragment().apply { arguments = args }
         }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractDialogFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListDialogFragment
+import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParametersViewModel
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract

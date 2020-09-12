@@ -1,11 +1,10 @@
-package com.onion.ktatractcollection.Fragments.TractPictures
+package com.onion.ktatractcollection.Fragments.PicturesList
 
 import android.content.Context
+import android.net.Uri
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.R
@@ -26,22 +25,9 @@ class PictureItemViewHolder(
     /**
      * Methods
      */
-    fun bind(photo: File) {
-        Glide.with(context)
-            .load(photo)
-            .asBitmap()
-            .centerCrop()
-            .placeholder(R.drawable.ic_no_tract_photo)
-            .into(pictureView)
-
-        pictureView.setOnClickListener {
-            callbacks.onPictureSelected(photo)
-        }
-
-        deleteButton.setOnClickListener {
-            callbacks.onDeleteButtonSelected(photo)
-        }
-
+    fun bind(photoPath: String) {
+        setupPhoto(photoPath)
+        setupListeners(photoPath)
         setDeleteButtonIsVisible(true)
     }
 
@@ -52,6 +38,25 @@ class PictureItemViewHolder(
         }
 
         setDeleteButtonIsVisible(false)
+    }
+
+    private fun setupPhoto(path: String) {
+        Glide.with(context)
+            .load(path)
+            .asBitmap()
+            .centerCrop()
+            .placeholder(R.drawable.ic_no_tract_photo)
+            .into(pictureView)
+    }
+
+    private fun setupListeners(path: String) {
+        pictureView.setOnClickListener {
+            callbacks.onPictureSelected(path)
+        }
+
+        deleteButton.setOnClickListener {
+            callbacks.onDeleteButtonSelected(path)
+        }
     }
 
     private fun setDeleteButtonIsVisible(isVisible: Boolean) {

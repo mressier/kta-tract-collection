@@ -1,41 +1,46 @@
-package com.onion.ktatractcollection.Fragments.TractPictures
+package com.onion.ktatractcollection.Fragments.PicturesList
 
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.ImageDialogFragment
 import com.onion.ktatractcollection.shared.tools.*
-import java.io.File
 import java.util.*
 
 private const val TAG = "PicturesListFragment"
 private const val REQUEST_CAMERA_PERMISSION = 0
-private const val REQUEST_CAMERA_INTENT = 1
+private const val REQUEST_PICTURE_SELECTION_DIALOG = 1
+private const val REQUEST_CAMERA_INTENT = 2
+private const val REQUEST_GALLERY_INTENT = 3
+
+private const val DIALOG_PICTURE_SELECTION = "picture_selection"
 
 
 interface PictureListCallbacks {
-    fun onPictureSelected(picture: File)
+    fun onPictureSelected(path: String)
     fun onLastButtonSelected()
-    fun onDeleteButtonSelected(picture: File)
+    fun onDeleteButtonSelected(path: String)
 }
 
 /**
  * A fragment representing a list of Items.
  */
-class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGrantedCallbacks {
+class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGrantedCallbacks, PictureSelectionDialogFragment.Callbacks {
 
     /**
      * Properties
@@ -55,7 +60,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
 
     /* Outlets */
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: PictureListAdapter
+    private lateinit var adapter: PicturesListAdapter
 
     /**
      * View Life Cycle
@@ -75,12 +80,12 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_pictures_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_pictures_list, container, false)
 
         // Set the adapter
         if (view is RecyclerView) {
             recyclerView = view
-            adapter = PictureListAdapter(requireContext(), this)
+            adapter = PicturesListAdapter(requireContext(), this)
             recyclerView.adapter = adapter
         }
         setupViewModel()
@@ -94,15 +99,36 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CAMERA_INTENT) {
-                picturesViewModel.savePicture(picture!!) // TODO
-                revokeCameraPermission()
-                picture = null
-                pictureUri = null
-                cameraIntent = null
+            when (requestCode) {
+                REQUEST_CAMERA_INTENT -> savePictureFromCameraIntent()
+                REQUEST_GALLERY_INTENT -> data?.let { savePictureFromGalleryIntent(it) }
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun savePictureFromGalleryIntent(data: Intent) {
+        val selectedImage = data.data ?: run { return }
+        "$selectedImage".let { path ->
+            println(path)
+            picturesViewModel.savePicture(
+                TractPicture(
+                    tractId = tractId,
+                    photoFilename = path,
+                    isFromDevice = true
+                )
+            )
+        }
+    }
+
+    private fun savePictureFromCameraIntent() {
+        picture?.let { picturesViewModel.savePicture(it) }
+
+        revokeCameraPermission()
+        picture = null
+        pictureUri = null
+        cameraIntent = null
     }
 
     /**
@@ -154,7 +180,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     }
 
     private fun updateUI() {
-        adapter.submitList(picturesViewModel.convertPicturesToFile(pictures))
+        adapter.submitList(picturesViewModel.convertPicturesToPath(pictures))
     }
 
     /**
@@ -166,6 +192,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
             viewLifecycleOwner,
             {
                 this.pictures = it.toMutableList()
+                println(pictures.map { it.photoFilename })
                 updateUI()
             }
         )
@@ -175,17 +202,17 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
      * Callbacks
      */
 
-    override fun onPictureSelected(picture: File) {
-        val intent = ImageDialogFragment.newInstance(picture)
+    override fun onPictureSelected(picture: String) {
+        val intent = ImageDialogFragment.newInstancePath(picture)
         intent.show(requireActivity().supportFragmentManager, "show_picture") // TODO: add dialogs enum
     }
 
     override fun onLastButtonSelected() {
-        startCameraIntent(generatePhotoUriForTract())
+        startPictureSelectionIntent()
     }
 
-    override fun onDeleteButtonSelected(picture: File) {
-        pictures.find { it.photoFilename == picture.name }?.let { tractPicture ->
+    override fun onDeleteButtonSelected(path: String) {
+        pictures.find { it.photoFilename == path }?.let { tractPicture ->
             Log.i(TAG, "Delete picture ${tractPicture.photoFilename}")
             picturesViewModel.deletePicture(tractPicture)
             pictures.remove(tractPicture)
@@ -194,18 +221,30 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     }
 
     private fun generatePhotoUriForTract(): Uri {
-        val picture = TractPicture(tractId = tractId)
-        val file = picturesViewModel.convertPictureToFile(picture)
+        val picture = TractPicture(tractId = tractId, isFromDevice = false)
 
-        val photoUri = FileProvider.getUriForFile(
-            requireActivity(),
-            "com.onion.android.ktatractcollection.fileprovider",
-            file
-        )
+        val photoUri = if (picture.isFromDevice) {
+            picturesViewModel.convertPictureToUri(picture)
+        } else {
+            val file = picturesViewModel.convertPictureToFile(picture)
+            FileProvider.getUriForFile(
+                requireActivity(),
+                "com.onion.android.ktatractcollection.fileprovider",
+                file
+            )
+        }
 
         this.picture = picture
 
+        println(photoUri)
         return photoUri
+    }
+
+    private fun startPictureSelectionIntent() {
+        PictureSelectionDialogFragment.newInstance().apply {
+            setTargetFragment(this@PicturesListFragment, REQUEST_PICTURE_SELECTION_DIALOG)
+            show(this@PicturesListFragment.requireFragmentManager(), DIALOG_PICTURE_SELECTION)
+        }
     }
 
     /**
@@ -255,6 +294,15 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
                     putSerializable("tract_id", tractId.toString())
                 }
             }
+    }
+
+    override fun onPictureSelected() {
+        startCameraIntent(generatePhotoUriForTract())
+    }
+
+    override fun onGallerySelected() {
+        val galleryIntent = requireActivity().buildGalleryIntent()
+        startActivityForResult(galleryIntent, REQUEST_GALLERY_INTENT)
     }
 
 }
