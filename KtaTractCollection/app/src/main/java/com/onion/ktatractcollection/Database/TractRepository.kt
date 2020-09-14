@@ -1,6 +1,8 @@
 package com.onion.ktatractcollection.Database
 
 import android.content.Context
+import android.net.Uri
+import androidx.core.net.toFile
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.onion.ktatractcollection.Models.Tract
@@ -61,25 +63,29 @@ class TractRepository private constructor(context: Context) {
 
     fun getPictureFile(filename: String): File = File(filesDir, filename)
 
-//    fun getExternalPictureFile(filename: String): File = File(globalFilesDir.first(), filename)
-
-    fun deletePicturesFiles(files: List<File>) {
-        executor.execute() {
-            files.forEach { it.delete() }
-        }
-    }
-
     fun addPicture(picture: TractPicture) {
         executor.execute() { tractDao.addPicture(picture) }
     }
 
+    fun deletePictures(pictures: List<TractPicture>) {
+        pictures.forEach { deletePicture(it) }
+    }
+
     fun deletePicture(picture: TractPicture) {
         executor.execute() {
-            if (!picture.isFromDevice) {
-                getPictureFile(picture.photoFilename).delete()
+            if (picture.isFromCamera) {
+                deleteAppPictureWithPath(picture.photoFilename)
             }
             tractDao.deletePicture(picture)
         }
+    }
+
+    private fun deleteAppPictureWithPath(path: String) {
+        val uri = Uri.parse(path)
+        val file = uri.lastPathSegment?.let { filename ->
+            getPictureFile(filename)
+        }
+        file?.delete()
     }
 
     /**

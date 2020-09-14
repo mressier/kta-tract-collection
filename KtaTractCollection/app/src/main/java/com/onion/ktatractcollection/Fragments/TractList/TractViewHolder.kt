@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
-import java.io.File
 import java.text.DateFormat
 
 class TractViewHolder(
@@ -61,10 +60,10 @@ class TractViewHolder(
     }
 
     private fun updateTractImage(tractItem: TractWithPicture) {
-        val photo = tractItem.picturesFile.firstOrNull()
+        val photo = tractItem.pictures.firstOrNull()
 
         Glide.with(context)
-            .load(photo)
+            .load(photo?.photoFilename)
             .asBitmap()
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)

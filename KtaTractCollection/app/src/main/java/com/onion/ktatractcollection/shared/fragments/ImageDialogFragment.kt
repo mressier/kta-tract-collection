@@ -32,10 +32,9 @@ class ImageDialogFragment: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val fileArgument = arguments?.getSerializable(PARAM_FILE_ID) as? File
         val pathArgument = arguments?.getSerializable(PARAM_PATH_ID) as? String
-        fileArgument?.let {
-            this.photoFile = fileArgument
-            this.photoPath = pathArgument
-        }
+
+        this.photoFile = fileArgument
+        this.photoPath = pathArgument
 
         return super.onCreateDialog(savedInstanceState)
     }
@@ -59,9 +58,8 @@ class ImageDialogFragment: DialogFragment() {
     }
     
     private fun updateUI() {
-        photoFile?.path ?: photoPath ?.let {path ->
-            updatePhoto(path)
-        }
+        photoFile?.path?.let { updatePhoto(it) }
+        photoPath?.let { updatePhoto(it) }
     }
 
     private fun updatePhoto(path: String) {

@@ -8,7 +8,7 @@ import com.onion.ktatractcollection.Models.TractPicture
 import java.io.File
 import java.util.*
 
-class TractWithPicture(val tract: Tract, var picturesFile: List<File> = listOf()) {}
+class TractWithPicture(val tract: Tract, var pictures: List<TractPicture> = listOf()) {}
 
 class TractListViewModel: ViewModel() {
 
@@ -31,8 +31,8 @@ class TractListViewModel: ViewModel() {
     }
 
     fun deleteTract(tract: Tract) {
-        getSavedTractWithPictures(tract.id)?.picturesFile?.let {
-            tractRepository.deletePicturesFiles(it)
+        getSavedTractWithPictures(tract.id)?.pictures?.let {
+            tractRepository.deletePictures(it)
         }
         tractRepository.deleteTract(tract)
 
@@ -45,7 +45,7 @@ class TractListViewModel: ViewModel() {
 
     fun saveAsTractsWithPicture(tracts: List<Tract>) {
         val newTractsWithPicture = tracts.map { tract ->
-            val oldPicture = getSavedTractWithPictures(tract.id)?.picturesFile
+            val oldPicture = getSavedTractWithPictures(tract.id)?.pictures
             TractWithPicture(tract, oldPicture ?: listOf())
         }
 
@@ -53,16 +53,11 @@ class TractListViewModel: ViewModel() {
     }
 
     fun addPicturesToTractItem(tractId: UUID, pictures: List<TractPicture>) {
-        val picturesFile = pictures.map { convertPictureToFile(it) }
-        tractsWithPicture.find { it.tract.id == tractId }?.picturesFile = picturesFile
+        tractsWithPicture.find { it.tract.id == tractId }?.pictures = pictures
     }
 
     fun getPictures(tractId: UUID): LiveData<List<TractPicture>> {
         return tractRepository.getPictures(tractId)
-    }
-
-    private fun convertPictureToFile(picture: TractPicture): File {
-        return tractRepository.getPictureFile(picture.photoFilename)
     }
 
     private fun getSavedTractWithPictures(tractId: UUID): TractWithPicture? {

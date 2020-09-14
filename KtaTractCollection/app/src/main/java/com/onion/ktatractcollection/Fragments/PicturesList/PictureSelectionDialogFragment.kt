@@ -1,6 +1,5 @@
 package com.onion.ktatractcollection.Fragments.PicturesList
 
-import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
-import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractDialogFragment
 import com.onion.ktatractcollection.R
 
 /**
@@ -19,8 +17,8 @@ import com.onion.ktatractcollection.R
 class PictureSelectionDialogFragment : DialogFragment() {
 
     interface Callbacks {
-        fun onPictureSelected()
-        fun onGallerySelected()
+        fun onCameraOptionSelected()
+        fun onGalleryOptionSelected()
     }
 
     /**
@@ -61,12 +59,12 @@ class PictureSelectionDialogFragment : DialogFragment() {
 
     private fun setupListeners() {
         pictureButton.setOnClickListener {
-            (targetFragment as Callbacks).onPictureSelected()
+            (targetFragment as Callbacks).onCameraOptionSelected()
             dismiss()
         }
 
         galleryButton.setOnClickListener {
-            (targetFragment as Callbacks).onGallerySelected()
+            (targetFragment as Callbacks).onGalleryOptionSelected()
             dismiss()
         }
 

@@ -32,23 +32,11 @@ class TractPicturesViewModel: ViewModel() {
      */
 
     fun convertPicturesToPath(pictures: List<TractPicture>): List<String> {
-        return pictures.map { convertPictureToPath(it) }
-    }
-
-    fun convertPictureToPath(picture: TractPicture): String {
-        return if (picture.isFromDevice) { picture.photoFilename }
-        else {
-            val file = convertPictureToFile(picture)
-            file.path
-        }
+        return pictures.map { it.photoFilename }
     }
 
     fun convertPictureToFile(picture: TractPicture): File =
         tractRepository.getPictureFile(picture.photoFilename)
-
-    fun convertPictureToUri(picture: TractPicture): Uri {
-        return Uri.parse(picture.photoFilename)
-    }
 
     fun loadPicturesForTractId(id: UUID) {
         tractId.value = id

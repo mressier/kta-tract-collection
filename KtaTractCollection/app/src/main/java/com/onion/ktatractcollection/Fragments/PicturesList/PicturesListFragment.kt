@@ -28,7 +28,8 @@ private const val REQUEST_PICTURE_SELECTION_DIALOG = 1
 private const val REQUEST_CAMERA_INTENT = 2
 private const val REQUEST_GALLERY_INTENT = 3
 
-private const val DIALOG_PICTURE_SELECTION = "picture_selection"
+private const val DIALOG_SELECT_PICTURE = "select_picture"
+private const val DIALOG_SHOW_PICTURE = "show_picture"
 
 
 interface PictureListCallbacks {
@@ -56,7 +57,6 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     /* Camera */
     private var cameraIntent: Intent? = null
     private var pictureUri: Uri? = null
-    private var picture: TractPicture? = null
 
     /* Outlets */
     private lateinit var recyclerView: RecyclerView
@@ -110,25 +110,25 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
 
     private fun savePictureFromGalleryIntent(data: Intent) {
         val selectedImage = data.data ?: run { return }
-        "$selectedImage".let { path ->
-            println(path)
-            picturesViewModel.savePicture(
-                TractPicture(
-                    tractId = tractId,
-                    photoFilename = path,
-                    isFromDevice = true
-                )
-            )
-        }
+        savePictureWithUri(selectedImage, true)
+
     }
 
     private fun savePictureFromCameraIntent() {
-        picture?.let { picturesViewModel.savePicture(it) }
+        pictureUri?.let { uri -> savePictureWithUri(uri, false) }
 
         revokeCameraPermission()
-        picture = null
         pictureUri = null
         cameraIntent = null
+    }
+
+    private fun savePictureWithUri(uri: Uri, isFromDevice: Boolean) {
+        val picture = TractPicture(
+            tractId = tractId,
+            photoFilename = "$uri",
+            isFromDevice = isFromDevice
+        )
+        picturesViewModel.savePicture(picture)
     }
 
     /**
@@ -204,7 +204,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
 
     override fun onPictureSelected(picture: String) {
         val intent = ImageDialogFragment.newInstancePath(picture)
-        intent.show(requireActivity().supportFragmentManager, "show_picture") // TODO: add dialogs enum
+        intent.show(requireActivity().supportFragmentManager, DIALOG_SHOW_PICTURE)
     }
 
     override fun onLastButtonSelected() {
@@ -223,27 +223,21 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     private fun generatePhotoUriForTract(): Uri {
         val picture = TractPicture(tractId = tractId, isFromDevice = false)
 
-        val photoUri = if (picture.isFromDevice) {
-            picturesViewModel.convertPictureToUri(picture)
-        } else {
-            val file = picturesViewModel.convertPictureToFile(picture)
-            FileProvider.getUriForFile(
-                requireActivity(),
-                "com.onion.android.ktatractcollection.fileprovider",
-                file
-            )
-        }
+        val file = picturesViewModel.convertPictureToFile(picture)
+        val photoUri = FileProvider.getUriForFile(
+            requireActivity(),
+            getString(R.string.app_fileprovider_authority),
+            file
+        )
 
-        this.picture = picture
-
-        println(photoUri)
+        Log.d(TAG, "Generate photo uri $photoUri")
         return photoUri
     }
 
     private fun startPictureSelectionIntent() {
         PictureSelectionDialogFragment.newInstance().apply {
             setTargetFragment(this@PicturesListFragment, REQUEST_PICTURE_SELECTION_DIALOG)
-            show(this@PicturesListFragment.requireFragmentManager(), DIALOG_PICTURE_SELECTION)
+            show(this@PicturesListFragment.requireFragmentManager(), DIALOG_SELECT_PICTURE)
         }
     }
 
@@ -296,12 +290,12 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
             }
     }
 
-    override fun onPictureSelected() {
+    override fun onCameraOptionSelected() {
         startCameraIntent(generatePhotoUriForTract())
     }
 
-    override fun onGallerySelected() {
-        val galleryIntent = requireActivity().buildGalleryIntent()
+    override fun onGalleryOptionSelected() {
+        val galleryIntent = buildGalleryIntent()
         startActivityForResult(galleryIntent, REQUEST_GALLERY_INTENT)
     }
 

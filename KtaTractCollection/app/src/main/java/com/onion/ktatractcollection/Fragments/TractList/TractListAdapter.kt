@@ -43,10 +43,11 @@ class TractListAdapter(
         }
 
         override fun areContentsTheSame(oldItem: TractWithPicture, newItem: TractWithPicture): Boolean {
+            val newPicturesFilename = newItem.pictures.map { it.photoFilename }
+            val oldPicturesFilename = oldItem.pictures.map { it.photoFilename }
             return oldItem.tract.author == newItem.tract.author
                     && oldItem.tract.discoveryDate == newItem.tract.discoveryDate
-                    && oldItem.picturesFile == newItem.picturesFile
+                    && oldPicturesFilename == newPicturesFilename
         }
     }
-
 }

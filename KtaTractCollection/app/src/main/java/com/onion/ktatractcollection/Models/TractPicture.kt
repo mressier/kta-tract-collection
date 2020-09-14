@@ -10,4 +10,7 @@ class TractPicture(
     var tractId: UUID,
     val isFromDevice: Boolean,
     val photoFilename: String = "IMG_$id.jpg"
-) {}
+) {
+    val isFromCamera: Boolean
+        get() = !isFromDevice
+}
