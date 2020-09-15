@@ -157,6 +157,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     ) {
         val previousTracts = tractAdapter.currentList
 
+        tractAdapter.parameters = parametersViewModel.parameters
         tractAdapter.submitList(tractListItems)
         tractAdapter.notifyDataSetChanged()
 
@@ -170,6 +171,8 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
     private fun updateTractListLayout(displayMode: TractListParameters.DisplayMode) {
         tractLayout.spanCount = displayMode.spanCount
+        tractRecyclerView.layoutManager = tractLayout
+        tractRecyclerView.adapter = tractAdapter
     }
 
     private fun updateMenuUI(displayMode: TractListParameters.DisplayMode, item: MenuItem) {

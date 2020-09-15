@@ -5,12 +5,12 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
 import java.text.DateFormat
+import java.util.*
 
 class TractViewHolder(
     view: View,
@@ -25,6 +25,11 @@ class TractViewHolder(
     private val discoveryDateText: TextView = view.findViewById(R.id.discovery_date_text)
     private val datingText: TextView = view.findViewById(R.id.dating_text)
     private val pictureView: ImageView = view.findViewById(R.id.image_view)
+    private val separatorView: ImageView = view.findViewById(R.id.separator_view)
+
+    private val dateInstance: DateFormat by lazy {
+        DateFormat.getDateInstance(DateFormat.SHORT)
+    }
 
     override fun toString(): String {
         return super.toString() + " '" + authorText.text + "'"
@@ -34,9 +39,10 @@ class TractViewHolder(
      * Bind
      */
 
-    fun bind(tractItem: TractWithPicture) {
+    fun bind(tractItem: TractWithPicture, showTractDetails: Boolean) {
         updateTractImage(tractItem)
         updateTract(tractItem.tract)
+        setTractDetailsAsVisible(showTractDetails)
         setupClickListener(tractItem.tract)
     }
 
@@ -44,15 +50,29 @@ class TractViewHolder(
         authorText.text = tract.author
         authorText.visibility = if (tract.author.isBlank()) { View.GONE } else { View.VISIBLE }
 
-        val dateInstance = DateFormat.getDateInstance(DateFormat.SHORT)
+        setDiscoveryDate(tract.discoveryDate)
+        setDatingDate(tract.dating)
+    }
+
+    private fun setDiscoveryDate(date: Date) {
         discoveryDateText.text = itemView.context.getString(R.string.tract_found_on)
-            .format(dateInstance.format(tract.discoveryDate))
-        tract.dating?.let {
+            .format(dateInstance.format(date))
+    }
+
+    private fun setDatingDate(date: Date?) {
+        date?.let {
             datingText.text =
                 context.getString(R.string.tract_dating_from).format(dateInstance.format(it))
         } ?: run { datingText.text = "" }
     }
 
+    private fun setTractDetailsAsVisible(isVisible: Boolean) {
+        val visibility = if (isVisible) { View.VISIBLE } else { View.GONE }
+        authorText.visibility = visibility
+        discoveryDateText.visibility = visibility
+        datingText.visibility = visibility
+        separatorView.visibility = visibility
+    }
 
     private fun setupClickListener(tract: Tract) {
         itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
@@ -67,7 +87,6 @@ class TractViewHolder(
 
         Glide.with(itemView.context)
             .load(Uri.parse(picture.photoFilename))
-            .dontAnimate()
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(pictureView)

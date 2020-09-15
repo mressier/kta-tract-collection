@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
 import java.util.*
@@ -23,6 +24,8 @@ class TractListAdapter(
     private val callbacks: TractListCallbacks?,
     ) : ListAdapter<TractWithPicture, TractViewHolder>(DiffUtilCallback()) {
 
+    var parameters = TractListParameters()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TractViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_tract_list_item, parent, false)
@@ -31,7 +34,8 @@ class TractListAdapter(
 
     override fun onBindViewHolder(holder: TractViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item,
+            parameters.displayMode == TractListParameters.DisplayMode.LIST)
     }
 
     /**
