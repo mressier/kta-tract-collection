@@ -3,10 +3,8 @@ package com.onion.ktatractcollection.Fragments.PicturesList
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -102,7 +100,6 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
             when (requestCode) {
                 REQUEST_CAMERA_INTENT -> savePictureFromCameraIntent()
                 REQUEST_GALLERY_INTENT -> data?.let { savePictureFromGalleryIntent(it) }
-
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -192,7 +189,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
             viewLifecycleOwner,
             {
                 this.pictures = it.toMutableList()
-                println(pictures.map { it.photoFilename })
+                println("------- get pictures ${pictures.map { it.photoFilename }}")
                 updateUI()
             }
         )
@@ -202,8 +199,8 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
      * Callbacks
      */
 
-    override fun onPictureSelected(picture: String) {
-        val intent = ImageDialogFragment.newInstancePath(picture)
+    override fun onPictureSelected(path: String) {
+        val intent = ImageDialogFragment.newInstancePath(path)
         intent.show(requireActivity().supportFragmentManager, DIALOG_SHOW_PICTURE)
     }
 
@@ -295,7 +292,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     }
 
     override fun onGalleryOptionSelected() {
-        val galleryIntent = buildGalleryIntent()
+        val galleryIntent = buildGalleryIntent(retainDocument = true)
         startActivityForResult(galleryIntent, REQUEST_GALLERY_INTENT)
     }
 

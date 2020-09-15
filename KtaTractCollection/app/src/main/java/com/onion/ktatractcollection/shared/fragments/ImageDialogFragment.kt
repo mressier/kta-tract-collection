@@ -63,9 +63,8 @@ class ImageDialogFragment: DialogFragment() {
     }
 
     private fun updatePhoto(path: String) {
-        Glide.with(context)
+        Glide.with(requireContext())
             .load(path)
-            .asBitmap()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(photoView)
     }

@@ -1,5 +1,6 @@
 package com.onion.ktatractcollection.Database
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import java.util.*
 

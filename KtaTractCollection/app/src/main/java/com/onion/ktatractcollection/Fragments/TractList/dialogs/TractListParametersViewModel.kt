@@ -18,10 +18,22 @@ class TractListParametersViewModel: ViewModel() {
         get() = parameters.sortOrder
         set(value) { parameters.sortOrder = value }
 
+    var displayMode: TractListParameters.DisplayMode
+        get() = parameters.displayMode
+        set(value) { parameters.displayMode = value }
+
+    val reversedDisplayMode: TractListParameters.DisplayMode
+        get() = parameters.reversedDisplayMode
+
     /**
      * Properties
      */
     fun getDisplayedTracts(tracts: List<Tract>): List<Tract> {
         return parameters.sortList(tracts)
+    }
+
+    fun reverseDisplayMode(): TractListParameters.DisplayMode {
+        parameters.reverseDisplayMode()
+        return parameters.displayMode
     }
 }

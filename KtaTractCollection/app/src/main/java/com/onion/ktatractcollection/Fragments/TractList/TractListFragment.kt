@@ -53,13 +53,14 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         ViewModelProvider(this).get(TractListParametersViewModel::class.java)
     }
 
-
     private lateinit var tractRecyclerView: RecyclerView
     private lateinit var noTractImageView: ImageView
     private lateinit var noTractButton: Button
 
     private lateinit var tractAdapter: TractListAdapter
+    private lateinit var tractLayout: GridLayoutManager
     private var currentTracts: List<Tract> = listOf()
+
 
     /**
      * View Life Cycle
@@ -82,6 +83,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupViewModelObserver()
         setupButtonListener()
     }
@@ -96,9 +98,16 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         callbacks = null
     }
 
+    /**
+     * Menu
+     */
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.tract_list_menu, menu)
+        println("--------------- hey you ${parametersViewModel.displayMode} / ${parametersViewModel.reversedDisplayMode}")
+        updateMenuUI(parametersViewModel.reversedDisplayMode,
+            menu.findItem(R.id.grid_or_list_tract))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -111,8 +120,19 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
                 showTractListDialog()
                 true
             }
+            R.id.grid_or_list_tract -> {
+                toggleListMenuItem(item)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun toggleListMenuItem(item: MenuItem) {
+        parametersViewModel.reverseDisplayMode()
+
+        updateMenuUI(parametersViewModel.reversedDisplayMode, item)
+        updateTractListLayout(parametersViewModel.displayMode)
     }
 
     private fun launchTractCreation() {
@@ -127,10 +147,14 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private fun updateUI() {
         val tracts = parametersViewModel.getDisplayedTracts(currentTracts)
         tractListViewModel.saveAsTractsWithPicture(tracts)
-        updateTractListUI(tractListViewModel.tractsWithPicture)
+
+        updateTractListLayout(parametersViewModel.displayMode)
+        updateTractListContent(tractListViewModel.tractsWithPicture)
     }
 
-    private fun updateTractListUI(tractListItems: List<TractWithPicture>) {
+    private fun updateTractListContent(
+        tractListItems: List<TractWithPicture>
+    ) {
         val previousTracts = tractAdapter.currentList
 
         tractAdapter.submitList(tractListItems)
@@ -144,6 +168,15 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         noTractImageView.visibility = noTractVisibility
     }
 
+    private fun updateTractListLayout(displayMode: TractListParameters.DisplayMode) {
+        tractLayout.spanCount = displayMode.spanCount
+    }
+
+    private fun updateMenuUI(displayMode: TractListParameters.DisplayMode, item: MenuItem) {
+        item.setIcon(displayMode.iconId)
+        item.setTitle(displayMode.titleId)
+    }
+
     /**
      * Setup
      */
@@ -151,9 +184,10 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private fun setupRecyclerView(view: View) {
         tractRecyclerView = view.findViewById(R.id.tract_list)
         tractAdapter = TractListAdapter(requireContext(), this)
+        tractLayout = GridLayoutManager(context, 1)
 
         tractRecyclerView.adapter = tractAdapter
-        tractRecyclerView.layoutManager = GridLayoutManager(context, 1)
+        tractRecyclerView.layoutManager = tractLayout
     }
 
     private fun setupNoTractView(view: View) {
@@ -194,7 +228,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
                     Log.i(TAG, "Tract $tractId - Got pictures $items")
 
-                    updateTractListUI(tractListViewModel.tractsWithPicture)
+                    updateTractListContent(tractListViewModel.tractsWithPicture)
                 }
             )
         }
@@ -239,7 +273,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     override fun onDelete(tractId: UUID) {
         tractListViewModel.deleteTract(Tract(id = tractId))
 
-        updateTractListUI(tractListViewModel.tractsWithPicture)
+        updateTractListContent(tractListViewModel.tractsWithPicture)
 
         Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_LONG).show()
     }

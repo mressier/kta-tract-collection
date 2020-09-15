@@ -5,8 +5,11 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.core.net.toFile
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
+import com.bumptech.glide.RequestManager
 import com.onion.ktatractcollection.R
 import java.io.File
 
@@ -26,6 +29,7 @@ class PictureItemViewHolder(
      * Methods
      */
     fun bind(photoPath: String) {
+        println("-------- bind $photoPath")
         setupPhoto(photoPath)
         setupListeners(photoPath)
         setDeleteButtonIsVisible(true)
@@ -41,9 +45,9 @@ class PictureItemViewHolder(
     }
 
     private fun setupPhoto(path: String) {
-        Glide.with(context)
-            .load(path)
-            .asBitmap()
+        Glide.with(itemView.context)
+            .load(Uri.parse(path))
+            .dontAnimate()
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(pictureView)

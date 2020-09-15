@@ -1,9 +1,11 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
@@ -27,6 +29,7 @@ class TractViewHolder(
     override fun toString(): String {
         return super.toString() + " '" + authorText.text + "'"
     }
+
     /**
      * Bind
      */
@@ -42,7 +45,7 @@ class TractViewHolder(
         authorText.visibility = if (tract.author.isBlank()) { View.GONE } else { View.VISIBLE }
 
         val dateInstance = DateFormat.getDateInstance(DateFormat.SHORT)
-        discoveryDateText.text = context.getString(R.string.tract_found_on)
+        discoveryDateText.text = itemView.context.getString(R.string.tract_found_on)
             .format(dateInstance.format(tract.discoveryDate))
         tract.dating?.let {
             datingText.text =
@@ -60,11 +63,11 @@ class TractViewHolder(
     }
 
     private fun updateTractImage(tractItem: TractWithPicture) {
-        val photo = tractItem.pictures.firstOrNull()
+        val picture = tractItem.pictures.firstOrNull() ?: run { return }
 
-        Glide.with(context)
-            .load(photo?.photoFilename)
-            .asBitmap()
+        Glide.with(itemView.context)
+            .load(Uri.parse(picture.photoFilename))
+            .dontAnimate()
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(pictureView)

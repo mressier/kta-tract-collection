@@ -137,9 +137,9 @@ class TractListDialogFragment : DialogFragment() {
         }
     }
 
-    private fun onParametersSelected(parameters: TractListParameters) {
+    private fun onParametersSelected(parameter: TractListParameters) {
         targetFragment?.let { fragment ->
-            (fragment as Callbacks).onParameterSelected(parameters)
+            (fragment as Callbacks).onParameterSelected(parameter)
         }
     }
 

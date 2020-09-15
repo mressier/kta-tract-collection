@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.onion.ktatractcollection.R
 
-import java.io.File
-
 class PicturesListAdapter(
     private val context: Context,
     private val callbacks: PictureListCallbacks
@@ -43,7 +41,7 @@ class PicturesListAdapter(
         }
 
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
+            return oldItem.contentEquals(newItem)
         }
     }
 }
