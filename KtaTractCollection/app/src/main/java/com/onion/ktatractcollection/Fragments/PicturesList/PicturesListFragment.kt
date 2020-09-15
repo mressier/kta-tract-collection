@@ -20,16 +20,6 @@ import com.onion.ktatractcollection.shared.fragments.ImageDialogFragment
 import com.onion.ktatractcollection.shared.tools.*
 import java.util.*
 
-private const val TAG = "PicturesListFragment"
-private const val REQUEST_CAMERA_PERMISSION = 0
-private const val REQUEST_PICTURE_SELECTION_DIALOG = 1
-private const val REQUEST_CAMERA_INTENT = 2
-private const val REQUEST_GALLERY_INTENT = 3
-
-private const val DIALOG_SELECT_PICTURE = "select_picture"
-private const val DIALOG_SHOW_PICTURE = "show_picture"
-
-
 interface PictureListCallbacks {
     fun onPictureSelected(path: String)
     fun onLastButtonSelected()
@@ -177,7 +167,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     }
 
     private fun updateUI() {
-        adapter.submitList(picturesViewModel.convertPicturesToPath(pictures))
+        adapter.submitList(picturesViewModel.getPicturesPath(pictures))
     }
 
     /**
@@ -187,13 +177,77 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     private fun setupViewModel() {
         picturesViewModel.pictures.observe(
             viewLifecycleOwner,
-            {
-                this.pictures = it.toMutableList()
-                println("------- get pictures ${pictures.map { it.photoFilename }}")
+            { picturesList ->
+                pictures = picturesList.toMutableList()
                 updateUI()
+                Log.d(TAG, "Get pictures ${pictures.map { it.photoFilename }}")
             }
         )
     }
+
+    /**
+     * Intents
+     */
+
+    private fun startPictureSelectionIntent() {
+        PictureSelectionDialogFragment.newInstance().apply {
+            setTargetFragment(this@PicturesListFragment, REQUEST_PICTURE_SELECTION_DIALOG)
+            show(this@PicturesListFragment.requireFragmentManager(), DIALOG_SELECT_PICTURE)
+        }
+    }
+
+    private fun startCameraIntent(photoUri: Uri) {
+        if (shouldWaitForCameraPermission()) { return }
+
+        val cameraIntent = requireActivity().buildCameraIntent(photoUri)
+        if (!requireActivity().isIntentAvailable(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY)) {
+            Toast.makeText(context, R.string.no_camera_error, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        this.pictureUri = photoUri
+        this.cameraIntent = cameraIntent
+
+        startActivityForResult(cameraIntent, REQUEST_CAMERA_INTENT)
+    }
+
+    /**
+     * Permissions
+     */
+
+    private fun shouldWaitForCameraPermission(): Boolean {
+        val permission = android.Manifest.permission.CAMERA
+
+        if (!requireContext().permissionIsGranted(permission)) {
+            requestPermissionWithRationale(
+                requireContext(),
+                getString(R.string.camera_permission_description),
+                permission,
+                REQUEST_CAMERA_PERMISSION
+            ) { println("canceled") }
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Tools
+     */
+
+    private fun generatePhotoUriForTract(): Uri {
+        val picture = TractPicture(tractId = tractId, isFromDevice = false)
+
+        val file = picturesViewModel.getPictureFile(picture)
+        val photoUri = FileProvider.getUriForFile(
+            requireActivity(),
+            getString(R.string.app_fileprovider_authority),
+            file
+        )
+
+        Log.d(TAG, "Generate photo uri $photoUri")
+        return photoUri
+    }
+
 
     /**
      * Callbacks
@@ -217,76 +271,6 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
         }
     }
 
-    private fun generatePhotoUriForTract(): Uri {
-        val picture = TractPicture(tractId = tractId, isFromDevice = false)
-
-        val file = picturesViewModel.convertPictureToFile(picture)
-        val photoUri = FileProvider.getUriForFile(
-            requireActivity(),
-            getString(R.string.app_fileprovider_authority),
-            file
-        )
-
-        Log.d(TAG, "Generate photo uri $photoUri")
-        return photoUri
-    }
-
-    private fun startPictureSelectionIntent() {
-        PictureSelectionDialogFragment.newInstance().apply {
-            setTargetFragment(this@PicturesListFragment, REQUEST_PICTURE_SELECTION_DIALOG)
-            show(this@PicturesListFragment.requireFragmentManager(), DIALOG_SELECT_PICTURE)
-        }
-    }
-
-    /**
-     * Camera
-     */
-
-    private fun startCameraIntent(photoUri: Uri) {
-        if (shouldWaitForCameraPermission()) { return }
-
-        val cameraIntent = requireActivity().buildCameraIntent(photoUri)
-        if (!requireActivity().isIntentAvailable(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY)) {
-            Toast.makeText(context, "No camera available", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        this.pictureUri = photoUri
-        this.cameraIntent = cameraIntent
-
-        startActivityForResult(cameraIntent, REQUEST_CAMERA_INTENT)
-    }
-
-    private fun shouldWaitForCameraPermission(): Boolean {
-        val permission = android.Manifest.permission.CAMERA
-
-        if (!requireContext().permissionIsGranted(permission)) {
-            requestPermissionWithRationale(
-                requireContext(),
-                getString(R.string.camera_permission_description),
-                permission,
-                REQUEST_CAMERA_PERMISSION
-            ) { println("canceled") }
-            return true
-        }
-        return false
-    }
-
-    /**
-     * Initialize
-     */
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance(tractId: UUID) =
-            PicturesListFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable("tract_id", tractId.toString())
-                }
-            }
-    }
-
     override fun onCameraOptionSelected() {
         startCameraIntent(generatePhotoUriForTract())
     }
@@ -294,6 +278,21 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     override fun onGalleryOptionSelected() {
         val galleryIntent = buildGalleryIntent(retainDocument = true)
         startActivityForResult(galleryIntent, REQUEST_GALLERY_INTENT)
+    }
+
+    /**
+     * Initialize
+     */
+
+    companion object {
+        private const val TAG = "PicturesListFragment"
+        private const val REQUEST_CAMERA_PERMISSION = 0
+        private const val REQUEST_PICTURE_SELECTION_DIALOG = 1
+        private const val REQUEST_CAMERA_INTENT = 2
+        private const val REQUEST_GALLERY_INTENT = 3
+
+        private const val DIALOG_SELECT_PICTURE = "select_picture"
+        private const val DIALOG_SHOW_PICTURE = "show_picture"
     }
 
 }
