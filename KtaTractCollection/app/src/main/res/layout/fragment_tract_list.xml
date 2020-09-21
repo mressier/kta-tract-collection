@@ -22,21 +22,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_no_tract_image"
-        app:layout_constraintBottom_toTopOf="@+id/no_tract_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_no_tract_image" />
 
-    <Button
-        android:id="@+id/no_tract_button"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_tract"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@color/transparent"
-        android:drawableBottom="@drawable/ic_add_tract_2"
-        android:text="@string/no_tract_list"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="@+id/tract_list" />
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/new_tract"
+        android:src="@drawable/ic_add_icon"
+        android:tint="@color/primaryTextColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

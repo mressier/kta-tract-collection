@@ -12,9 +12,4 @@
         android:icon="@drawable/ic_sort_icon"
         android:title="@string/sort_tract_list"
         app:showAsAction="ifRoom|withText" />
-    <item
-        android:id="@+id/new_tract"
-        android:icon="@drawable/ic_add_icon"
-        android:title="@string/new_tract"
-        app:showAsAction="ifRoom|withText" />
 </menu>

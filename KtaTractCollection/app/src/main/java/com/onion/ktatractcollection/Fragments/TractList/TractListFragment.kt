@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractDialogFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListDialogFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
@@ -53,9 +55,10 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         ViewModelProvider(this).get(TractListParametersViewModel::class.java)
     }
 
+    private lateinit var fabNewTract: FloatingActionButton
+
     private lateinit var tractRecyclerView: RecyclerView
     private lateinit var noTractImageView: ImageView
-    private lateinit var noTractButton: Button
 
     private lateinit var tractAdapter: TractListAdapter
     private lateinit var tractLayout: GridLayoutManager
@@ -105,17 +108,12 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.tract_list_menu, menu)
-        println("--------------- hey you ${parametersViewModel.displayMode} / ${parametersViewModel.reversedDisplayMode}")
         updateMenuUI(parametersViewModel.reversedDisplayMode,
             menu.findItem(R.id.grid_or_list_tract))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
-            R.id.new_tract -> {
-                launchTractCreation()
-                true
-            }
             R.id.sort_list -> {
                 showTractListDialog()
                 true
@@ -165,7 +163,6 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
         val noTractVisibility =
             if (tractListItems.isNotEmpty()) { View.GONE } else { View.VISIBLE }
-        noTractButton.visibility = noTractVisibility
         noTractImageView.visibility = noTractVisibility
     }
 
@@ -195,10 +192,9 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
     private fun setupNoTractView(view: View) {
         noTractImageView = view.findViewById(R.id.no_tract_image)
-        noTractButton = view.findViewById(R.id.no_tract_button)
+        fabNewTract = view.findViewById(R.id.fab_new_tract)
 
         noTractImageView.visibility = View.GONE
-        noTractButton.visibility = View.GONE
     }
 
     /**
@@ -207,9 +203,9 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
     private fun setupViewModelObserver() {
         tractListViewModel.tracts.observe(
-            viewLifecycleOwner,
-            { items ->
-                items?.let {
+            owner = viewLifecycleOwner,
+            onChanged = { items ->
+                items.let {
                     Log.i("TAG", "Got items ${it.size}")
                     currentTracts = items
                     updateUI()
@@ -225,8 +221,8 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
         for (tractId in tracts.map { it.id }) {
             tractListViewModel.getPictures(tractId).observe(
-                viewLifecycleOwner,
-                { items ->
+                owner = viewLifecycleOwner,
+                onChanged = { items ->
                     tractListViewModel.addPicturesToTractItem(tractId, items)
 
                     Log.i(TAG, "Tract $tractId - Got pictures $items")
@@ -238,7 +234,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     }
 
     private fun setupButtonListener() {
-        noTractButton.setOnClickListener {
+        fabNewTract.setOnClickListener {
             launchTractCreation()
         }
     }
