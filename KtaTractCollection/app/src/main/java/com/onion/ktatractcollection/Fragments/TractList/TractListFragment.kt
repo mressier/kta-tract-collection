@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -59,6 +60,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
     private lateinit var tractRecyclerView: RecyclerView
     private lateinit var noTractImageView: ImageView
+    private lateinit var noTractText: TextView
 
     private lateinit var tractAdapter: TractListAdapter
     private lateinit var tractLayout: GridLayoutManager
@@ -164,6 +166,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         val noTractVisibility =
             if (tractListItems.isNotEmpty()) { View.GONE } else { View.VISIBLE }
         noTractImageView.visibility = noTractVisibility
+        noTractText.visibility = noTractVisibility
     }
 
     private fun updateTractListLayout(displayMode: TractListParameters.DisplayMode) {
@@ -192,6 +195,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
 
     private fun setupNoTractView(view: View) {
         noTractImageView = view.findViewById(R.id.no_tract_image)
+        noTractText = view.findViewById(R.id.no_tract_text)
         fabNewTract = view.findViewById(R.id.fab_new_tract)
 
         noTractImageView.visibility = View.GONE
