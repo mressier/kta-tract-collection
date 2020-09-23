@@ -1,18 +1,17 @@
 package com.onion.ktatractcollection.Fragments.PicturesList
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import com.onion.ktatractcollection.R
 
 /**
- * A simple [Fragment] subclass.
- * Use the [PictureSelectionDialogFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * A [DialogFragment] giving the choice between take a picture and choose a picture from gallery
+ *
+ * Create an instance with PictureSelectionDialogFragment.newInstance()
  */
 class PictureSelectionDialogFragment : DialogFragment() {
 
@@ -27,24 +26,23 @@ class PictureSelectionDialogFragment : DialogFragment() {
 
     private lateinit var pictureButton: Button
     private lateinit var galleryButton: Button
-    private lateinit var cancelButton: Button
 
     /**
      * View Life Cycle
      */
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_picture_selection_dialog, container, false)
-        setupView(view)
-        return view
-    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val activity = activity ?: throw IllegalStateException("Activity cannot be null")
+        val inflater = activity.layoutInflater
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_picture_selection_dialog, null)
+        setupView(view)
         setupListeners()
+
+        val builder = AlertDialog.Builder(activity)
+        builder.setView(view)
+        builder.setCancelable(true)
+        builder.setNegativeButton(android.R.string.cancel) { _, _ -> dismiss() }
+        return builder.create()
     }
 
     /**
@@ -54,7 +52,6 @@ class PictureSelectionDialogFragment : DialogFragment() {
     private fun setupView(view: View) {
         pictureButton = view.findViewById(R.id.picture_button)
         galleryButton = view.findViewById(R.id.gallery_button)
-        cancelButton = view.findViewById(R.id.cancel_button)
     }
 
     private fun setupListeners() {
@@ -67,8 +64,6 @@ class PictureSelectionDialogFragment : DialogFragment() {
             (targetFragment as Callbacks).onGalleryOptionSelected()
             dismiss()
         }
-
-        cancelButton.setOnClickListener { dismiss() }
     }
 
     /**
@@ -82,9 +77,7 @@ class PictureSelectionDialogFragment : DialogFragment() {
          *
          * @return A new instance of fragment PictureSelectionDialogFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() =
-            PictureSelectionDialogFragment()
+        fun newInstance() = PictureSelectionDialogFragment()
     }
 }

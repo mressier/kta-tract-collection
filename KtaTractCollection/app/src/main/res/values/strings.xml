@@ -24,6 +24,7 @@
 
     <!--  AlertDialog  -->
     <string name="tract_dialog_title">Tract actions</string>
+
     <string name="delete_tract">Delete the tract</string>
     <string name="delete_tract_success">Your tract has been successfully deleted</string>
 
