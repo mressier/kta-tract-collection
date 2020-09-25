@@ -7,6 +7,7 @@ import com.onion.ktatractcollection.Database.TractRepository
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import java.io.File
+import java.util.*
 
 class FabImageMenuViewModel: ViewModel() {
 
@@ -17,6 +18,8 @@ class FabImageMenuViewModel: ViewModel() {
     var isMenuVisible = false
 
     var pictureFile: File? = null
+
+    var tractId: UUID? = null
 
     private val repository: TractRepository by lazy { TractRepository.get() }
 
@@ -32,28 +35,31 @@ class FabImageMenuViewModel: ViewModel() {
 
     fun savePictureFile(): TractPicture? {
         return pictureFile?.let { file ->
-            val tract = Tract()
-            repository.addTract(tract)
+
+            val tractId = this.tractId ?: repository.addEmptyTract()
+            this.tractId = tractId
 
             val tractPicture = TractPicture(
-                tractId = tract.id,
+                tractId = tractId,
                 isFromDevice = false,
                 photoFilename = file.toUri().toString()
             )
+
             repository.addPicture(tractPicture)
             tractPicture
         }
     }
 
     fun savePictures(uri: Array<Uri>): Array<TractPicture> {
-        val tract = Tract()
-        repository.addTract(tract)
+        val tractId = this.tractId ?: repository.addEmptyTract()
+        this.tractId = tractId
 
         val pictures = uri.map {
-            TractPicture(tractId = tract.id,
+            TractPicture(tractId = tractId,
                 isFromDevice = false,
                 photoFilename = it.toString())
         }
+
         pictures.forEach { repository.addPicture(it) }
 
         return pictures.toTypedArray()

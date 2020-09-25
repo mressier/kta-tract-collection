@@ -49,4 +49,15 @@
         app:layout_constraintTop_toBottomOf="@+id/tab_layout"
         tools:layout="@layout/fragment_pictures_list" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fab_fragment"
+        android:name="com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_fab_image_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

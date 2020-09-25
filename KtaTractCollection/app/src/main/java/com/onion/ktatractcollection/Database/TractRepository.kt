@@ -43,6 +43,12 @@ class TractRepository private constructor(context: Context) {
         executor.execute() { tractDao.addTract(tract) }
     }
 
+    fun addEmptyTract(): UUID {
+        val tract = Tract()
+        addTract(tract)
+        return tract.id
+    }
+
     fun updateTract(tract: Tract) {
         executor.execute() { tractDao.updateTract(tract) }
     }

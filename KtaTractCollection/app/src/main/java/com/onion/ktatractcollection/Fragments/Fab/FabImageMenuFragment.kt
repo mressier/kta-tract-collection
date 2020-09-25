@@ -101,6 +101,10 @@ class FabImageMenuFragment : Fragment() {
      * Methods
      */
 
+    fun setTract(tractId: UUID) {
+        imageMenuViewModel.tractId = tractId
+    }
+
     private fun savePicture() {
         val picture = imageMenuViewModel.savePictureFile()
         hideMenu()
