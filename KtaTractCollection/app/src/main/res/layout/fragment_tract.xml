@@ -22,7 +22,8 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tract_detail_fragment">
+        app:layout_constraintTop_toBottomOf="@+id/tract_detail_fragment"
+        app:tabBackground="@android:color/background_light">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_image_item"
