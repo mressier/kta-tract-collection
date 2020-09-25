@@ -49,5 +49,6 @@
     <string name="delete">Delete</string>
     <string name="validate">Validate</string>
     <string name="settings">Settings</string>
+    <string name="unknown">Unknown</string>
 
 </resources>

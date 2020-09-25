@@ -1,23 +1,16 @@
 package com.onion.ktatractcollection.Fragments.PicturesList
 
-import android.app.Activity
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.ImageDialogFragment
-import com.onion.ktatractcollection.shared.tools.*
 import java.util.*
 
 interface PictureListCallbacks {
@@ -55,7 +48,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
         if (savedInstanceState != null) { return }
 
         arguments?.let {
-           updateTract(UUID.fromString(it.getString("tract_id")))
+           setTract(UUID.fromString(it.getString("tract_id")))
         }
     }
 
@@ -78,7 +71,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
     /**
      * Update
      */
-    fun updateTract(tractId: UUID) {
+    fun setTract(tractId: UUID) {
         this.tractId = tractId
         picturesViewModel.loadPicturesForTractId(tractId)
     }
