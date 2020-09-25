@@ -34,7 +34,6 @@ fun Activity.grantCameraPermissionsForIntent(intent: Intent, photoUri: Uri) {
             PackageManager.MATCH_DEFAULT_ONLY
         )
 
-    println(cameraActivities)
     for (info in cameraActivities) {
         grantCameraPermission(info, photoUri)
     }

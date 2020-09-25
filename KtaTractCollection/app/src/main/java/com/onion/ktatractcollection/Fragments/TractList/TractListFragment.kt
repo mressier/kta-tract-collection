@@ -235,7 +235,6 @@ class TractListFragment : Fragment(),
     }
 
     private fun setupButtonListener() {
-        println("----------- fabFragment $fabFragment")
         fabFragment.callbacks = this
     }
 

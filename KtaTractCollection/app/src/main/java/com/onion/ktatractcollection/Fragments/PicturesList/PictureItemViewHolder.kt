@@ -29,7 +29,6 @@ class PictureItemViewHolder(
      * Methods
      */
     fun bind(photoPath: String) {
-        println("-------- bind $photoPath")
         setupPhoto(photoPath)
         setupListeners(photoPath)
         setDeleteButtonIsVisible(true)
