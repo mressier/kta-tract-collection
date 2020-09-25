@@ -43,7 +43,6 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     }
 
     /* Camera */
-    private var cameraIntent: Intent? = null
     private var pictureUri: Uri? = null
 
     /* Outlets */
@@ -106,7 +105,6 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
 
         revokeCameraPermission()
         pictureUri = null
-        cameraIntent = null
     }
 
     private fun savePictureWithUri(uri: Uri, isFromDevice: Boolean) {
@@ -149,9 +147,9 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
     }
 
     override fun onPermissionDeniedForever(permission: String) {
-        requireContext().showPermissionAlwaysDeniedExplanation(
-            getString(R.string.camera_permission_denied)
-        )
+//        requireContext().showPermissionAlwaysDeniedExplanation(
+//            getString(R.string.camera_permission_denied)
+//        )
     }
 
     private fun revokeCameraPermission() {
@@ -200,13 +198,8 @@ class PicturesListFragment : Fragment(), PictureListCallbacks, PermissionGranted
         if (shouldWaitForCameraPermission()) { return }
 
         val cameraIntent = requireActivity().buildCameraIntent(photoUri)
-        if (!requireActivity().isIntentAvailable(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY)) {
-            Toast.makeText(context, R.string.no_camera_error, Toast.LENGTH_SHORT).show()
-            return
-        }
 
         this.pictureUri = photoUri
-        this.cameraIntent = cameraIntent
 
         startActivityForResult(cameraIntent, REQUEST_CAMERA_INTENT)
     }

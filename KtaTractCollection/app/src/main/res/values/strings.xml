@@ -41,8 +41,7 @@
     <string name="choose_from_gallery">Choose from gallery</string>
 
     <!--  Permissions  -->
-    <string name="camera_permission_description">We should access to your camera to take a picture of the tract</string>
-    <string name="camera_permission_denied">Camera access not granted. Go to app settings to enable it.</string>
+    <string name="camera_permission_description">Camera permission is required to take a picture of a tract.</string>
     <string name="no_camera_error">No camera available</string>
 
     <!--  Basics  -->
@@ -51,7 +50,6 @@
     <string name="no_thanks">No thanks</string>
     <string name="delete">Delete</string>
     <string name="validate">Validate</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings">Settings</string>
 
 </resources>

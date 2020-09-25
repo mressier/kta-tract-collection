@@ -2,11 +2,14 @@ package com.onion.ktatractcollection.shared.tools
 
 import android.content.Intent
 
-fun buildGalleryIntent(retainDocument: Boolean = false): Intent {
+fun buildGalleryIntent(retainDocument: Boolean = false,
+                       allowMultipleFiles: Boolean = false): Intent {
     val action =
         if (retainDocument) { Intent.ACTION_OPEN_DOCUMENT } else { Intent.ACTION_GET_CONTENT }
-    val getContentIntent = Intent(action)
-    getContentIntent.type = "image/*"
+    val galleryIntent = Intent(action)
 
-    return getContentIntent
+    galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, allowMultipleFiles)
+    galleryIntent.type = "image/*"
+
+    return galleryIntent
 }

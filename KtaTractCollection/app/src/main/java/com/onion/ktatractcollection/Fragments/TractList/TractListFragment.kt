@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractDialogFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListDialogFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
@@ -33,7 +33,12 @@ private const val DIALOG_TRACT_LIST_ACTION = "dialog_tract_list_action"
 /**
  * A fragment representing a list of Items.
  */
-class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Callbacks, TractListDialogFragment.Callbacks {
+class TractListFragment : Fragment(),
+    TractListCallbacks,
+    TractDialogFragment.Callbacks,
+    TractListDialogFragment.Callbacks,
+    FabImageMenuFragment.Callbacks
+{
 
     /**
      * Required interface for hosting activities
@@ -58,6 +63,7 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private lateinit var tractRecyclerView: RecyclerView
     private lateinit var noTractImageView: ImageView
     private lateinit var noTractText: TextView
+    private lateinit var fabFragment: FabImageMenuFragment
 
     private lateinit var tractAdapter: TractListAdapter
     private lateinit var tractLayout: GridLayoutManager
@@ -131,12 +137,6 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         updateTractListLayout(parametersViewModel.displayMode)
     }
 
-//    private fun launchTractCreation() {
-//        val tract = Tract()
-//        tractListViewModel.saveTract(tract)
-//        callbacks?.onTractSelected(tract.id)
-//    }
-
     /**
      * Update
      */
@@ -192,8 +192,10 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private fun setupNoTractView(view: View) {
         noTractImageView = view.findViewById(R.id.no_tract_image)
         noTractText = view.findViewById(R.id.no_tract_text)
+        fabFragment = childFragmentManager.findFragmentById(R.id.fab_fragment) as FabImageMenuFragment
 
         noTractImageView.visibility = View.GONE
+        noTractText.visibility = View.GONE
     }
 
     /**
@@ -233,6 +235,8 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     }
 
     private fun setupButtonListener() {
+        println("----------- fabFragment $fabFragment")
+        fabFragment.callbacks = this
     }
 
     /**
@@ -273,9 +277,13 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_LONG).show()
     }
 
-    override fun onParameterSelected(parameters: TractListParameters) {
-        parametersViewModel.parameters = parameters
+    override fun onParameterSelected(parameter: TractListParameters) {
+        parametersViewModel.parameters = parameter
         updateUI()
+    }
+
+    override fun onTractSaved(tractId: UUID) {
+        callbacks?.onTractSelected(tractId)
     }
 
 }
