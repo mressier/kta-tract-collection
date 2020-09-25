@@ -96,6 +96,14 @@ class FabImageMenuFragment : Fragment() {
         backgroundView.startAnimation(fabClose)
     }
 
+    private fun takePicture() {
+        println("take picture")
+    }
+
+    private fun importFromGallery() {
+        println("get from gallery")
+    }
+
     /**
      * Setup
      */
@@ -121,8 +129,10 @@ class FabImageMenuFragment : Fragment() {
             if (imageMenuViewModel.isMenuVisible) { hideMenu() } else { showMenu() }
         }
 
-        backgroundView.setOnClickListener {
-            hideMenu()
-        }
+        backgroundView.setOnClickListener { hideMenu() }
+
+        cameraButton.setOnClickListener { takePicture() }
+
+        galleryButton.setOnClickListener { importFromGallery() }
     }
 }
