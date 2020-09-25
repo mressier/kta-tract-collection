@@ -19,17 +19,12 @@ class PicturesListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount() + 1
+        return super.getItemCount()
     }
 
-
     override fun onBindViewHolder(holder: PictureItemViewHolder, position: Int) {
-        if (position == itemCount - 1) {
-            holder.bindButton()
-        } else {
-            val item = getItem(position)
-            holder.bind(item)
-        }
+         val item = getItem(position)
+        holder.bind(item)
     }
 
     /**

@@ -11,6 +11,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -93,6 +94,7 @@ class FabImageMenuFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         callbacks = null
+        revokeCameraPermission()
     }
 
     /**
@@ -102,6 +104,7 @@ class FabImageMenuFragment : Fragment() {
     private fun savePicture() {
         val picture = imageMenuViewModel.savePictureFile()
         hideMenu()
+        revokeCameraPermission()
 
         picture?.let { callbacks?.onTractSaved(picture.tractId) }
     }
@@ -158,6 +161,12 @@ class FabImageMenuFragment : Fragment() {
     private fun importFromGallery() {
         val galleryIntent = buildGalleryIntent(retainDocument = true, allowMultipleFiles = true)
         startActivityForResult(galleryIntent, REQUEST_GALLERY_INTENT)
+    }
+
+    private fun revokeCameraPermission() {
+        imageMenuViewModel.pictureFile?.toUri()?.let { uri ->
+            requireActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        }
     }
 
     /**

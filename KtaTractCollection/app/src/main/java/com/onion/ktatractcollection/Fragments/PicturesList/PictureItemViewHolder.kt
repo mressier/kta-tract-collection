@@ -35,15 +35,6 @@ class PictureItemViewHolder(
         setDeleteButtonIsVisible(true)
     }
 
-    fun bindButton() {
-        pictureView.setImageResource(R.drawable.ic_add_tract_2)
-        pictureView.setOnClickListener {
-            callbacks.onLastButtonSelected()
-        }
-
-        setDeleteButtonIsVisible(false)
-    }
-
     private fun setupPhoto(path: String) {
         Glide.with(itemView.context)
             .load(Uri.parse(path))
