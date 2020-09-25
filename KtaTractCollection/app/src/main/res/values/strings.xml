@@ -4,11 +4,9 @@
 
     <!--  Tract  -->
     <string name="tract_author_title">Author</string>
-    <string name="tract_author_hint">Who has done this tract ?</string>
     <string name="tract_discovery_date_title">Discovery Date</string>
     <string name="tract_dating_title">Dating of the tract</string>
     <string name="tract_comments_title">Comments</string>
-    <string name="tract_comments_hint">Anything special to tell about this ?</string>
 
     <!--  Tract List  -->
     <string name="no_tract_list">No tract yet…</string>

@@ -14,26 +14,7 @@ import com.onion.ktatractcollection.shared.tools.*
 import java.text.DateFormat
 import java.util.*
 
-private const val REQUEST_DISCOVERY_DATE = 0
-private const val REQUEST_DATING = 1
-
-private const val DIALOG_DISCOVERY_DATE = "dialog_discovery_date"
-private const val DIALOG_DATING = "dialog_dating"
-
 class TractFragment : Fragment(), DatePickerFragment.Callbacks {
-
-    /**
-     * Requests, Parameters, Dialog, ...
-     */
-    private enum class Requests {
-        DISCOVERY_DATE,
-        DATING
-    }
-
-    private enum class Dialogs(val description: String) {
-        DISCOVERY_DATE("date_dialog"),
-        PICTURE("picture_dialog")
-    }
 
     /**
      * Properties
@@ -202,6 +183,18 @@ class TractFragment : Fragment(), DatePickerFragment.Callbacks {
             REQUEST_DATING -> tract.dating = date
         }
         updateUI()
+    }
+
+    /**
+     * Companion
+     */
+    companion object {
+
+        private const val REQUEST_DISCOVERY_DATE = 0
+        private const val REQUEST_DATING = 1
+
+        private const val DIALOG_DISCOVERY_DATE = "dialog_discovery_date"
+        private const val DIALOG_DATING = "dialog_dating"
     }
 
 }
