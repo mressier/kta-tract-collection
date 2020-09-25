@@ -55,8 +55,6 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         ViewModelProvider(this).get(TractListParametersViewModel::class.java)
     }
 
-    private lateinit var fabNewTract: FloatingActionButton
-
     private lateinit var tractRecyclerView: RecyclerView
     private lateinit var noTractImageView: ImageView
     private lateinit var noTractText: TextView
@@ -64,7 +62,6 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private lateinit var tractAdapter: TractListAdapter
     private lateinit var tractLayout: GridLayoutManager
     private var currentTracts: List<Tract> = listOf()
-
 
     /**
      * View Life Cycle
@@ -134,11 +131,11 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
         updateTractListLayout(parametersViewModel.displayMode)
     }
 
-    private fun launchTractCreation() {
-        val tract = Tract()
-        tractListViewModel.saveTract(tract)
-        callbacks?.onTractSelected(tract.id)
-    }
+//    private fun launchTractCreation() {
+//        val tract = Tract()
+//        tractListViewModel.saveTract(tract)
+//        callbacks?.onTractSelected(tract.id)
+//    }
 
     /**
      * Update
@@ -195,7 +192,6 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     private fun setupNoTractView(view: View) {
         noTractImageView = view.findViewById(R.id.no_tract_image)
         noTractText = view.findViewById(R.id.no_tract_text)
-        fabNewTract = view.findViewById(R.id.fab_new_tract)
 
         noTractImageView.visibility = View.GONE
     }
@@ -237,9 +233,6 @@ class TractListFragment : Fragment(), TractListCallbacks, TractDialogFragment.Ca
     }
 
     private fun setupButtonListener() {
-        fabNewTract.setOnClickListener {
-            launchTractCreation()
-        }
     }
 
     /**
