@@ -124,11 +124,8 @@ class FabImageMenuFragment : Fragment() {
     private fun showMenu(animated: Boolean = true) {
         imageMenuViewModel.isMenuVisible = true
 
-        if (animated) {
-            newTractButton.startAnimation(fabClock)
-        } else {
-            newTractButton.rotation = 45F
-        }
+        fabClock.duration = if (animated) { 300 } else { 0 }
+        newTractButton.startAnimation(fabClock)
 
         galleryButton.show()
         galleryText.visibility = View.VISIBLE
@@ -138,21 +135,15 @@ class FabImageMenuFragment : Fragment() {
 
         backgroundView.isClickable = true
 
-        if (animated) {
-            backgroundView.animate().alpha(1F).duration = 300
-        } else {
-            backgroundView.alpha = 1F
-        }
+        fabOpen.duration = if (animated) { 300 } else { 0 }
+        backgroundView.startAnimation(fabOpen)
     }
 
     private fun hideMenu(animated: Boolean = true) {
         imageMenuViewModel.isMenuVisible = false
 
-        if (animated) {
-            newTractButton.startAnimation(fabAnticlock)
-        } else {
-            newTractButton.rotation = 0F
-        }
+        fabAnticlock.duration = if (animated) { 300 } else { 0 }
+        newTractButton.startAnimation(fabAnticlock)
 
         galleryButton.hide()
         galleryText.visibility = View.GONE
@@ -162,11 +153,8 @@ class FabImageMenuFragment : Fragment() {
 
         backgroundView.isClickable = false
 
-        if (animated) {
-            backgroundView.animate().alpha(0F).duration = 300
-        } else {
-            backgroundView.alpha = 0F
-        }
+        fabClose.duration = if (animated) { 300 } else { 0 }
+        backgroundView.startAnimation(fabClose)
     }
 
     private fun takePicture() {
