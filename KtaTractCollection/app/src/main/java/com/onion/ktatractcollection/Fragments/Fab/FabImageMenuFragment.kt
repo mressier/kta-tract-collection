@@ -73,7 +73,7 @@ class FabImageMenuFragment : Fragment() {
 
         setupListeners()
 
-        if (imageMenuViewModel.isMenuVisible) { showMenu() } else { hideMenu() }
+        if (imageMenuViewModel.isMenuVisible) { showMenu(animated = false) } else { hideMenu(animated = false) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -121,10 +121,14 @@ class FabImageMenuFragment : Fragment() {
         pictures.firstOrNull()?.let { callbacks?.onTractSaved(it.tractId) }
     }
 
-    private fun showMenu() {
+    private fun showMenu(animated: Boolean = true) {
         imageMenuViewModel.isMenuVisible = true
 
-        newTractButton.startAnimation(fabClock)
+        if (animated) {
+            newTractButton.startAnimation(fabClock)
+        } else {
+            newTractButton.rotation = 45F
+        }
 
         galleryButton.show()
         galleryText.visibility = View.VISIBLE
@@ -133,13 +137,22 @@ class FabImageMenuFragment : Fragment() {
         cameraText.visibility = View.VISIBLE
 
         backgroundView.isClickable = true
-        backgroundView.startAnimation(fabOpen)
+
+        if (animated) {
+            backgroundView.animate().alpha(1F).duration = 300
+        } else {
+            backgroundView.alpha = 1F
+        }
     }
 
-    private fun hideMenu() {
+    private fun hideMenu(animated: Boolean = true) {
         imageMenuViewModel.isMenuVisible = false
 
-        newTractButton.startAnimation(fabAnticlock)
+        if (animated) {
+            newTractButton.startAnimation(fabAnticlock)
+        } else {
+            newTractButton.rotation = 0F
+        }
 
         galleryButton.hide()
         galleryText.visibility = View.GONE
@@ -148,7 +161,12 @@ class FabImageMenuFragment : Fragment() {
         cameraText.visibility = View.GONE
 
         backgroundView.isClickable = false
-        backgroundView.startAnimation(fabClose)
+
+        if (animated) {
+            backgroundView.animate().alpha(0F).duration = 300
+        } else {
+            backgroundView.alpha = 0F
+        }
     }
 
     private fun takePicture() {
@@ -193,7 +211,7 @@ class FabImageMenuFragment : Fragment() {
 
     private fun setupListeners() {
         newTractButton.setOnClickListener {
-            if (imageMenuViewModel.isMenuVisible) { hideMenu() } else { showMenu() }
+            if (imageMenuViewModel.isMenuVisible) { hideMenu(animated = true) } else { showMenu(animated = true) }
         }
 
         backgroundView.setOnClickListener { hideMenu() }
