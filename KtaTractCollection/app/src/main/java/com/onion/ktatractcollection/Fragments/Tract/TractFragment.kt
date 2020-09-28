@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment
 import com.onion.ktatractcollection.Fragments.PicturesList.PicturesListFragment
+import com.onion.ktatractcollection.Fragments.Tract.TractTabLayout.TractDetailsTabsFragment
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.tools.*
 import java.util.*
@@ -14,7 +15,7 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
     /**
      * Properties
      */
-    private lateinit var picturesFragment: PicturesListFragment
+    private lateinit var tabsFragment: TractDetailsTabsFragment
     private lateinit var detailsFragment: TractDetailsFragment
     private lateinit var fabFragment: FabImageMenuFragment
 
@@ -48,7 +49,7 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        picturesFragment.setTract(tractId)
+        tabsFragment.setTract(tractId)
         detailsFragment.setTract(tractId)
         fabFragment.setTract(tractId)
         setupListeners()
@@ -81,8 +82,8 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
     private fun setupOutlets(view: View) {
         detailsFragment =
             childFragmentManager.findFragmentById(R.id.tract_detail_fragment) as TractDetailsFragment
-        picturesFragment =
-            childFragmentManager.findFragmentById(R.id.pictures_fragment) as PicturesListFragment
+        tabsFragment =
+            childFragmentManager.findFragmentById(R.id.tract_tab_fragment) as TractDetailsTabsFragment
         fabFragment =
             childFragmentManager.findFragmentById(R.id.fab_fragment) as FabImageMenuFragment
     }

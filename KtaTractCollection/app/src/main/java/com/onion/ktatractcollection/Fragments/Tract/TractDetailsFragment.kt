@@ -44,6 +44,9 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
 
     private lateinit var tract: Tract
 
+    /**
+     * View Life cycle
+     */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

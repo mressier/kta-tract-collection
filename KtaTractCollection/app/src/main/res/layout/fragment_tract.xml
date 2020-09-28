@@ -13,42 +13,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tract_detail_fragment"
-        app:tabBackground="@android:color/background_light">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_image_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="IMAGES" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_map_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MAP" />
-
-    </com.google.android.material.tabs.TabLayout>
+    </androidx.fragment.app.FragmentContainerView>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/pictures_fragment"
-        android:name="com.onion.ktatractcollection.Fragments.PicturesList.PicturesListFragment"
+        android:id="@+id/tract_tab_fragment"
+        android:name="com.onion.ktatractcollection.Fragments.Tract.TractTabLayout.TractDetailsTabsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout"
-        tools:layout="@layout/fragment_pictures_list" />
+        app:layout_constraintTop_toBottomOf="@+id/tract_detail_fragment" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fab_fragment"

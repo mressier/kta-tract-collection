@@ -48,7 +48,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
         if (savedInstanceState != null) { return }
 
         arguments?.let {
-           setTract(UUID.fromString(it.getString("tract_id")))
+            it.getString("tract_id")?.let { tractId -> setTract(UUID.fromString(tractId)) }
         }
     }
 
@@ -119,6 +119,15 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
     companion object {
         private const val TAG = "PicturesListFragment"
         private const val DIALOG_SHOW_PICTURE = "show_picture"
+
+        private const val PARAM_TRACT_ID = "tract_id"
+
+        fun newInstance(tractId: UUID? = null): PicturesListFragment {
+            val args = Bundle().apply {
+                tractId?.let { putString(PARAM_TRACT_ID, it.toString()) }
+            }
+            return PicturesListFragment().apply { arguments = args }
+        }
     }
 
 }
