@@ -195,7 +195,9 @@ class TractListFragment : Fragment(),
         fabFragment = childFragmentManager.findFragmentById(R.id.fab_fragment) as FabImageMenuFragment
 
         noTractImageView.visibility = View.GONE
+        noTractImageView.jumpDrawablesToCurrentState()
         noTractText.visibility = View.GONE
+        noTractText.jumpDrawablesToCurrentState()
     }
 
     /**

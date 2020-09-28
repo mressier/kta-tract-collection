@@ -2,6 +2,7 @@ package com.onion.ktatractcollection.Fragments.Tract
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment
 import com.onion.ktatractcollection.Fragments.PicturesList.PicturesListFragment
@@ -53,6 +54,8 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
         detailsFragment.setTract(tractId)
         fabFragment.setTract(tractId)
         setupListeners()
+
+        ViewCompat.setTranslationZ(view, 100f)
     }
 
     /**

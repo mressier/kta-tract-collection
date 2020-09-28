@@ -22,7 +22,9 @@
         <action
             android:id="@+id/show_tract"
             app:destination="@id/tractFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right"/>
     </fragment>
 </navigation>
