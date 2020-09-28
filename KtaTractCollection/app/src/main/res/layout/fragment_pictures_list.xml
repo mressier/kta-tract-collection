@@ -8,6 +8,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-    app:spanCount="3"
+    app:spanCount="2"
     tools:context=".Fragments.PicturesList.PicturesListFragment"
     tools:listitem="@layout/fragment_pictures_item" />
