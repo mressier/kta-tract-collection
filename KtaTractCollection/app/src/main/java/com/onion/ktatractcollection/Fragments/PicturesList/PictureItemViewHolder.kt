@@ -5,13 +5,9 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.core.net.toFile
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.GlideBuilder
-import com.bumptech.glide.RequestManager
 import com.onion.ktatractcollection.R
-import java.io.File
 
 class PictureItemViewHolder(
     view: View,
@@ -50,6 +46,7 @@ class PictureItemViewHolder(
 
         deleteButton.setOnClickListener {
             callbacks.onDeleteButtonSelected(path)
+            setDeleteButtonIsVisible(false)
         }
     }
 
