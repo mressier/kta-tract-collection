@@ -73,7 +73,9 @@ class FabImageMenuFragment : Fragment() {
 
         setupListeners()
 
-        if (imageMenuViewModel.isMenuVisible) { showMenu(animated = false) } else { hideMenu(animated = false) }
+        if (imageMenuViewModel.isMenuVisible) { showMenu(animated = false) } else { hideMenu(
+            animated = false
+        ) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -115,6 +117,12 @@ class FabImageMenuFragment : Fragment() {
 
     private fun savePictures(intent: Intent) {
         val picturesUri = intent.dataAsUriArray()
+        val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+        picturesUri.forEach {
+            context?.contentResolver?.takePersistableUriPermission(it, flags)
+        }
+
         val pictures = imageMenuViewModel.savePictures(picturesUri)
         hideMenu()
 
@@ -199,7 +207,9 @@ class FabImageMenuFragment : Fragment() {
 
     private fun setupListeners() {
         newTractButton.setOnClickListener {
-            if (imageMenuViewModel.isMenuVisible) { hideMenu(animated = true) } else { showMenu(animated = true) }
+            if (imageMenuViewModel.isMenuVisible) { hideMenu(animated = true) } else { showMenu(
+                animated = true
+            ) }
         }
 
         backgroundView.setOnClickListener { hideMenu() }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import com.onion.ktatractcollection.R
 
@@ -62,6 +63,7 @@ class ImageDialogFragment: DialogFragment() {
         Glide.with(requireContext())
             .load(path)
             .centerInside()
+            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
             .into(photoView)
     }
 

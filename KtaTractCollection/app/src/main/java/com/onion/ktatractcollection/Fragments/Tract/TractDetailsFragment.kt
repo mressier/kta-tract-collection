@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.textfield.TextInputEditText
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.DatePickerFragment
@@ -15,16 +16,6 @@ import com.onion.ktatractcollection.shared.tools.TextChangedWatcher
 import java.text.DateFormat
 import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TractDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
 
     /**
@@ -32,10 +23,10 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
      */
 
     /* Outlets */
-    private lateinit var authorTextField: EditText
+    private lateinit var authorTextField: TextInputEditText
     private lateinit var discoveryDateButton: Button
     private lateinit var datingButton: Button
-    private lateinit var commentsTextField: EditText
+    private lateinit var commentsTextField: TextInputEditText
 
     /* View Model */
     private val tractViewModel: TractViewModel by lazy {
