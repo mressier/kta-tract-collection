@@ -100,7 +100,7 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
      */
 
     override fun onPictureSelected(path: String) {
-        val intent = ImageDialogFragment.newInstancePath(path)
+        val intent = ImageDialogFragment.newInstance(path)
         intent.show(requireActivity().supportFragmentManager, DIALOG_SHOW_PICTURE)
     }
 

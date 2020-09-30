@@ -24,7 +24,7 @@ class TractDetailsTabsFragment : Fragment() {
 
     private lateinit var adapter : TractDetailsTabsAdapter
 
-    private val tabs = arrayOf("IMAGES", "MAPS")
+    private val tabs = arrayOf("IMAGES") // Next feature: Map
 
     /* View Model */
     private val viewModel: TractDetailsTabsViewModel by lazy {
