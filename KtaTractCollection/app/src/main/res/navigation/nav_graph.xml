@@ -13,6 +13,9 @@
         <argument
             android:name="tractId"
             app:argType="string" />
+        <action
+            android:id="@+id/showImages"
+            app:destination="@id/imagePagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/tractListFragment"
@@ -26,5 +29,17 @@
             app:exitAnim="@anim/wait"
             app:popEnterAnim="@anim/wait"
             app:popExitAnim="@anim/slide_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/imagePagerFragment"
+        android:name="com.onion.ktatractcollection.Fragments.ImagePager.ImagePagerFragment"
+        android:label="fragment_image_pager"
+        tools:layout="@layout/fragment_image_pager" >
+        <argument
+            android:name="path_array"
+            app:argType="string[]" />
+        <argument
+            android:name="current_index"
+            app:argType="integer" />
     </fragment>
 </navigation>

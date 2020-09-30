@@ -1,5 +1,6 @@
 package com.onion.ktatractcollection.Fragments.PicturesList
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,18 +11,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
-import com.onion.ktatractcollection.shared.fragments.ImageDialogFragment
 import java.util.*
-
-interface PictureListCallbacks {
-    fun onPictureSelected(path: String)
-    fun onDeleteButtonSelected(path: String)
-}
 
 /**
  * A fragment representing a list of Items.
  */
-class PicturesListFragment : Fragment(), PictureListCallbacks {
+class PicturesListFragment : Fragment(), PictureItemCallback {
+
+    interface Callbacks {
+        fun onPictureListSelected(list: Array<TractPicture>, pictureIndex: Int)
+    }
 
     /**
      * Properties
@@ -37,6 +36,9 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
     /* Outlets */
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PicturesListAdapter
+
+    /* Callbacks */
+    var callbacks: Callbacks? = null
 
     /**
      * View Life Cycle
@@ -61,11 +63,21 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
         // Set the adapter
         if (view is RecyclerView) {
             recyclerView = view
-            adapter = PicturesListAdapter(requireContext(), this)
+            adapter = PicturesListAdapter(this)
             recyclerView.adapter = adapter
         }
         setupViewModel()
         return view
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as? Callbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
     }
 
     /**
@@ -100,8 +112,8 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
      */
 
     override fun onPictureSelected(path: String) {
-        val intent = ImageDialogFragment.newInstance(path)
-        intent.show(requireActivity().supportFragmentManager, DIALOG_SHOW_PICTURE)
+        val index = pictures.indexOfFirst { it.photoFilename == path }
+        callbacks?.onPictureListSelected(pictures.toTypedArray(), index)
     }
 
     override fun onDeleteButtonSelected(path: String) {
@@ -118,7 +130,6 @@ class PicturesListFragment : Fragment(), PictureListCallbacks {
 
     companion object {
         private const val TAG = "PicturesListFragment"
-        private const val DIALOG_SHOW_PICTURE = "show_picture"
 
         private const val PARAM_TRACT_ID = "tract_id"
 

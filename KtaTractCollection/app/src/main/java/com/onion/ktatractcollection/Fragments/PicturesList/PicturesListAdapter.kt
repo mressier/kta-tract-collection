@@ -1,6 +1,5 @@
 package com.onion.ktatractcollection.Fragments.PicturesList
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,14 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import com.onion.ktatractcollection.R
 
 class PicturesListAdapter(
-    private val context: Context,
-    private val callbacks: PictureListCallbacks
+    private val callbacks: PictureItemCallback
 ) : ListAdapter<String, PictureItemViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_pictures_item, parent, false)
-        return PictureItemViewHolder(view, context, callbacks)
+        return PictureItemViewHolder(view, callbacks)
     }
 
     override fun getItemCount(): Int {

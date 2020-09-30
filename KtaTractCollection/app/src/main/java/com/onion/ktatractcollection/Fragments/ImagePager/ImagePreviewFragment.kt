@@ -1,17 +1,16 @@
-package com.onion.ktatractcollection.shared.fragments
+package com.onion.ktatractcollection.Fragments.ImagePager
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import com.onion.ktatractcollection.R
 
-class ImageDialogFragment: DialogFragment() {
+class ImagePreviewFragment: Fragment() {
 
     /**
      * Properties
@@ -25,12 +24,13 @@ class ImageDialogFragment: DialogFragment() {
     /**
      * View Life Cycle
      */
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val pathArgument = arguments?.getSerializable(PARAM_PATH_ID) as? String
 
-        this.photoPath = pathArgument
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        return super.onCreateDialog(savedInstanceState)
+        arguments?.let {
+            this.photoPath = it.getSerializable(PARAM_PATH_ID) as? String
+        }
     }
 
     override fun onCreateView(
@@ -38,7 +38,7 @@ class ImageDialogFragment: DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_photo, container, false)
+        val view = inflater.inflate(R.layout.fragment_image_preview, container, false)
         setupView(view)
         return view
     }
@@ -74,11 +74,11 @@ class ImageDialogFragment: DialogFragment() {
 
         private const val PARAM_PATH_ID = "path_id"
 
-        fun newInstance(path: String): ImageDialogFragment {
+        fun newInstance(path: String): ImagePreviewFragment {
             val args = Bundle().apply {
                 putSerializable(PARAM_PATH_ID, path)
             }
-            return ImageDialogFragment().apply { arguments = args }
+            return ImagePreviewFragment().apply { arguments = args }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.onion.ktatractcollection.Fragments.PicturesList
 
-import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.ImageButton
@@ -9,10 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.R
 
+interface PictureItemCallback {
+    fun onPictureSelected(path: String)
+    fun onDeleteButtonSelected(path: String)
+}
+
+/**
+ * PictureItemViewHolder
+ */
 class PictureItemViewHolder(
     view: View,
-    private val context: Context,
-    private val callbacks: PictureListCallbacks
+    private val callbacks: PictureItemCallback
 ) : RecyclerView.ViewHolder(view) {
 
     /**
