@@ -11,7 +11,9 @@
         android:id="@+id/tract_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
         app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="fill"
         app:tabIndicatorColor="@color/colorAccent" />
 
     <androidx.viewpager2.widget.ViewPager2
