@@ -70,7 +70,7 @@
 
             <Button
                 android:id="@+id/discovery_date_button"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="20 janvier 2018"
@@ -98,7 +98,7 @@
 
             <Button
                 android:id="@+id/dating_button"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="20 octobre 1996"
