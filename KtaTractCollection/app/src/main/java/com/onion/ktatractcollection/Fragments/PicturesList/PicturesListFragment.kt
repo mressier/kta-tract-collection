@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +21,9 @@ import java.util.*
 class PicturesListFragment : Fragment(), PictureItemCallback {
 
     interface Callbacks {
-        fun onPictureListSelected(list: Array<TractPicture>, pictureIndex: Int)
+        fun onPictureListSelected(list: Array<TractPicture>,
+                                  pictureIndex: Int,
+                                  pictureView: View)
     }
 
     /**
@@ -46,8 +50,6 @@ class PicturesListFragment : Fragment(), PictureItemCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if (savedInstanceState != null) { return }
 
         arguments?.let {
             it.getString("tract_id")?.let { tractId -> setTract(UUID.fromString(tractId)) }
@@ -83,7 +85,8 @@ class PicturesListFragment : Fragment(), PictureItemCallback {
     /**
      * Update
      */
-    fun setTract(tractId: UUID) {
+    private fun setTract(tractId: UUID) {
+        Log.d(TAG, "Set tract id: $tractId. Load pictures...")
         this.tractId = tractId
         picturesViewModel.loadPicturesForTractId(tractId)
     }
@@ -113,7 +116,7 @@ class PicturesListFragment : Fragment(), PictureItemCallback {
 
     override fun onPictureSelected(path: String) {
         val index = pictures.indexOfFirst { it.photoFilename == path }
-        callbacks?.onPictureListSelected(pictures.toTypedArray(), index)
+        callbacks?.onPictureListSelected(pictures.toTypedArray(), index, recyclerView[index])
     }
 
     override fun onDeleteButtonSelected(path: String) {

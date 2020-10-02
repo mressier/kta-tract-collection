@@ -1,6 +1,7 @@
 package com.onion.ktatractcollection.Fragments.Tract.TractTabLayout
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,10 +35,6 @@ class TractDetailsTabsFragment : Fragment() {
     /**
      * View Life cycle
      */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,11 +60,22 @@ class TractDetailsTabsFragment : Fragment() {
         tractViewPager = view.findViewById(R.id.tract_view_pager)
         tractTabLayout = view.findViewById(R.id.tract_tab_layout)
 
-        adapter = TractDetailsTabsAdapter(this, tabs.count(), viewModel.tractId)
-        tractViewPager.adapter = adapter
+        setupAdapter()
 
         TabLayoutMediator(tractTabLayout, tractViewPager) { tab, position ->
             tab.text = tabs[position]
         }.attach()
+    }
+
+    private fun setupAdapter() {
+        adapter = TractDetailsTabsAdapter(this, tabs.count(), viewModel.tractId)
+        tractViewPager.adapter = adapter
+    }
+
+    /**
+     * Companion
+     */
+    companion object {
+        private const val TAG = "TractDetailsTabs"
     }
 }

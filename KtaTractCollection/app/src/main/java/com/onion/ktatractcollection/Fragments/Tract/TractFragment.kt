@@ -1,6 +1,7 @@
 package com.onion.ktatractcollection.Fragments.Tract
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -34,7 +35,6 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
             val args = TractFragmentArgs.fromBundle(it)
             args.tractId.let { tractId ->
                 this.tractId = UUID.fromString(tractId)
-                println(tractId)
             }
         }
     }
@@ -50,6 +50,8 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d(TAG, "Set tract id on sub fragments $tractId")
         tabsFragment.setTract(tractId)
         detailsFragment.setTract(tractId)
         fabFragment.setTract(tractId)
@@ -97,5 +99,12 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
 
     override fun onTractSaved(tractId: UUID) {
         println("saved")
+    }
+
+    /**
+     * Companion
+     */
+    companion object {
+        private const val TAG = "TractFragment"
     }
 }

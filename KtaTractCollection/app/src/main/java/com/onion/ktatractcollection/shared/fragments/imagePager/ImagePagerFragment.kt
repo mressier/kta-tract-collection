@@ -1,6 +1,7 @@
-package com.onion.ktatractcollection.Fragments.ImagePager
+package com.onion.ktatractcollection.shared.fragments.imagePager
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ class ImagePagerFragment : Fragment() {
     /**
      * Properties
      */
+
     /* Parameters */
     private var imagePathArray: Array<String> = arrayOf()
     private var currentIndex: Int = 0
@@ -68,8 +70,5 @@ class ImagePagerFragment : Fragment() {
     /**
      * Static methods
      */
-    companion object {
-        private const val PARAM_PATH_ID = "paths"
-        private const val PARAM_CURRENT_INDEX = "current_index"
-    }
+    companion object {}
 }

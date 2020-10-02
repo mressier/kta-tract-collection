@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/imagePagerFragment"
-        android:name="com.onion.ktatractcollection.Fragments.ImagePager.ImagePagerFragment"
+        android:name="com.onion.ktatractcollection.shared.fragments.imagePager.ImagePagerFragment"
         android:label="fragment_image_pager"
         tools:layout="@layout/fragment_image_pager" >
         <argument

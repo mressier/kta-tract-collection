@@ -34,15 +34,8 @@ class TractPicturesViewModel: ViewModel() {
         return pictures.map { it.photoFilename }
     }
 
-    fun getPictureFile(picture: TractPicture): File =
-        tractRepository.getPictureFile(picture.photoFilename)
-
     fun loadPicturesForTractId(id: UUID) {
         tractId.value = id
-    }
-
-    fun savePicture(picture: TractPicture) {
-        tractRepository.addPicture(picture)
     }
 
     fun deletePicture(picture: TractPicture) {

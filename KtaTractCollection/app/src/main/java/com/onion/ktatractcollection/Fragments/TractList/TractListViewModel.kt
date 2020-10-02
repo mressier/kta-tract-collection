@@ -1,12 +1,13 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.onion.ktatractcollection.Database.TractRepository
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
-import java.io.File
 import java.util.*
+
 
 class TractWithPicture(val tract: Tract, var pictures: List<TractPicture> = listOf()) {}
 
@@ -26,9 +27,13 @@ class TractListViewModel: ViewModel() {
 
     var tractsWithPicture: List<TractWithPicture> = listOf()
 
-    fun saveTract(tract: Tract) {
-        tractRepository.addTract(tract)
-    }
+    /* Tract List UI parameters to save */
+    var selectedTractPosition: Int? = null
+    var state: Parcelable? = null
+
+    /**
+     * Methods
+     */
 
     fun deleteTract(tract: Tract) {
         getSavedTractWithPictures(tract.id)?.pictures?.let {

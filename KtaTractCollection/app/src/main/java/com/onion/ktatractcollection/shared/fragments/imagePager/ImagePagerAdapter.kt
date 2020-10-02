@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.Fragments.ImagePager
+package com.onion.ktatractcollection.shared.fragments.imagePager
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

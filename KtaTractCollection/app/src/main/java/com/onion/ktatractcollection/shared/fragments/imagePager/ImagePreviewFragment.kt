@@ -1,9 +1,11 @@
-package com.onion.ktatractcollection.Fragments.ImagePager
+package com.onion.ktatractcollection.shared.fragments.imagePager
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target

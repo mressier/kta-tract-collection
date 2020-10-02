@@ -105,6 +105,11 @@ class TractListFragment : Fragment(),
         callbacks = null
     }
 
+    override fun onPause() {
+        super.onPause()
+        saveRecyclerViewState()
+    }
+
     /**
      * Menu
      */
@@ -153,16 +158,37 @@ class TractListFragment : Fragment(),
     ) {
         val previousTracts = tractAdapter.currentList
 
+        updateTractAdapterParameters(tractListItems)
+        updateNoTractImageVisibility(previousTracts, tractListItems)
+        restoreRecyclerViewState()
+    }
+
+    private fun updateTractAdapterParameters(tractListItems: List<TractWithPicture>) {
         tractAdapter.parameters = parametersViewModel.parameters
         tractAdapter.submitList(tractListItems)
         tractAdapter.notifyDataSetChanged()
+    }
 
-        if (previousTracts.isNotEmpty() && tractListItems.isNotEmpty()) { return }
+    private fun updateNoTractImageVisibility(previousTracts: List<TractWithPicture>,
+                                             newTracts: List<TractWithPicture>) {
+
+        if (previousTracts.isNotEmpty() && newTracts.isNotEmpty()) { return }
 
         val noTractVisibility =
-            if (tractListItems.isNotEmpty()) { View.GONE } else { View.VISIBLE }
+            if (newTracts.isNotEmpty()) { View.GONE } else { View.VISIBLE }
         noTractImageView.visibility = noTractVisibility
         noTractText.visibility = noTractVisibility
+    }
+
+    private fun saveRecyclerViewState() {
+        tractListViewModel.state = tractRecyclerView.layoutManager?.onSaveInstanceState()
+    }
+
+    private fun restoreRecyclerViewState() {
+        tractListViewModel.state?.let {
+            tractRecyclerView.layoutManager?.onRestoreInstanceState(it)
+        }
+
     }
 
     private fun updateTractListLayout(displayMode: TractListParameters.DisplayMode) {
@@ -181,6 +207,7 @@ class TractListFragment : Fragment(),
      */
 
     private fun setupRecyclerView(view: View) {
+        Log.d(TAG, "Setup Recycler view !")
         tractRecyclerView = view.findViewById(R.id.tract_list)
         tractAdapter = TractListAdapter(requireContext(), this)
         tractLayout = GridLayoutManager(context, 1)
@@ -209,7 +236,7 @@ class TractListFragment : Fragment(),
             owner = viewLifecycleOwner,
             onChanged = { items ->
                 items.let {
-                    Log.i("TAG", "Got items ${it.size}")
+                    Log.i(TAG, "Got items ${it.size}")
                     currentTracts = items
                     updateUI()
                     setupImagesForTracts()
@@ -227,8 +254,6 @@ class TractListFragment : Fragment(),
                 owner = viewLifecycleOwner,
                 onChanged = { items ->
                     tractListViewModel.addPicturesToTractItem(tractId, items)
-
-                    Log.i(TAG, "Tract $tractId - Got pictures $items")
 
                     updateTractListContent(tractListViewModel.tractsWithPicture)
                 }
@@ -264,6 +289,9 @@ class TractListFragment : Fragment(),
      */
 
     override fun onTractSelected(tractId: UUID) {
+        val index = tractLayout.findFirstVisibleItemPosition()
+        tractListViewModel.selectedTractPosition = index
+
         callbacks?.onTractSelected(tractId)
     }
 
