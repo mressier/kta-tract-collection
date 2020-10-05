@@ -46,26 +46,27 @@
                 app:layout_constraintTop_toBottomOf="@id/content_text">
 
                 <TextView
-                    android:id="@+id/dating_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:text="@string/tract_dating_title"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@android:color/secondary_text_dark"
-                    android:textSize="12sp" />
-
-                <TextView
                     android:id="@+id/discovery_date_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
                     android:text="@string/tract_discovery_date_title"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/secondary_text_dark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/dating_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:text="@string/tract_dating_title"
                     android:textAlignment="textEnd"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@android:color/secondary_text_dark"
                     android:textSize="12sp" />
+
             </LinearLayout>
 
             <ImageView
@@ -86,7 +87,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:maxLines="2"
                 android:text="@string/tract_comments_title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/content_text"
