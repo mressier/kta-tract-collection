@@ -5,7 +5,7 @@
     <item
         android:id="@+id/grid_or_list_tract"
         android:icon="@drawable/ic_baseline_list_bulleted_24"
-        android:title="@string/grid_tract"
+        android:title="@string/show_as_grid"
         app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/sort_list"

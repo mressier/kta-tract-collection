@@ -23,8 +23,8 @@ class TractListParameters() {
     }
 
     enum class DisplayMode(val spanCount: Int, @DrawableRes val iconId: Int, @StringRes val titleId: Int) {
-        LIST(1, R.drawable.ic_baseline_list_bulleted_24, R.string.list_tract),
-        GRID(3, R.drawable.ic_baseline_grid_24, R.string.grid_tract)
+        LIST(1, R.drawable.ic_baseline_list_bulleted_24, R.string.show_as_list),
+        GRID(3, R.drawable.ic_baseline_grid_24, R.string.show_as_grid)
     }
 
     /**

@@ -17,8 +17,8 @@
     <string name="new_tract">New tract</string>
     <string name="sort_tract_list">Sort list</string>
     <string name="save_tract">Save tract</string>
-    <string name="list_tract">Show as list</string>
-    <string name="grid_tract">Show as grid</string>
+    <string name="show_as_list">Show as list</string>
+    <string name="show_as_grid">Show as grid</string>
 
     <!--  AlertDialog  -->
     <string name="tract_dialog_title">Tract actions</string>
@@ -50,9 +50,12 @@
     <string name="validate">Validate</string>
     <string name="settings">Settings</string>
     <string name="unknown">Unknown</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- Fab -->
+    <string name="fab_btn_import_from_gallery">Import from gallery</string>
+    <string name="fab_btn_take_picture">Take a picture</string>
+    <string name="fab_desc_create_tract_from_gallery">Use gallery images to create a tract</string>
+    <string name="fab_desc_create_tract_from_camera">Use camera to create a tract</string>
+
 
 </resources>
