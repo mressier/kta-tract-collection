@@ -24,8 +24,8 @@ class TractViewHolder(
     private val authorText: TextView = view.findViewById(R.id.author_text)
     private val discoveryDateText: TextView = view.findViewById(R.id.discovery_date_text)
     private val datingText: TextView = view.findViewById(R.id.dating_text)
-    private val pictureView: ImageView = view.findViewById(R.id.image_view)
-    private val separatorView: ImageView = view.findViewById(R.id.separator_view)
+    private val pictureView: ImageView = view.findViewById(R.id.tract_image_view)
+    private val commentsTextView: TextView = view.findViewById(R.id.tract_comment_text)
 
     private val dateInstance: DateFormat by lazy {
         DateFormat.getDateInstance(DateFormat.SHORT)
@@ -39,40 +39,52 @@ class TractViewHolder(
      * Bind
      */
 
-    fun bind(tractItem: TractWithPicture, showTractDetails: Boolean) {
+    fun bind(tractItem: TractWithPicture) {
         updateTractImage(tractItem)
         updateTract(tractItem.tract)
-        setTractDetailsAsVisible(showTractDetails)
+//        setTractDetailsAsVisible(showTractDetails)
         setupClickListener(tractItem.tract)
     }
 
     private fun updateTract(tract: Tract) {
-        authorText.text = tract.author
-        authorText.visibility = if (tract.author.isBlank()) { View.GONE } else { View.VISIBLE }
-
-        setDiscoveryDate(tract.discoveryDate)
-        setDatingDate(tract.dating)
+        setupAuthor(tract.author)
+        setupComment(tract.comment)
+        setupDiscoveryDate(tract.discoveryDate)
+        setupDatingDate(tract.dating)
     }
 
-    private fun setDiscoveryDate(date: Date) {
+    private fun setupAuthor(author: String) {
+        authorText.apply {
+            text = if (author.isBlank()) { context.getString(R.string.unknown) } else { author }
+        }
+    }
+
+    private fun setupComment(comment: String) {
+        commentsTextView.apply {
+            text = comment
+            visibility = if (text.isBlank()) { View.GONE } else { View.VISIBLE }
+        }
+    }
+
+    private fun setupDiscoveryDate(date: Date) {
         discoveryDateText.text = itemView.context.getString(R.string.tract_found_on)
             .format(dateInstance.format(date))
     }
 
-    private fun setDatingDate(date: Date?) {
+    private fun setupDatingDate(date: Date?) {
         date?.let {
             datingText.text =
                 context.getString(R.string.tract_dating_from).format(dateInstance.format(it))
         } ?: run { datingText.text = "" }
     }
 
-    private fun setTractDetailsAsVisible(isVisible: Boolean) {
-        val visibility = if (isVisible) { View.VISIBLE } else { View.GONE }
-        authorText.visibility = visibility
-        discoveryDateText.visibility = visibility
-        datingText.visibility = visibility
-        separatorView.visibility = visibility
-    }
+//    private fun setTractDetailsAsVisible(isVisible: Boolean) {
+//        val visibility = if (isVisible) { View.VISIBLE } else { View.GONE }
+//        authorText.visibility = visibility
+//        discoveryDateText.visibility = visibility
+//        datingText.visibility = visibility
+//        separatorView.visibility = visibility
+//    }
 
     private fun setupClickListener(tract: Tract) {
         itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
@@ -80,6 +92,12 @@ class TractViewHolder(
             callbacks?.onTractLongSelected(tract.id)
             true
         }
+//
+//        commentsTextView.setOnClickListener {
+//            commentsTextView.apply {
+//                maxLines = if (maxLines == 2) { -1 } else { 2 }
+//            }
+//        }
     }
 
     private fun updateTractImage(tractItem: TractWithPicture) {

@@ -27,15 +27,16 @@ class TractListAdapter(
     var parameters = TractListParameters()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TractViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_tract_list_item, parent, false)
+        val isList = parameters.displayMode == TractListParameters.DisplayMode.LIST
+        val tractItem = if (isList) { R.layout.fragment_tract_list_item } else { R.layout.fragment_tract_grid_item }
+
+        val view = LayoutInflater.from(parent.context).inflate(tractItem, parent, false)
         return TractViewHolder(view, context, callbacks)
     }
 
     override fun onBindViewHolder(holder: TractViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item,
-            parameters.displayMode == TractListParameters.DisplayMode.LIST)
+        holder.bind(item)
     }
 
     /**
