@@ -20,4 +20,6 @@ data class Tract(
     /* Date figuring on the tract */
     var dating: Date? = null,
     /* Comments about the tract */
-    var comment: String = "") {}
+    var comment: String = "",
+    /* User set tract as a favorite */
+    var isFavorite: Boolean = false) {}

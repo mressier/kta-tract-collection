@@ -299,12 +299,15 @@ class TractListFragment : Fragment(),
         showTractDialog(tractId)
     }
 
+    override fun onTractLikeToggled(tractId: UUID) {
+        tractListViewModel.toggleLike(tractId)
+        updateTractListContent(tractListViewModel.tractsWithPicture)
+    }
+
     override fun onDelete(tractId: UUID) {
         tractListViewModel.deleteTract(Tract(id = tractId))
-
         updateTractListContent(tractListViewModel.tractsWithPicture)
-
-        Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT).show()
     }
 
     override fun onParameterSelected(parameter: TractListParameters) {

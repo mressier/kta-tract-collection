@@ -1,13 +1,15 @@
 package com.onion.ktatractcollection.Fragments.Tract
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment
-import com.onion.ktatractcollection.Fragments.PicturesList.PicturesListFragment
 import com.onion.ktatractcollection.Fragments.Tract.TractTabLayout.TractDetailsTabsFragment
+import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.tools.*
 import java.util.*

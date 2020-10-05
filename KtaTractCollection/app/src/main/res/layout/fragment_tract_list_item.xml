@@ -23,6 +23,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageButton
+                android:id="@+id/like_image_button"
+                style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/btn_desc_like_action"
+                android:tint="@color/primaryColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/content_text"
+                app:layout_constraintTop_toBottomOf="@+id/tract_image_view"
+                app:srcCompat="@drawable/ic_baseline_star_border_24" />
+
             <TextView
                 android:id="@+id/content_text"
                 android:layout_width="match_parent"
@@ -85,15 +99,14 @@
                 android:id="@+id/tract_comment_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/tract_comments_title"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/content_text"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/like_image_button"
                 app:layout_constraintStart_toStartOf="@+id/content_text"
-                app:layout_constraintTop_toBottomOf="@+id/tract_image_view"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/tract_image_view" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

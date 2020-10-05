@@ -3,6 +3,7 @@ package com.onion.ktatractcollection.Fragments.TractList
 import android.content.Context
 import android.net.Uri
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ class TractGridViewHolder(
      */
     private val pictureView: ImageView = view.findViewById(R.id.tract_image_view)
     private val contentTextView: TextView = view.findViewById(R.id.content_text)
+    private val likeImageButton: ImageButton = view.findViewById(R.id.like_image_button)
 
     /**
      * Methods
@@ -37,10 +39,10 @@ class TractGridViewHolder(
 
     private fun setupTract(tract: Tract) {
         val content = tract.author
-
         contentTextView.apply {
             text = if (content.isBlank()) { context.getString(R.string.unknown) } else { content }
         }
+        setupLikeButton(tract.isFavorite)
     }
 
     private fun setupTractImage(tractItem: TractWithPicture) {
@@ -53,12 +55,33 @@ class TractGridViewHolder(
             .into(pictureView)
     }
 
+    private fun setupLikeButton(isFavorite: Boolean) {
+        likeImageButton.apply {
+            val resource = if (isFavorite) {
+                R.drawable.ic_baseline_star_24
+            } else {
+                R.drawable.ic_baseline_star_border_24
+            }
+
+            val descriptionId = if (isFavorite) {
+                R.string.btn_desc_do_not_like_action
+            } else {
+                R.string.btn_desc_like_action
+            }
+            setImageResource(resource)
+            contentDescription = itemView.context.getString(descriptionId)
+        }
+    }
 
     private fun setupListeners(tract: Tract) {
         itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
         itemView.setOnLongClickListener {
             callbacks?.onTractLongSelected(tract.id)
             true
+        }
+
+        likeImageButton.setOnClickListener {
+            callbacks?.onTractLikeToggled(tract.id)
         }
     }
 }

@@ -15,6 +15,7 @@ import java.util.*
 interface TractListCallbacks {
     fun onTractSelected(tractId: UUID)
     fun onTractLongSelected(tractId: UUID)
+    fun onTractLikeToggled(tractId: UUID)
 }
 
 /**

@@ -35,16 +35,29 @@
 
             <TextView
                 android:id="@+id/content_text"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:text="@string/tract_author_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/primaryColor"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/like_image_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tract_image_view" />
+
+            <ImageButton
+                android:id="@+id/like_image_button"
+                style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/btn_desc_like_action"
+                android:tint="@color/primaryColor"
+                app:layout_constraintBottom_toBottomOf="@+id/content_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/content_text"
+                app:srcCompat="@drawable/ic_baseline_star_border_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

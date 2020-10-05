@@ -58,11 +58,18 @@ class TractListViewModel: ViewModel() {
     }
 
     fun addPicturesToTractItem(tractId: UUID, pictures: List<TractPicture>) {
-        tractsWithPicture.find { it.tract.id == tractId }?.pictures = pictures
+        getSavedTractWithPictures(tractId)?.pictures = pictures
     }
 
     fun getPictures(tractId: UUID): LiveData<List<TractPicture>> {
         return tractRepository.getPictures(tractId)
+    }
+
+    fun toggleLike(tractId: UUID) {
+        getSavedTractWithPictures(tractId)?.tract?.let { tract ->
+            tract.isFavorite = !tract.isFavorite
+            tractRepository.updateTract(tract)
+        }
     }
 
     private fun getSavedTractWithPictures(tractId: UUID): TractWithPicture? {

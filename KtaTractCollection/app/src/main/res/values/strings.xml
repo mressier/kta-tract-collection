@@ -17,6 +17,8 @@
     <string name="new_tract">New tract</string>
     <string name="sort_tract_list">Sort list</string>
     <string name="save_tract">Save tract</string>
+    <string name="like_tract">Like it</string>
+    <string name="unlike_tract">Do not like it anymore</string>
     <string name="show_as_list">Show as list</string>
     <string name="show_as_grid">Show as grid</string>
 
@@ -60,6 +62,11 @@
     <!--  Accessibility  -->
     <string name="btn_desc_delete_tract_image">Delete tract picture</string>
     <string name="btn_desc_date_not_set">Unknown date</string>
+
+    <string name="btn_desc_like">You like this tract.</string>
+    <string name="btn_desc_like_action">Like this tract</string>
+    <string name="btn_desc_do_not_like_action">Do not like this tract anymore</string>
+
     <string name="image_desc_no_tract_in_list">Tract list is empty.</string>
 
 </resources>
