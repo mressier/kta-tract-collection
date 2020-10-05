@@ -59,7 +59,7 @@
 
     <!--  Accessibility  -->
     <string name="btn_desc_delete_tract_image">Delete tract picture</string>
-    <string name="btn_date_not_set">Unknown date</string>
-
+    <string name="btn_desc_date_not_set">Unknown date</string>
+    <string name="image_desc_no_tract_in_list">Tract list is empty.</string>
 
 </resources>

@@ -20,7 +20,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_no_tract_photo" />
+        app:srcCompat="@drawable/ic_no_tract_photo"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -37,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Date"
+            android:text="@string/tract_dating_title"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/secondary_text_dark"
@@ -48,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Date"
+            android:text="@string/tract_discovery_date_title"
             android:textAlignment="textEnd"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/secondary_text_dark"
@@ -61,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Author"
+        android:text="@string/tract_author_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/primaryColor"
         app:layout_constraintBottom_toBottomOf="parent"
