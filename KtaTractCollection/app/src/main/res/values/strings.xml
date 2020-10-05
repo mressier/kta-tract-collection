@@ -57,5 +57,8 @@
     <string name="fab_desc_create_tract_from_gallery">Use gallery images to create a tract</string>
     <string name="fab_desc_create_tract_from_camera">Use camera to create a tract</string>
 
+    <!--  Accessibility  -->
+    <string name="btn_desc_delete_tract_image">Delete tract picture</string>
+
 
 </resources>
