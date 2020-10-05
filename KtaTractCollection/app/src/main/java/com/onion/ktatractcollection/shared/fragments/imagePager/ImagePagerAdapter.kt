@@ -10,6 +10,6 @@ class ImagePagerAdapter(fragment: Fragment, val items: Array<String>): FragmentS
     }
 
     override fun createFragment(position: Int): Fragment {
-        return ImagePreviewFragment.newInstance(items[position])
+        return ImageViewFragment.newInstance(items[position])
     }
 }

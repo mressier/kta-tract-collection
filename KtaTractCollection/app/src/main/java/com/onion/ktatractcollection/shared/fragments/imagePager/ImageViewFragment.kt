@@ -3,16 +3,14 @@ package com.onion.ktatractcollection.shared.fragments.imagePager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewConfiguration
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import com.onion.ktatractcollection.R
 
-class ImagePreviewFragment: Fragment() {
+class ImageViewFragment: Fragment() {
 
     /**
      * Properties
@@ -40,7 +38,7 @@ class ImagePreviewFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_image_preview, container, false)
+        val view = inflater.inflate(R.layout.fragment_image_view, container, false)
         setupView(view)
         return view
     }
@@ -76,11 +74,11 @@ class ImagePreviewFragment: Fragment() {
 
         private const val PARAM_PATH_ID = "path_id"
 
-        fun newInstance(path: String): ImagePreviewFragment {
+        fun newInstance(path: String): ImageViewFragment {
             val args = Bundle().apply {
                 putSerializable(PARAM_PATH_ID, path)
             }
-            return ImagePreviewFragment().apply { arguments = args }
+            return ImageViewFragment().apply { arguments = args }
         }
     }
 }
