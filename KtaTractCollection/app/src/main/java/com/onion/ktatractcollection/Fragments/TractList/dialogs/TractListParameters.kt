@@ -24,7 +24,7 @@ class TractListParameters() {
 
     enum class DisplayMode(val spanCount: Int, @DrawableRes val iconId: Int, @StringRes val titleId: Int) {
         LIST(1, R.drawable.ic_baseline_list_bulleted_24, R.string.show_as_list),
-        GRID(3, R.drawable.ic_baseline_grid_24, R.string.show_as_grid)
+        GRID(2, R.drawable.ic_baseline_grid_24, R.string.show_as_grid)
     }
 
     /**
@@ -34,8 +34,8 @@ class TractListParameters() {
     var sortOrder = SortOrder.DESCENDING
     var displayMode = DisplayMode.LIST
 
-    private val isNaturalOrder: Boolean
-        get() = sortOrder == SortOrder.ASCENDING
+    val isList: Boolean
+        get() = displayMode == DisplayMode.LIST
 
     val reversedDisplayMode: DisplayMode
         get() {
@@ -45,6 +45,9 @@ class TractListParameters() {
                 DisplayMode.GRID
             }
         }
+
+    private val isNaturalOrder: Boolean
+        get() = sortOrder == SortOrder.ASCENDING
 
     /**
      * Methods

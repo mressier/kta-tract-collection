@@ -12,7 +12,7 @@ import com.onion.ktatractcollection.R
 import java.text.DateFormat
 import java.util.*
 
-class TractViewHolder(
+class TractListViewHolder(
     view: View,
     private val context: Context,
     private val callbacks: TractListCallbacks?
@@ -21,7 +21,7 @@ class TractViewHolder(
     /**
      * Properties
      */
-    private val authorText: TextView = view.findViewById(R.id.author_text)
+    private val authorText: TextView = view.findViewById(R.id.content_text)
     private val discoveryDateText: TextView = view.findViewById(R.id.discovery_date_text)
     private val datingText: TextView = view.findViewById(R.id.dating_text)
     private val pictureView: ImageView = view.findViewById(R.id.tract_image_view)
@@ -40,13 +40,12 @@ class TractViewHolder(
      */
 
     fun bind(tractItem: TractWithPicture) {
-        updateTractImage(tractItem)
-        updateTract(tractItem.tract)
-//        setTractDetailsAsVisible(showTractDetails)
-        setupClickListener(tractItem.tract)
+        setupTractImage(tractItem)
+        setupTract(tractItem.tract)
+        setupListeners(tractItem.tract)
     }
 
-    private fun updateTract(tract: Tract) {
+    private fun setupTract(tract: Tract) {
         setupAuthor(tract.author)
         setupComment(tract.comment)
         setupDiscoveryDate(tract.discoveryDate)
@@ -78,29 +77,15 @@ class TractViewHolder(
         } ?: run { datingText.text = "" }
     }
 
-//    private fun setTractDetailsAsVisible(isVisible: Boolean) {
-//        val visibility = if (isVisible) { View.VISIBLE } else { View.GONE }
-//        authorText.visibility = visibility
-//        discoveryDateText.visibility = visibility
-//        datingText.visibility = visibility
-//        separatorView.visibility = visibility
-//    }
-
-    private fun setupClickListener(tract: Tract) {
+    private fun setupListeners(tract: Tract) {
         itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
         itemView.setOnLongClickListener {
             callbacks?.onTractLongSelected(tract.id)
             true
         }
-//
-//        commentsTextView.setOnClickListener {
-//            commentsTextView.apply {
-//                maxLines = if (maxLines == 2) { -1 } else { 2 }
-//            }
-//        }
     }
 
-    private fun updateTractImage(tractItem: TractWithPicture) {
+    private fun setupTractImage(tractItem: TractWithPicture) {
         val picture = tractItem.pictures.firstOrNull() ?: run { return }
 
         Glide.with(itemView.context)

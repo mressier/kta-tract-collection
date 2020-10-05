@@ -3,6 +3,7 @@ package com.onion.ktatractcollection.Fragments.TractList
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -22,23 +23,46 @@ interface TractListCallbacks {
 class TractListAdapter(
     private val context: Context,
     private val callbacks: TractListCallbacks?,
-    ) : ListAdapter<TractWithPicture, TractViewHolder>(DiffUtilCallback()) {
+    ) : ListAdapter<TractWithPicture, RecyclerView.ViewHolder>(DiffUtilCallback()) {
 
     var parameters = TractListParameters()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TractViewHolder {
-        val isList = parameters.displayMode == TractListParameters.DisplayMode.LIST
-        val tractItem = if (isList) { R.layout.fragment_tract_list_item } else { R.layout.fragment_tract_grid_item }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val layoutId = getTractItemLayoutId()
+        val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
 
-        val view = LayoutInflater.from(parent.context).inflate(tractItem, parent, false)
-        return TractViewHolder(view, context, callbacks)
+        return getTractViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TractViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+
+        if (parameters.isList) {
+            (holder as? TractListViewHolder)?.bind(item)
+        } else {
+            (holder as? TractGridViewHolder)?.bind(item)
+        }
     }
 
+    /**
+     * View Holder
+     */
+
+    private fun getTractItemLayoutId(): Int {
+        return if (parameters.isList) {
+            R.layout.fragment_tract_list_item
+        } else {
+            R.layout.fragment_tract_grid_item
+        }
+    }
+
+    private fun getTractViewHolder(view: View): RecyclerView.ViewHolder {
+        return if (parameters.isList) {
+            TractListViewHolder(view, context, callbacks)
+        } else {
+            TractGridViewHolder(view, context, callbacks)
+        }
+    }
     /**
      * Diff
      */
