@@ -58,9 +58,9 @@ class TractListAdapter(
 
     private fun getTractViewHolder(view: View): RecyclerView.ViewHolder {
         return if (parameters.isList) {
-            TractListViewHolder(view, context, callbacks)
+            TractListViewHolder(view, callbacks)
         } else {
-            TractGridViewHolder(view, context, callbacks)
+            TractGridViewHolder(view, callbacks)
         }
     }
     /**

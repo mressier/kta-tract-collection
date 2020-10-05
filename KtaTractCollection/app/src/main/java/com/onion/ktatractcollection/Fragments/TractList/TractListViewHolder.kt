@@ -14,7 +14,6 @@ import java.util.*
 
 class TractListViewHolder(
     view: View,
-    private val context: Context,
     private val callbacks: TractListCallbacks?
 ) : RecyclerView.ViewHolder(view) {
 
@@ -54,7 +53,7 @@ class TractListViewHolder(
 
     private fun setupAuthor(author: String) {
         authorText.apply {
-            text = if (author.isBlank()) { context.getString(R.string.unknown) } else { author }
+            text = if (author.isBlank()) { itemView.context.getString(R.string.unknown) } else { author }
         }
     }
 
@@ -73,7 +72,7 @@ class TractListViewHolder(
     private fun setupDatingDate(date: Date?) {
         date?.let {
             datingText.text =
-                context.getString(R.string.tract_dating_from).format(dateInstance.format(it))
+                itemView.context.getString(R.string.tract_dating_from).format(dateInstance.format(it))
         } ?: run { datingText.text = "" }
     }
 

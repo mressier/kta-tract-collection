@@ -12,7 +12,6 @@ import com.onion.ktatractcollection.R
 
 class TractGridViewHolder(
     view: View,
-    private val context: Context,
     private val callbacks: TractListCallbacks?
 ) : RecyclerView.ViewHolder(view) {
 
@@ -29,6 +28,7 @@ class TractGridViewHolder(
     fun bind(tractItem: TractWithPicture) {
         setupTract(tractItem.tract)
         setupTractImage(tractItem)
+        setupListeners(tractItem.tract)
     }
 
     /**
@@ -51,5 +51,14 @@ class TractGridViewHolder(
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(pictureView)
+    }
+
+
+    private fun setupListeners(tract: Tract) {
+        itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
+        itemView.setOnLongClickListener {
+            callbacks?.onTractLongSelected(tract.id)
+            true
+        }
     }
 }
