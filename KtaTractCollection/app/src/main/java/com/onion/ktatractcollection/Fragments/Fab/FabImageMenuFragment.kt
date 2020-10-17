@@ -88,9 +88,9 @@ class FabImageMenuFragment : Fragment() {
     }
 
     override fun onDetach() {
-        super.onDetach()
         callbacks = null
         revokeCameraPermission()
+        super.onDetach()
     }
 
     /**

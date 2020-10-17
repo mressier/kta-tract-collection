@@ -33,7 +33,8 @@ private const val DIALOG_TRACT_LIST_ACTION = "dialog_tract_list_action"
 /**
  * A fragment representing a list of Items.
  */
-class TractListFragment : Fragment(),
+class TractListFragment :
+    Fragment(),
     TractListCallbacks,
     TractDialogFragment.Callbacks,
     TractListDialogFragment.Callbacks,
@@ -188,7 +189,6 @@ class TractListFragment : Fragment(),
         tractListViewModel.state?.let {
             tractRecyclerView.layoutManager?.onRestoreInstanceState(it)
         }
-
     }
 
     private fun updateTractListLayout(displayMode: TractListParameters.DisplayMode) {
@@ -209,7 +209,7 @@ class TractListFragment : Fragment(),
     private fun setupRecyclerView(view: View) {
         Log.d(TAG, "Setup Recycler view !")
         tractRecyclerView = view.findViewById(R.id.tract_list)
-        tractAdapter = TractListAdapter(requireContext(), this)
+        tractAdapter = TractListAdapter(this)
         tractLayout = GridLayoutManager(context, 1)
 
         tractRecyclerView.adapter = tractAdapter

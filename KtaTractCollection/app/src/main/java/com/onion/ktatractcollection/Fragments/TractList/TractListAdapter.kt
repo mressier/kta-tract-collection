@@ -22,12 +22,17 @@ interface TractListCallbacks {
  * [RecyclerView.Adapter] that can display a [Tract].
  */
 class TractListAdapter(
-    private val context: Context,
-    private val callbacks: TractListCallbacks?,
-    ) : ListAdapter<TractWithPicture, RecyclerView.ViewHolder>(DiffUtilCallback()) {
+    private val callbacks: TractListCallbacks?
+) : ListAdapter<TractWithPicture, RecyclerView.ViewHolder>(DiffUtilCallback()) {
 
+    /**
+     * Properties
+     */
     var parameters = TractListParameters()
 
+    /**
+     * View Life Cycle
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutId = getTractItemLayoutId()
         val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
