@@ -20,6 +20,7 @@ import com.onion.ktatractcollection.shared.tools.buildCameraIntentForFile
 import com.onion.ktatractcollection.shared.tools.buildGalleryIntent
 import com.onion.ktatractcollection.shared.tools.checkCameraPermission
 import com.onion.ktatractcollection.shared.tools.dataAsUriArray
+import kotlinx.android.synthetic.main.fragment_fab_image_menu.*
 import java.util.*
 
 /**
@@ -34,14 +35,6 @@ class FabImageMenuFragment : Fragment() {
     /**
      * Properties
      */
-
-    /* Outlets */
-    private lateinit var newTractButton: FloatingActionButton
-    private lateinit var galleryButton: FloatingActionButton
-    private lateinit var galleryText: TextView
-    private lateinit var cameraButton: FloatingActionButton
-    private lateinit var cameraText: TextView
-    private lateinit var backgroundView: ImageView
 
     private lateinit var fabOpen: Animation
     private lateinit var fabClose: Animation
@@ -63,9 +56,8 @@ class FabImageMenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_fab_image_menu, container, false)
-        setupView(view)
-        return view
+        setupAnimations()
+        return inflater.inflate(R.layout.fragment_fab_image_menu, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,9 +65,11 @@ class FabImageMenuFragment : Fragment() {
 
         setupListeners()
 
-        if (imageMenuViewModel.isMenuVisible) { showMenu(animated = false) } else { hideMenu(
-            animated = false
-        ) }
+        if (imageMenuViewModel.isMenuVisible) {
+            showMenu(animated = false)
+        } else {
+            hideMenu(animated = false)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -129,10 +123,16 @@ class FabImageMenuFragment : Fragment() {
         pictures.firstOrNull()?.let { callbacks?.onTractSaved(it.tractId) }
     }
 
+    /**
+     * Menu
+     */
+
     private fun showMenu(animated: Boolean = true) {
+        val duration: Long = if (animated) { 300 } else { 0 }
+
         imageMenuViewModel.isMenuVisible = true
 
-        fabClock.duration = if (animated) { 300 } else { 0 }
+        fabClock.duration = duration
         newTractButton.startAnimation(fabClock)
 
         galleryButton.show()
@@ -143,14 +143,15 @@ class FabImageMenuFragment : Fragment() {
 
         backgroundView.isClickable = true
 
-        fabOpen.duration = if (animated) { 300 } else { 0 }
-        backgroundView.startAnimation(fabOpen)
+        backgroundView.animate().alpha(0.7F).duration = duration
     }
 
     private fun hideMenu(animated: Boolean = true) {
+        val duration: Long = if (animated) { 300 } else { 0 }
+
         imageMenuViewModel.isMenuVisible = false
 
-        fabAnticlock.duration = if (animated) { 300 } else { 0 }
+        fabAnticlock.duration = duration
         newTractButton.startAnimation(fabAnticlock)
 
         galleryButton.hide()
@@ -161,12 +162,16 @@ class FabImageMenuFragment : Fragment() {
 
         backgroundView.isClickable = false
 
-        fabClose.duration = if (animated) { 300 } else { 0 }
-        backgroundView.startAnimation(fabClose)
+        backgroundView.animate().alpha(0F).duration = duration
     }
+
+    /**
+     * Picture
+     */
 
     private fun takePicture() {
         checkCameraPermission(onPermissionGranted = { startCameraIntent() })
+        hideMenu(animated = false)
     }
 
     private fun startCameraIntent() {
@@ -174,7 +179,12 @@ class FabImageMenuFragment : Fragment() {
 
         val cameraIntent = requireActivity().buildCameraIntentForFile(pictureFile)
         startActivityForResult(cameraIntent, REQUEST_CAMERA_INTENT)
+        hideMenu(animated = false)
     }
+
+    /**
+     * Gallery
+     */
 
     private fun importFromGallery() {
         val galleryIntent = buildGalleryIntent(retainDocument = true, allowMultipleFiles = true)
@@ -191,14 +201,7 @@ class FabImageMenuFragment : Fragment() {
      * Setup
      */
 
-    private fun setupView(view: View) {
-        newTractButton = view.findViewById(R.id.add_button)
-        galleryButton = view.findViewById(R.id.gallery_button)
-        galleryText = view.findViewById(R.id.gallery_text)
-        cameraButton = view.findViewById(R.id.camera_button)
-        cameraText = view.findViewById(R.id.camera_text)
-        backgroundView = view.findViewById(R.id.background_view)
-
+    private fun setupAnimations() {
         fabClose = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out);
         fabOpen = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
         fabClock = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_rotate_clock);
@@ -207,9 +210,11 @@ class FabImageMenuFragment : Fragment() {
 
     private fun setupListeners() {
         newTractButton.setOnClickListener {
-            if (imageMenuViewModel.isMenuVisible) { hideMenu(animated = true) } else { showMenu(
-                animated = true
-            ) }
+            if (imageMenuViewModel.isMenuVisible) {
+                hideMenu(animated = true)
+            } else {
+                showMenu(animated = true)
+            }
         }
 
         backgroundView.setOnClickListener { hideMenu() }

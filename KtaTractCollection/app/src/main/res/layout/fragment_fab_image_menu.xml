@@ -9,10 +9,10 @@
     tools:context=".Fragments.Fab.FabImageMenuFragment">
 
     <ImageView
-        android:id="@+id/background_view"
+        android:id="@+id/backgroundView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:alpha="0.7"
+        android:alpha="0"
         android:background="?android:colorBackground"
         android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,53 +22,53 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/gallery_text"
+        android:id="@+id/galleryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:labelFor="@id/gallery_button"
+        android:labelFor="@id/galleryButton"
         android:text="@string/fab_btn_import_from_gallery"
-        app:layout_constraintBottom_toBottomOf="@+id/gallery_button"
-        app:layout_constraintEnd_toStartOf="@+id/gallery_button"
-        app:layout_constraintTop_toTopOf="@+id/gallery_button" />
+        app:layout_constraintBottom_toBottomOf="@+id/galleryButton"
+        app:layout_constraintEnd_toStartOf="@+id/galleryButton"
+        app:layout_constraintTop_toTopOf="@+id/galleryButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/gallery_button"
+        android:id="@+id/galleryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_baseline_image_24"
         android:tint="@color/primaryTextColor"
         app:fabSize="mini"
-        app:layout_constraintBottom_toTopOf="@+id/camera_button"
-        app:layout_constraintEnd_toEndOf="@+id/add_button"
-        app:layout_constraintStart_toStartOf="@+id/add_button" />
+        app:layout_constraintBottom_toTopOf="@+id/cameraButton"
+        app:layout_constraintEnd_toEndOf="@+id/newTractButton"
+        app:layout_constraintStart_toStartOf="@+id/newTractButton" />
 
     <TextView
-        android:id="@+id/camera_text"
+        android:id="@+id/cameraText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:labelFor="@id/camera_button"
+        android:labelFor="@id/cameraButton"
         android:text="@string/fab_btn_take_picture"
-        app:layout_constraintBottom_toBottomOf="@+id/camera_button"
-        app:layout_constraintEnd_toStartOf="@+id/camera_button"
-        app:layout_constraintTop_toTopOf="@+id/camera_button" />
+        app:layout_constraintBottom_toBottomOf="@+id/cameraButton"
+        app:layout_constraintEnd_toStartOf="@+id/cameraButton"
+        app:layout_constraintTop_toTopOf="@+id/cameraButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/camera_button"
+        android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_baseline_photo_camera_24"
         android:tint="@color/primaryTextColor"
         app:fabSize="mini"
-        app:layout_constraintBottom_toTopOf="@+id/add_button"
-        app:layout_constraintEnd_toEndOf="@+id/add_button"
-        app:layout_constraintStart_toStartOf="@+id/add_button" />
+        app:layout_constraintBottom_toTopOf="@+id/newTractButton"
+        app:layout_constraintEnd_toEndOf="@+id/newTractButton"
+        app:layout_constraintStart_toStartOf="@+id/newTractButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_button"
+        android:id="@+id/newTractButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
