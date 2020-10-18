@@ -1,16 +1,14 @@
 package com.onion.ktatractcollection.Fragments.TractList.dialogs
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters.SortOrder
 import com.onion.ktatractcollection.R
 
 private const val PARAM_SORT_BY_ID = "sort_by_id"
@@ -21,7 +19,7 @@ private const val PARAM_SORT_ORDER_ID = "sort_order_id"
  * Use the [TractListDialogFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TractListDialogFragment : DialogFragment() {
+class TractListDialogFragment : DialogFragment(), View.OnClickListener {
 
     interface Callbacks {
         fun onParameterSelected(parameter: TractListParameters)
@@ -30,11 +28,7 @@ class TractListDialogFragment : DialogFragment() {
     /**
      * Properties
      */
-    private lateinit var sortByRadioGroup: RadioGroup
     private lateinit var sortByRadioButtons: List<RadioButton>
-    private lateinit var sortOrderRadioGroup: RadioGroup
-    private lateinit var sortOrderRadioButtons: List<RadioButton>
-    private lateinit var validateButton: Button
 
     private val parametersViewModel: TractListParametersViewModel by lazy {
         ViewModelProvider(this).get(TractListParametersViewModel::class.java)
@@ -44,138 +38,57 @@ class TractListDialogFragment : DialogFragment() {
      * View Life Cycle
      */
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_tract_list_dialog, container, false)
-        setupView(view)
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setupListeners()
-        updateUI()
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (savedInstanceState == null) {
-            parametersViewModel.sortBy =
-                arguments?.getSerializable(PARAM_SORT_BY_ID) as TractListParameters.SortBy
-            parametersViewModel.sortOrder =
-                arguments?.getSerializable(PARAM_SORT_ORDER_ID) as TractListParameters.SortOrder
+            setupParametersFromArguments()
         }
 
-        return super.onCreateDialog(savedInstanceState)
+        val dialog = AlertDialog.Builder(requireContext())
+
+        setupChoiceItems(dialog)
+
+        dialog.setTitle(R.string.tract_sort_dialog_title)
+        dialog.setPositiveButton(R.string.tract_sort_button) { _, _ -> onComplete() }
+
+        dialog.setCancelable(true)
+        dialog.setOnCancelListener { dismiss() }
+
+        return dialog.create()
     }
 
     /**
      * Setup View
      */
 
-    private fun setupView(view: View) {
-        sortByRadioGroup = view.findViewById(R.id.sort_by_radio_group)
-        sortOrderRadioGroup = view.findViewById(R.id.sort_order_radio_group)
-        validateButton = view.findViewById(R.id.validate_button)
-
-        sortByRadioButtons = setupRadioButtons(
-            sortByRadioGroup,
-            TractListParameters.SortBy.values().map { it.stringId }
-        )
-        sortOrderRadioButtons = setupRadioButtons(
-            sortOrderRadioGroup,
-            TractListParameters.SortOrder.values().map { it.stringId }
-        )
+    private fun setupParametersFromArguments() {
+        parametersViewModel.sortBy =
+            arguments?.getSerializable(PARAM_SORT_BY_ID) as TractListParameters.SortBy
+        parametersViewModel.sortOrder =
+            arguments?.getSerializable(PARAM_SORT_ORDER_ID) as SortOrder
     }
 
-    private fun setupRadioButtons(
-        radioGroup: RadioGroup,
-        valuesStringId: List<Int>
-    ): List<RadioButton> {
-        return valuesStringId.map { value ->
-            val button =
-                RadioButton(requireContext()).apply { setText(value) }
-            radioGroup.addView(button)
-            button
+    private fun setupChoiceItems(dialog: AlertDialog.Builder) {
+        val items = TractListParameters.SortBy.values()
+        val selectedItem = parametersViewModel.sortBy.ordinal
+        val strings = items.map { getString(it.stringId) }.toTypedArray()
+
+        dialog.setSingleChoiceItems(strings, selectedItem) { _, index ->
+            onSelectSortOptionItem(index)
         }
     }
 
     /**
-     * Setup Listeners
+     * Actions
      */
-    private fun setupListeners() {
-        setupSortByRadioGroupListener()
-        setupSortOrderRadioGroupListener()
-        setupValidateButtonListener()
+
+    private fun onSelectSortOptionItem(index: Int) {
+        parametersViewModel.sortBy = TractListParameters.SortBy.values()[index]
     }
 
-    private fun setupSortByRadioGroupListener() {
-        sortByRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            val index = getCheckedRadioButtonIndex(group, sortByRadioButtons, checkedId)
-            val selected = TractListParameters.SortBy.values()[index]
-
-            parametersViewModel.sortBy = selected
-        }
-    }
-
-    private fun setupSortOrderRadioGroupListener() {
-        sortOrderRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            val index = getCheckedRadioButtonIndex(group, sortOrderRadioButtons, checkedId)
-            val selected = TractListParameters.SortOrder.values()[index]
-
-            parametersViewModel.sortOrder = selected
-        }
-    }
-
-    private fun setupValidateButtonListener() {
-        validateButton.setOnClickListener {
-            onParametersSelected(parametersViewModel.parameters)
-            dismiss()
-        }
-    }
-
-    private fun onParametersSelected(parameter: TractListParameters) {
+    private fun onComplete() {
         targetFragment?.let { fragment ->
-            (fragment as Callbacks).onParameterSelected(parameter)
+            (fragment as Callbacks).onParameterSelected(parametersViewModel.parameters)
         }
-    }
-
-    /**
-     * Update
-     */
-    private fun updateUI() {
-        updateRadioButtonChecked(
-            sortByRadioGroup,
-            sortByRadioButtons,
-            parametersViewModel.sortBy.ordinal
-        )
-        updateRadioButtonChecked(
-            sortOrderRadioGroup,
-            sortOrderRadioButtons,
-            parametersViewModel.sortOrder.ordinal
-        )
-    }
-
-    private fun updateRadioButtonChecked(radioGroup: RadioGroup, radioButtons: List<RadioButton>, checkIndex: Int) {
-        val buttonId = radioButtons[checkIndex].id
-        if (buttonId != radioGroup.checkedRadioButtonId) {
-            radioGroup.check(buttonId)
-        }
-    }
-
-    /**
-     * Tools
-     */
-    private fun getCheckedRadioButtonIndex(
-        radioGroup: RadioGroup,
-        radioButtons: List<RadioButton>,
-        checkedId: Int
-    ): Int {
-        val button: RadioButton = radioGroup.findViewById(checkedId)
-        return radioButtons.indexOf(button)
     }
 
     /**
@@ -191,5 +104,9 @@ class TractListDialogFragment : DialogFragment() {
                     putSerializable(PARAM_SORT_ORDER_ID, parameter.sortOrder)
                 }
             }
+    }
+
+    override fun onClick(v: View?) {
+        println("click click")
     }
 }

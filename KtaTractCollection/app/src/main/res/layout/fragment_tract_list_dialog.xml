@@ -8,38 +8,20 @@
     tools:context=".Fragments.TractList.dialogs.TractListDialogFragment">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_weight="1"
-        android:text="@string/tract_sort_dialog_title" />
-
     <RadioGroup
-        android:id="@+id/sort_by_radio_group"
+        android:id="@+id/sortByRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" >
 
     </RadioGroup>
 
-    <TextView
+    <CheckBox
+        android:id="@+id/descendingCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_weight="1"
-        android:text="@string/tract_sort_order_dialog_title" />
+        android:text="@string/sort_order_descending" />
 
-    <RadioGroup
-        android:id="@+id/sort_order_radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-    <Button
-        android:id="@+id/validate_button"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_baseline_check_24"
-        android:text="@string/validate" />
 </LinearLayout>

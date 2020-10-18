@@ -24,7 +24,7 @@ class TractListParameters() {
 
     enum class DisplayMode(val spanCount: Int, @DrawableRes val iconId: Int, @StringRes val titleId: Int) {
         LIST(1, R.drawable.ic_baseline_list_bulleted_24, R.string.show_as_list),
-        GRID(2, R.drawable.ic_baseline_grid_24, R.string.show_as_grid);
+        GRID(2, R.drawable.ic_baseline_apps_24, R.string.show_as_grid);
 
         val reversed: DisplayMode
             get() = if (this == GRID) { LIST } else { GRID }

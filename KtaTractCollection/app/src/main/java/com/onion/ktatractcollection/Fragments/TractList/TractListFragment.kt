@@ -294,7 +294,8 @@ class TractListFragment :
     }
 
     override fun onParameterSelected(parameter: TractListParameters) {
-        parametersViewModel.parameters = parameter
+        parametersViewModel.sortOrder = parameter.sortOrder
+        parametersViewModel.sortBy = parameter.sortOption
         updateUI()
     }
 
