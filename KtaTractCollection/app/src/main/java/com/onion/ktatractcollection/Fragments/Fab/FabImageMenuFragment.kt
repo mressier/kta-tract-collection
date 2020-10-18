@@ -36,8 +36,6 @@ class FabImageMenuFragment : Fragment() {
      * Properties
      */
 
-    private lateinit var fabOpen: Animation
-    private lateinit var fabClose: Animation
     private lateinit var fabClock: Animation
     private lateinit var fabAnticlock: Animation
 
@@ -202,8 +200,6 @@ class FabImageMenuFragment : Fragment() {
      */
 
     private fun setupAnimations() {
-        fabClose = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out);
-        fabOpen = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
         fabClock = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_rotate_clock);
         fabAnticlock = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_rotate_anticlock);
     }
