@@ -1,5 +1,6 @@
 package com.onion.ktatractcollection.Fragments.TractList.dialogs
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import com.onion.ktatractcollection.R
+import kotlinx.android.synthetic.main.fragment_tract_dialog.*
 import java.util.*
 
 private const val ARGUMENT_TRACT_ID = "tract_id"
@@ -24,66 +26,53 @@ class TractDialogFragment: DialogFragment() {
 
     private lateinit var tractId: UUID
 
-    private lateinit var deleteButton: Button
-    private lateinit var cancelButton: Button
-
     /**
      * View Life Cycle
      */
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_tract_dialog, container)
-        setupView(view)
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupListeners()
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val tractString = arguments?.getSerializable(ARGUMENT_TRACT_ID) as String
         tractId = UUID.fromString(tractString)
 
-        return super.onCreateDialog(savedInstanceState)
+        val dialog = AlertDialog.Builder(requireContext())
+
+        val view = layoutInflater.inflate(R.layout.fragment_tract_dialog, null)
+        setupListeners(view)
+        dialog.setView(view)
+
+        dialog.setNegativeButton(getString(android.R.string.cancel)) { _, _ ->
+            dismiss()
+        }
+
+        return dialog.create()
     }
 
     /**
      * Setup
      */
-    private fun setupView(view: View) {
-        deleteButton = view.findViewById(R.id.delete_button)
-        cancelButton = view.findViewById(R.id.cancel_button)
-    }
 
-    private fun setupListeners() {
+    private fun setupListeners(view: View) {
+        val deleteButton: Button = view.findViewById(R.id.deleteButton)
+
         deleteButton.setOnClickListener {
             targetFragment?.let { fragment ->
                 (fragment as Callbacks).onDelete(tractId)
                 dismiss()
             }
         }
-
-        cancelButton.setOnClickListener {
-            dismiss()
-        }
     }
+
     /**
      * Instantiate
      */
     companion object {
         fun newInstance(tractId: UUID): TractDialogFragment {
-            val args = Bundle()
-            args.putSerializable(ARGUMENT_TRACT_ID, tractId.toString())
-
-            val fragment = TractDialogFragment()
-            fragment.arguments = args
-            return fragment
+            val args = Bundle().apply {
+                putSerializable(ARGUMENT_TRACT_ID, tractId.toString())
+            }
+            return TractDialogFragment().apply {
+                arguments = args
+            }
         }
     }
 }
