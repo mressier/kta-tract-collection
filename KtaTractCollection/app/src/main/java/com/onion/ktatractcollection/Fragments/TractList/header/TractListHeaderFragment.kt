@@ -45,7 +45,7 @@ class TractListHeaderFragment : Fragment() {
         setupViewModelObserver()
         setupTractListButtonListener()
 
-        updateHeaderView(viewModel.displayMode)
+        updateHeaderView()
     }
 
     override fun onAttach(context: Context) {
@@ -62,7 +62,8 @@ class TractListHeaderFragment : Fragment() {
      * Update
      */
 
-    private fun updateHeaderView(displayMode: TractListParameters.DisplayMode) {
+    private fun updateHeaderView() {
+        val displayMode = viewModel.displayMode.reversed
         tractListButton.setImageResource(displayMode.iconId)
         tractListButton.contentDescription = getString(displayMode.titleId)
     }
@@ -87,7 +88,7 @@ class TractListHeaderFragment : Fragment() {
         tractListButton.setOnClickListener {
             viewModel.displayMode = viewModel.displayMode.reversed
 
-            updateHeaderView(viewModel.displayMode)
+            updateHeaderView()
             callbacks?.onDisplayModeChanged(viewModel.displayMode)
         }
     }
