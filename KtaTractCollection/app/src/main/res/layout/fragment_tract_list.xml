@@ -5,31 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment"
-        android:name="com.onion.ktatractcollection.TractListHeaderFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tract_list"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingBottom="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment"
-        tools:listitem="@layout/fragment_tract_list_item">
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:id="@+id/tractListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/headerFragment"
+                android:name="com.onion.ktatractcollection.Fragments.TractList.header.TractListHeaderFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:scrollbars="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tractRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="90"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headerFragment"
+                tools:listitem="@layout/fragment_tract_list_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="70dp"/>
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
 
     <ImageView
-        android:id="@+id/no_tract_image"
+        android:id="@+id/noTractImageView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -37,26 +59,26 @@
         android:contentDescription="@string/image_desc_no_tract_in_list"
         android:src="@drawable/ic_no_tract_image"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/no_tract_text"
+        app:layout_constraintBottom_toTopOf="@+id/noTractText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_no_tract_image" />
 
     <TextView
-        android:id="@+id/no_tract_text"
+        android:id="@+id/noTractText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:labelFor="@id/no_tract_image"
+        android:labelFor="@id/noTractImageView"
         android:text="@string/no_tract_list"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/tract_list"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fab_fragment"
+        android:id="@+id/fabFragment"
         android:name="com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
