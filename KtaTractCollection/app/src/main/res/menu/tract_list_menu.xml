@@ -3,11 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/grid_or_list_tract"
-        android:icon="@drawable/ic_baseline_list_bulleted_24"
-        android:title="@string/show_as_grid"
-        app:showAsAction="ifRoom|withText" />
-    <item
         android:id="@+id/sort_list"
         android:icon="@drawable/ic_baseline_sort_24"
         android:title="@string/sort_tract_list"

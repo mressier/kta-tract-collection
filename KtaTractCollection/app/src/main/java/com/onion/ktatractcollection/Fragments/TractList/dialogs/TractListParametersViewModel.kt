@@ -22,9 +22,6 @@ class TractListParametersViewModel: ViewModel() {
         get() = parameters.displayMode
         set(value) { parameters.displayMode = value }
 
-    val reversedDisplayMode: TractListParameters.DisplayMode
-        get() = parameters.reversedDisplayMode
-
     /**
      * Properties
      */

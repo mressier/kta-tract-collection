@@ -4,12 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment
@@ -17,8 +14,11 @@ import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractDialogFragm
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListDialogFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParametersViewModel
+import com.onion.ktatractcollection.Fragments.TractList.header.TractListHeaderFragment
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
+import kotlinx.android.synthetic.main.fragment_tract_list.*
+import kotlinx.android.synthetic.main.fragment_tract_list_header.*
 import java.util.*
 
 private const val TAG = "TractListFragment"
@@ -38,7 +38,8 @@ class TractListFragment :
     TractListCallbacks,
     TractDialogFragment.Callbacks,
     TractListDialogFragment.Callbacks,
-    FabImageMenuFragment.Callbacks
+    FabImageMenuFragment.Callbacks,
+    TractListHeaderFragment.Callbacks
 {
 
     /**
@@ -61,10 +62,8 @@ class TractListFragment :
         ViewModelProvider(this).get(TractListParametersViewModel::class.java)
     }
 
-    private lateinit var tractRecyclerView: RecyclerView
-    private lateinit var noTractImageView: ImageView
-    private lateinit var noTractText: TextView
     private lateinit var fabFragment: FabImageMenuFragment
+    private lateinit var headerFragment: TractListHeaderFragment
 
     private lateinit var tractAdapter: TractListAdapter
     private lateinit var tractLayout: GridLayoutManager
@@ -83,15 +82,13 @@ class TractListFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_tract_list, container, false)
-        setupRecyclerView(view)
-        setupNoTractView(view)
-        return view
+        return inflater.inflate(R.layout.fragment_tract_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupView()
         setupViewModelObserver()
         setupButtonListener()
     }
@@ -118,8 +115,6 @@ class TractListFragment :
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.tract_list_menu, menu)
-        updateMenuUI(parametersViewModel.reversedDisplayMode,
-            menu.findItem(R.id.grid_or_list_tract))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -128,19 +123,8 @@ class TractListFragment :
                 showTractListDialog()
                 true
             }
-            R.id.grid_or_list_tract -> {
-                toggleListMenuItem(item)
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun toggleListMenuItem(item: MenuItem) {
-        parametersViewModel.reverseDisplayMode()
-
-        updateMenuUI(parametersViewModel.reversedDisplayMode, item)
-        updateTractListLayout(parametersViewModel.displayMode)
     }
 
     /**
@@ -150,7 +134,7 @@ class TractListFragment :
         val tracts = parametersViewModel.getDisplayedTracts(currentTracts)
         tractListViewModel.saveAsTractsWithPicture(tracts)
 
-        updateTractListLayout(parametersViewModel.displayMode)
+        updateTractListLayout()
         updateTractListContent(tractListViewModel.tractsWithPicture)
     }
 
@@ -159,26 +143,23 @@ class TractListFragment :
     ) {
         val previousTracts = tractAdapter.currentList
 
-        updateTractAdapterParameters(tractListItems)
+        tractAdapter.submitList(tractListItems)
+        tractAdapter.notifyDataSetChanged()
+
         updateNoTractImageVisibility(previousTracts, tractListItems)
         restoreRecyclerViewState()
     }
 
-    private fun updateTractAdapterParameters(tractListItems: List<TractWithPicture>) {
-        tractAdapter.parameters = parametersViewModel.parameters
-        tractAdapter.submitList(tractListItems)
-        tractAdapter.notifyDataSetChanged()
-    }
-
     private fun updateNoTractImageVisibility(previousTracts: List<TractWithPicture>,
                                              newTracts: List<TractWithPicture>) {
-
         if (previousTracts.isNotEmpty() && newTracts.isNotEmpty()) { return }
 
         val noTractVisibility =
             if (newTracts.isNotEmpty()) { View.GONE } else { View.VISIBLE }
         noTractImageView.visibility = noTractVisibility
         noTractText.visibility = noTractVisibility
+
+        tractListLayout.visibility = if (newTracts.isEmpty()) { View.GONE } else { View.VISIBLE }
     }
 
     private fun saveRecyclerViewState() {
@@ -191,24 +172,25 @@ class TractListFragment :
         }
     }
 
-    private fun updateTractListLayout(displayMode: TractListParameters.DisplayMode) {
-        tractLayout.spanCount = displayMode.spanCount
-        tractRecyclerView.layoutManager = tractLayout
-        tractRecyclerView.adapter = tractAdapter
-    }
+    private fun updateTractListLayout() {
+        tractLayout.spanCount = parametersViewModel.displayMode.spanCount
 
-    private fun updateMenuUI(displayMode: TractListParameters.DisplayMode, item: MenuItem) {
-        item.setIcon(displayMode.iconId)
-        item.setTitle(displayMode.titleId)
+        tractAdapter.parameters = parametersViewModel.parameters
+        tractAdapter.notifyItemRangeChanged(0, tractAdapter.itemCount)
     }
 
     /**
      * Setup
      */
 
-    private fun setupRecyclerView(view: View) {
+    private fun setupView() {
+        setupRecyclerView()
+        setupFragments()
+        setupNoTractView()
+    }
+
+    private fun setupRecyclerView() {
         Log.d(TAG, "Setup Recycler view !")
-        tractRecyclerView = view.findViewById(R.id.tract_list)
         tractAdapter = TractListAdapter(this)
         tractLayout = GridLayoutManager(context, 1)
 
@@ -216,11 +198,12 @@ class TractListFragment :
         tractRecyclerView.layoutManager = tractLayout
     }
 
-    private fun setupNoTractView(view: View) {
-        noTractImageView = view.findViewById(R.id.no_tract_image)
-        noTractText = view.findViewById(R.id.no_tract_text)
-        fabFragment = childFragmentManager.findFragmentById(R.id.fab_fragment) as FabImageMenuFragment
+    private fun setupFragments() {
+        fabFragment = childFragmentManager.findFragmentById(R.id.fabFragment) as FabImageMenuFragment
+        headerFragment = childFragmentManager.findFragmentById(R.id.headerFragment) as TractListHeaderFragment
+    }
 
+    private fun setupNoTractView() {
         noTractImageView.visibility = View.GONE
         noTractImageView.jumpDrawablesToCurrentState()
         noTractText.visibility = View.GONE
@@ -319,4 +302,8 @@ class TractListFragment :
         callbacks?.onTractSelected(tractId)
     }
 
+    override fun onDisplayModeChanged(displayMode: TractListParameters.DisplayMode) {
+        parametersViewModel.displayMode = displayMode
+        updateTractListLayout()
+    }
 }
