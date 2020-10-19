@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import com.onion.ktatractcollection.Database.TractRepository
-import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import java.io.File
 import java.util.*
@@ -41,7 +40,6 @@ class FabImageMenuViewModel: ViewModel() {
 
             val tractPicture = TractPicture(
                 tractId = tractId,
-                isFromDevice = false,
                 photoFilename = file.toUri().toString()
             )
 
@@ -55,9 +53,10 @@ class FabImageMenuViewModel: ViewModel() {
         this.tractId = tractId
 
         val pictures = uri.map {
-            TractPicture(tractId = tractId,
-                isFromDevice = false,
-                photoFilename = it.toString())
+            TractPicture(
+                tractId = tractId,
+                photoFilename = it.toString()
+            )
         }
 
         pictures.forEach { repository.addPicture(it) }

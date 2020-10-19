@@ -9,17 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
-import com.onion.ktatractcollection.shared.tools.buildCameraIntentForFile
-import com.onion.ktatractcollection.shared.tools.buildGalleryIntent
-import com.onion.ktatractcollection.shared.tools.checkCameraPermission
-import com.onion.ktatractcollection.shared.tools.dataAsUriArray
+import com.onion.ktatractcollection.shared.tools.*
 import kotlinx.android.synthetic.main.fragment_fab_image_menu.*
 import java.util.*
 
@@ -114,6 +109,11 @@ class FabImageMenuFragment : Fragment() {
         picturesUri.forEach {
             context?.contentResolver?.takePersistableUriPermission(it, flags)
         }
+
+//        picturesUri.map { uri ->
+//            val dest = imageMenuViewModel.generatePictureFile()
+//            copyFile(uri, dest)
+//        }
 
         val pictures = imageMenuViewModel.savePictures(picturesUri)
         hideMenu()
