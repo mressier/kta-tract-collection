@@ -23,7 +23,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/tractImageView"
+                android:id="@+id/pictureView"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:adjustViewBounds="true"
@@ -34,7 +34,7 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/content_text"
+                android:id="@+id/authorText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -42,21 +42,21 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/primaryColor"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/like_image_button"
+                app:layout_constraintEnd_toStartOf="@+id/likeImageButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tractImageView" />
+                app:layout_constraintTop_toBottomOf="@+id/pictureView" />
 
             <ImageButton
-                android:id="@+id/like_image_button"
+                android:id="@+id/likeImageButton"
                 style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/btn_desc_like_action"
                 android:tint="@color/primaryColor"
-                app:layout_constraintBottom_toBottomOf="@+id/content_text"
+                app:layout_constraintBottom_toBottomOf="@+id/authorText"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/content_text"
+                app:layout_constraintTop_toTopOf="@+id/authorText"
                 app:srcCompat="@drawable/ic_baseline_star_border_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

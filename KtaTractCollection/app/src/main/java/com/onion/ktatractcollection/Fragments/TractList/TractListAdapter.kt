@@ -1,6 +1,7 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
 import android.content.Context
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -31,11 +32,17 @@ class TractListAdapter(
      */
     var parameters = TractListParameters()
 
+    enum class ViewTypeValue(val layoutId: Int) {
+        LIST(R.layout.fragment_tract_list_item),
+        GRID(R.layout.fragment_tract_grid_item)
+    }
+
     /**
      * View Life Cycle
      */
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutId = getTractItemLayoutId()
+        val layoutId = getTractItemLayoutId(viewType)
         val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
 
         return getTractViewHolder(view)
@@ -51,16 +58,20 @@ class TractListAdapter(
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (parameters.isList) {
+            ViewTypeValue.LIST.ordinal
+        } else {
+            ViewTypeValue.GRID.ordinal
+        }
+    }
+
     /**
      * View Holder
      */
 
-    private fun getTractItemLayoutId(): Int {
-        return if (parameters.isList) {
-            R.layout.fragment_tract_list_item
-        } else {
-            R.layout.fragment_tract_grid_item
-        }
+    private fun getTractItemLayoutId(viewType: Int): Int {
+        return (ViewTypeValue.values()[viewType].layoutId)
     }
 
     private fun getTractViewHolder(view: View): RecyclerView.ViewHolder {
@@ -70,6 +81,7 @@ class TractListAdapter(
             TractGridViewHolder(view, callbacks)
         }
     }
+
     /**
      * Diff
      */
@@ -81,6 +93,7 @@ class TractListAdapter(
         override fun areContentsTheSame(oldItem: TractWithPicture, newItem: TractWithPicture): Boolean {
             return oldItem.tract.author == newItem.tract.author
                     && oldItem.tract.discoveryDate == newItem.tract.discoveryDate
+                    && oldItem.tract.isFavorite == newItem.tract.isFavorite
                     && oldItem.pictures.firstOrNull()?.id == newItem.pictures.firstOrNull()?.id
         }
     }

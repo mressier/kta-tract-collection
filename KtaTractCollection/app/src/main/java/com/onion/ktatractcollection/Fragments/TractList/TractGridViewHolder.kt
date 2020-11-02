@@ -2,25 +2,23 @@ package com.onion.ktatractcollection.Fragments.TractList
 
 import android.net.Uri
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
+import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.authorText
+import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.likeImageButton
+import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.pictureView
 
+/**
+ * TractGridViewHolder
+ *
+ * In the tract list, this is the view holder of each tract on "Grid" mode
+ */
 class TractGridViewHolder(
-    view: View,
+    private val gridView: View,
     private val callbacks: TractListCallbacks?
-) : RecyclerView.ViewHolder(view) {
-
-    /**
-     * Properties
-     */
-    private val pictureView: ImageView = view.findViewById(R.id.tractImageView)
-    private val contentTextView: TextView = view.findViewById(R.id.content_text)
-    private val likeImageButton: ImageButton = view.findViewById(R.id.like_image_button)
+) : RecyclerView.ViewHolder(gridView) {
 
     /**
      * Methods
@@ -38,7 +36,7 @@ class TractGridViewHolder(
 
     private fun setupTract(tract: Tract) {
         val content = tract.author
-        contentTextView.apply {
+        gridView.authorText.apply {
             text = if (content.isBlank()) { context.getString(R.string.unknown) } else { content }
         }
         setupLikeButton(tract.isFavorite)
@@ -51,11 +49,11 @@ class TractGridViewHolder(
             .load(Uri.parse(picture.photoFilename))
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
-            .into(pictureView)
+            .into(gridView.pictureView)
     }
 
     private fun setupLikeButton(isFavorite: Boolean) {
-        likeImageButton.apply {
+        gridView.likeImageButton.apply {
             val resource = if (isFavorite) {
                 R.drawable.ic_baseline_star_24
             } else {
@@ -72,6 +70,10 @@ class TractGridViewHolder(
         }
     }
 
+    /**
+     * Listeners
+     */
+
     private fun setupListeners(tract: Tract) {
         itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
         itemView.setOnLongClickListener {
@@ -79,8 +81,12 @@ class TractGridViewHolder(
             true
         }
 
-        likeImageButton.setOnClickListener {
+        gridView.likeImageButton.setOnClickListener {
             callbacks?.onTractLikeToggled(tract.id)
+        }
+
+        gridView.pictureView.setOnClickListener {
+            callbacks?.onTractImageSelected(0, tract.id)
         }
     }
 }

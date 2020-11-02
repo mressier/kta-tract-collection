@@ -2,37 +2,34 @@ package com.onion.ktatractcollection.Fragments.TractList
 
 import android.net.Uri
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
 import java.text.DateFormat
 import java.util.*
+import kotlinx.android.synthetic.main.fragment_tract_list_item.view.*
 
+/**
+ * TractListViewHolder
+ *
+ * In the tract list, this is the view holder of each tract on "List" mode
+ */
 class TractListViewHolder(
-    view: View,
+    private val listView: View,
     private val callbacks: TractListCallbacks?
-) : RecyclerView.ViewHolder(view) {
+) : RecyclerView.ViewHolder(listView) {
 
     /**
      * Properties
      */
-    private val authorText: TextView = view.findViewById(R.id.content_text)
-    private val discoveryDateText: TextView = view.findViewById(R.id.discovery_date_text)
-    private val datingText: TextView = view.findViewById(R.id.dating_text)
-    private val pictureView: ImageView = view.findViewById(R.id.tractImageView)
-    private val commentsTextView: TextView = view.findViewById(R.id.tract_comment_text)
-    private val likeImageButton: ImageButton = view.findViewById(R.id.like_image_button)
 
     private val dateInstance: DateFormat by lazy {
         DateFormat.getDateInstance(DateFormat.SHORT)
     }
 
     override fun toString(): String {
-        return super.toString() + " '" + authorText.text + "'"
+        return super.toString() + " '" + listView.authorText.text + "'"
     }
 
     /**
@@ -54,31 +51,31 @@ class TractListViewHolder(
     }
 
     private fun setupAuthor(author: String) {
-        authorText.apply {
+        listView.authorText.apply {
             text = if (author.isBlank()) { itemView.context.getString(R.string.unknown) } else { author }
         }
     }
 
     private fun setupComment(comment: String) {
-        commentsTextView.apply {
+        listView.commentsTextView.apply {
             text = comment
         }
     }
 
     private fun setupDiscoveryDate(date: Date) {
-        discoveryDateText.text = itemView.context.getString(R.string.tract_found_on)
+        listView.discoveryDateText.text = itemView.context.getString(R.string.tract_found_on)
             .format(dateInstance.format(date))
     }
 
     private fun setupDatingDate(date: Date?) {
         date?.let {
-            datingText.text =
+            listView.datingText.text =
                 itemView.context.getString(R.string.tract_dating_from).format(dateInstance.format(it))
-        } ?: run { datingText.text = "" }
+        } ?: run { listView.datingText.text = "" }
     }
 
     private fun setupLikeButton(isFavorite: Boolean) {
-        likeImageButton.apply {
+        listView.likeImageButton.apply {
             val resource = if (isFavorite) {
                 R.drawable.ic_baseline_star_24
             } else {
@@ -102,11 +99,11 @@ class TractListViewHolder(
             true
         }
 
-        likeImageButton.setOnClickListener {
+        listView.likeImageButton.setOnClickListener {
             callbacks?.onTractLikeToggled(tract.id)
         }
 
-        pictureView.setOnClickListener {
+        listView.pictureView.setOnClickListener {
             callbacks?.onTractImageSelected(0, tract.id)
         }
     }
@@ -118,7 +115,7 @@ class TractListViewHolder(
             .load(Uri.parse(picture.photoFilename))
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
-            .into(pictureView)
+            .into(listView.pictureView)
     }
 
 }

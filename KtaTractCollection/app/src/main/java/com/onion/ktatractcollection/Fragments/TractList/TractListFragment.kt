@@ -233,7 +233,6 @@ class TractListFragment :
                 items.let {
                     Log.i(TAG, "Got items ${it.size}")
                     currentTracts = items
-                    updateUI()
                     setupImagesForTracts()
                 }
             }
@@ -253,7 +252,7 @@ class TractListFragment :
                     count--
 
                     if (count == 0) {
-                        updateTractListContent(tractListViewModel.tractsWithPicture)
+                        updateUI()
                         restoreRecyclerViewState()
                     }
                 }
@@ -304,7 +303,6 @@ class TractListFragment :
 
     override fun onTractLikeToggled(tractId: UUID) {
         tractListViewModel.toggleLike(tractId)
-        updateTractListContent(tractListViewModel.tractsWithPicture)
     }
 
     override fun onTractImageSelected(imageIndex: Int, tractId: UUID) {
