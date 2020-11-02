@@ -10,26 +10,20 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment
-import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractDialogFragment
-import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListDialogFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParametersViewModel
 import com.onion.ktatractcollection.Fragments.TractList.header.TractListHeaderFragment
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
+import com.onion.ktatractcollection.shared.dialogs.SortListCallbacks
+import com.onion.ktatractcollection.shared.dialogs.TractActionCallback
+import com.onion.ktatractcollection.shared.dialogs.showSortListDialog
+import com.onion.ktatractcollection.shared.dialogs.showTractActionDialog
 import kotlinx.android.synthetic.main.fragment_tract_list.*
-import kotlinx.android.synthetic.main.fragment_tract_list.view.*
 import java.util.*
 
 private const val TAG = "TractListFragment"
-
-private const val REQUEST_TRACT_ACTION = 0
-private const val REQUEST_TRACT_LIST_ACTION = 1
-
-private const val DIALOG_TRACT_ACTION = "dialog_tract_action"
-private const val DIALOG_TRACT_LIST_ACTION = "dialog_tract_list_action"
-
 
 /**
  * A fragment representing a list of Items.
@@ -37,8 +31,6 @@ private const val DIALOG_TRACT_LIST_ACTION = "dialog_tract_list_action"
 class TractListFragment :
     Fragment(),
     TractListCallbacks,
-    TractDialogFragment.Callbacks,
-    TractListDialogFragment.Callbacks,
     FabImageMenuFragment.Callbacks,
     TractListHeaderFragment.Callbacks
 {
@@ -125,7 +117,13 @@ class TractListFragment :
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.sort_list -> {
-                showTractListDialog()
+                showSortTractListDialog()
+                true
+            }
+            R.id.export_collection -> {
+                true
+            }
+            R.id.import_collection -> {
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -274,17 +272,24 @@ class TractListFragment :
      */
 
     private fun showTractDialog(tractId: UUID) {
-        TractDialogFragment.newInstance(tractId).apply {
-            setTargetFragment(this@TractListFragment, REQUEST_TRACT_ACTION)
-            show(this@TractListFragment.requireFragmentManager(), DIALOG_TRACT_ACTION)
-        }
+        showTractActionDialog(tractId, object: TractActionCallback {
+            override fun onDelete(tractId: UUID) {
+                tractListViewModel.deleteTract(Tract(id = tractId))
+                updateTractListContent(tractListViewModel.tractsWithPicture)
+                Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
     }
 
-    private fun showTractListDialog() {
-        TractListDialogFragment.newInstance(parametersViewModel.parameters).apply {
-            setTargetFragment(this@TractListFragment, REQUEST_TRACT_LIST_ACTION)
-            show(this@TractListFragment.requireFragmentManager(), DIALOG_TRACT_LIST_ACTION)
-        }
+    private fun showSortTractListDialog() {
+        showSortListDialog(parametersViewModel.parameters, object: SortListCallbacks {
+            override fun onParameterSelected(parameter: TractListParameters) {
+                parametersViewModel.sortOrder = parameter.sortOrder
+                parametersViewModel.sortBy = parameter.sortOption
+                updateUI()
+            }
+        })
     }
 
     /**
@@ -313,19 +318,6 @@ class TractListFragment :
                 callbacks?.onTractPictureSelected(it, imageIndex)
             }
         }
-    }
-
-    override fun onDelete(tractId: UUID) {
-        tractListViewModel.deleteTract(Tract(id = tractId))
-        updateTractListContent(tractListViewModel.tractsWithPicture)
-        Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT)
-            .show()
-    }
-
-    override fun onParameterSelected(parameter: TractListParameters) {
-        parametersViewModel.sortOrder = parameter.sortOrder
-        parametersViewModel.sortBy = parameter.sortOption
-        updateUI()
     }
 
     override fun onTractSaved(tractId: UUID) {

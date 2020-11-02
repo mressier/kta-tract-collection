@@ -6,11 +6,17 @@
         android:id="@+id/sort_list"
         android:icon="@drawable/ic_baseline_sort_24"
         android:title="@string/sort_tract_list" />
+
     <item
+        android:id="@+id/export_collection"
         android:icon="@drawable/ic_baseline_backup_24"
         android:title="@string/export_collection"
-        app:showAsAction="withText"
-        android:enabled="false" />
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/import_collection"
+        android:icon="@drawable/ic_baseline_cloud_download_24"
+        android:title="@string/import_collection"
+        app:showAsAction="withText" />
     <item
         android:icon="@drawable/ic_baseline_info_24"
         android:title="@string/about"
