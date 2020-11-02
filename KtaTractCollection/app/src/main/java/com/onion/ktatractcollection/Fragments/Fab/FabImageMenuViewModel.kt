@@ -30,7 +30,6 @@ class FabImageMenuViewModel: ViewModel() {
     fun generatePictureFile(): File {
         val file = repository.getPictureFile(TractPicture.randomFilename())
         pictureFile = file
-        savePictureFile()
         return file
     }
 

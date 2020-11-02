@@ -94,11 +94,12 @@ class FabImageMenuFragment : Fragment() {
     }
 
     private fun savePicture() {
-        val picture = imageMenuViewModel.savePictureFile()
+        imageMenuViewModel.savePictureFile()
+
         hideMenu()
         revokeCameraPermission()
 
-        picture?.let { callbacks?.onTractSaved(picture.tractId) }
+        imageMenuViewModel.tractId?.let { callbacks?.onTractSaved(it) }
     }
 
     private fun savePictures(intent: Intent) {
@@ -106,7 +107,9 @@ class FabImageMenuFragment : Fragment() {
 
         picturesUri.forEach { uri ->
             val dest = imageMenuViewModel.generatePictureFile().toUri()
-            requireContext().contentResolver.copy(uri, dest)
+            if (requireContext().contentResolver.copy(uri, dest)) {
+                imageMenuViewModel.savePictureFile()
+            }
         }
 
         imageMenuViewModel.tractId?.let { callbacks?.onTractSaved(it) }
