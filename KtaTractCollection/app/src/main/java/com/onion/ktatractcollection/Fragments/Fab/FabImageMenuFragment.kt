@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.extensions.*
 import kotlinx.android.synthetic.main.fragment_fab_image_menu.*
 import java.util.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -41,8 +43,26 @@ class FabImageMenuFragment : Fragment() {
     var callbacks: Callbacks? = null
 
     /**
+     * Callbacks
+     */
+
+    private val interceptBackPressed: OnBackPressedCallback by lazy {
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (imageMenuViewModel.isMenuVisible) { hideMenu(true) }
+            }
+        }
+    }
+
+    /**
      * View Life Cycle
      */
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        activity?.onBackPressedDispatcher?.addCallback(interceptBackPressed)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,6 +145,7 @@ class FabImageMenuFragment : Fragment() {
         val duration: Long = if (animated) { 300 } else { 0 }
 
         imageMenuViewModel.isMenuVisible = true
+        interceptBackPressed.isEnabled = true
 
         fabClock.duration = duration
         newTractButton.startAnimation(fabClock)
@@ -144,6 +165,7 @@ class FabImageMenuFragment : Fragment() {
         val duration: Long = if (animated) { 300 } else { 0 }
 
         imageMenuViewModel.isMenuVisible = false
+        interceptBackPressed.isEnabled = false
 
         fabAntiClock.duration = duration
         newTractButton.startAnimation(fabAntiClock)
