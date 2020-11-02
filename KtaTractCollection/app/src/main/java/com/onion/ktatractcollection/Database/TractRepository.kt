@@ -79,9 +79,7 @@ class TractRepository private constructor(context: Context) {
 
     fun deletePicture(picture: TractPicture) {
         executor.execute() {
-            if (picture.isFromCamera) {
-                deleteAppPictureWithPath(picture.photoFilename)
-            }
+            deleteAppPictureWithPath(picture.photoFilename)
             tractDao.deletePicture(picture)
         }
     }

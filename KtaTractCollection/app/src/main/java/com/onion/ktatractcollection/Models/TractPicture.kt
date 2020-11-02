@@ -10,9 +10,6 @@ class TractPicture(
     var tractId: UUID,
     val photoFilename: String = randomFilename()
 ) {
-    val isFromCamera: Boolean
-        get() = !isFromDevice
-
     companion object {
         fun randomFilename(): String { return "IMG_${UUID.randomUUID()}.jpg" }
     }

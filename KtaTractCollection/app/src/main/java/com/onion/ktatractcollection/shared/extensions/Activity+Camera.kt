@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.shared.tools
+package com.onion.ktatractcollection.shared.extensions
 
 import android.Manifest
 import android.app.Activity
@@ -17,6 +17,7 @@ import com.karumi.dexter.listener.single.BasePermissionListener
 import com.karumi.dexter.listener.single.CompositePermissionListener
 import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import com.onion.ktatractcollection.R
+import com.onion.ktatractcollection.shared.tools.isIntentAvailable
 import java.io.File
 
 fun Activity.grantCameraPermission(info: ResolveInfo, photoUri: Uri) {

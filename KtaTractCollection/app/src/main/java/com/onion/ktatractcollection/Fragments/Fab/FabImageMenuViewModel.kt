@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import com.onion.ktatractcollection.Database.TractRepository
+import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import java.io.File
 import java.util.*
@@ -29,6 +30,7 @@ class FabImageMenuViewModel: ViewModel() {
     fun generatePictureFile(): File {
         val file = repository.getPictureFile(TractPicture.randomFilename())
         pictureFile = file
+        savePictureFile()
         return file
     }
 

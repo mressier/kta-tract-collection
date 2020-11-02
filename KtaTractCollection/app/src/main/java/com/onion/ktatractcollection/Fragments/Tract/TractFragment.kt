@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment
 import com.onion.ktatractcollection.Fragments.Tract.TractTabLayout.TractDetailsTabsFragment
 import com.onion.ktatractcollection.R
-import com.onion.ktatractcollection.shared.tools.*
+import com.onion.ktatractcollection.shared.extensions.hideKeyboard
 import java.util.*
 
 class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {

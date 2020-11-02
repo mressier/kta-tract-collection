@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection.shared.tools
+package com.onion.ktatractcollection.shared.extensions
 
 import android.content.Intent
 import android.net.Uri

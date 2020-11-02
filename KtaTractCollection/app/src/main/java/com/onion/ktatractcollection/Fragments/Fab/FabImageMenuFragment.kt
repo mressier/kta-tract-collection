@@ -12,9 +12,8 @@ import android.view.animation.AnimationUtils
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
-import com.onion.ktatractcollection.shared.tools.*
+import com.onion.ktatractcollection.shared.extensions.*
 import kotlinx.android.synthetic.main.fragment_fab_image_menu.*
 import java.util.*
 
@@ -32,7 +31,7 @@ class FabImageMenuFragment : Fragment() {
      */
 
     private lateinit var fabClock: Animation
-    private lateinit var fabAnticlock: Animation
+    private lateinit var fabAntiClock: Animation
 
     /* View Models */
     private val imageMenuViewModel: FabImageMenuViewModel by lazy {
@@ -104,21 +103,15 @@ class FabImageMenuFragment : Fragment() {
 
     private fun savePictures(intent: Intent) {
         val picturesUri = intent.dataAsUriArray()
-        val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
-        picturesUri.forEach {
-            context?.contentResolver?.takePersistableUriPermission(it, flags)
+        picturesUri.forEach { uri ->
+            val dest = imageMenuViewModel.generatePictureFile().toUri()
+            requireContext().contentResolver.copy(uri, dest)
         }
 
-//        picturesUri.map { uri ->
-//            val dest = imageMenuViewModel.generatePictureFile()
-//            copyFile(uri, dest)
-//        }
+        imageMenuViewModel.tractId?.let { callbacks?.onTractSaved(it) }
 
-        val pictures = imageMenuViewModel.savePictures(picturesUri)
         hideMenu()
-
-        pictures.firstOrNull()?.let { callbacks?.onTractSaved(it.tractId) }
     }
 
     /**
@@ -149,8 +142,8 @@ class FabImageMenuFragment : Fragment() {
 
         imageMenuViewModel.isMenuVisible = false
 
-        fabAnticlock.duration = duration
-        newTractButton.startAnimation(fabAnticlock)
+        fabAntiClock.duration = duration
+        newTractButton.startAnimation(fabAntiClock)
 
         galleryButton.hide()
         galleryText.visibility = View.GONE
@@ -201,7 +194,7 @@ class FabImageMenuFragment : Fragment() {
 
     private fun setupAnimations() {
         fabClock = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_rotate_clock);
-        fabAnticlock = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_rotate_anticlock);
+        fabAntiClock = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_rotate_anticlock);
     }
 
     private fun setupListeners() {
@@ -226,5 +219,7 @@ class FabImageMenuFragment : Fragment() {
     companion object {
         private const val REQUEST_CAMERA_INTENT = 0
         private const val REQUEST_GALLERY_INTENT = 1
+
+        private const val TAG = "FabImageMenuFgmt"
     }
 }
