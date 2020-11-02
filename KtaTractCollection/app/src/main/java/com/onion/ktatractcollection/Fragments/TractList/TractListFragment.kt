@@ -291,13 +291,7 @@ class TractListFragment :
      * Callbacks
      */
 
-    private fun saveCurrentListPosition() {
-        val index = tractLayout.findFirstVisibleItemPosition()
-        tractListViewModel.selectedTractPosition = index
-    }
-
     override fun onTractSelected(tractId: UUID) {
-        saveCurrentListPosition()
         callbacks?.onTractSelected(tractId)
     }
 
@@ -313,15 +307,19 @@ class TractListFragment :
         val list = tractListViewModel.getSavedTractWithPictures(tractId)?.pictures
 
         list?.toTypedArray()?.let {
-            saveCurrentListPosition()
-            callbacks?.onTractPictureSelected(it, imageIndex)
+            if (list.isEmpty()) {
+                callbacks?.onTractSelected(tractId)
+            } else {
+                callbacks?.onTractPictureSelected(it, imageIndex)
+            }
         }
     }
 
     override fun onDelete(tractId: UUID) {
         tractListViewModel.deleteTract(Tract(id = tractId))
         updateTractListContent(tractListViewModel.tractsWithPicture)
-        Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT)
+            .show()
     }
 
     override fun onParameterSelected(parameter: TractListParameters) {

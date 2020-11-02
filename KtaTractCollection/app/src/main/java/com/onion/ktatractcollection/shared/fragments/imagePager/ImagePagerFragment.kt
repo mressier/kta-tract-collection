@@ -60,6 +60,10 @@ class ImagePagerFragment : Fragment() {
     private fun setupViewPager() {
         viewPager.adapter = ImagePagerAdapter(this, imagePathArray)
         viewPager.currentItem = currentIndex
+
+        if (imagePathArray.isEmpty() || imagePathArray.size == 1) {
+            tabLayout.visibility = View.GONE
+        }
     }
 
     private fun setupTabLayout() {

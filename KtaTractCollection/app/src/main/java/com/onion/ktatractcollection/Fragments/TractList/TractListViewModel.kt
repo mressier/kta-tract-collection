@@ -27,9 +27,6 @@ class TractListViewModel: ViewModel() {
 
     var tractsWithPicture: List<TractWithPicture> = listOf()
 
-    /* Tract List UI parameters to save */
-    var selectedTractPosition: Int? = null
-
     var recyclerViewState: Parcelable? = null
 
     /**

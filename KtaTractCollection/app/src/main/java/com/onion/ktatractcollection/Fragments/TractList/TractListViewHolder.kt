@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
+import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.*
 import java.text.DateFormat
 import java.util.*
 import kotlinx.android.synthetic.main.fragment_tract_list_item.view.*
+import kotlinx.android.synthetic.main.fragment_tract_list_item.view.authorText
+import kotlinx.android.synthetic.main.fragment_tract_list_item.view.likeImageButton
+import kotlinx.android.synthetic.main.fragment_tract_list_item.view.pictureView
 
 /**
  * TractListViewHolder
@@ -105,6 +109,10 @@ class TractListViewHolder(
 
         listView.pictureView.setOnClickListener {
             callbacks?.onTractImageSelected(0, tract.id)
+        }
+        listView.pictureView.setOnLongClickListener {
+            callbacks?.onTractLongSelected(tract.id)
+            true
         }
     }
 

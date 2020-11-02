@@ -88,5 +88,9 @@ class TractGridViewHolder(
         gridView.pictureView.setOnClickListener {
             callbacks?.onTractImageSelected(0, tract.id)
         }
+        gridView.pictureView.setOnLongClickListener {
+            callbacks?.onTractLongSelected(tract.id)
+            true
+        }
     }
 }
