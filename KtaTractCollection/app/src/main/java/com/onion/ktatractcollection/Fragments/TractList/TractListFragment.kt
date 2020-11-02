@@ -244,7 +244,7 @@ class TractListFragment :
         var count = tracts.size
         tractListViewModel.saveAsTractsWithPicture(tracts)
 
-        for (tractId in tracts.map { it.id }) {
+        tracts.map { it.id }.forEach { tractId ->
             tractListViewModel.getPictures(tractId).observe(
                 owner = viewLifecycleOwner,
                 onChanged = { items ->
@@ -257,6 +257,10 @@ class TractListFragment :
                     }
                 }
             )
+        }
+
+        if (tracts.isEmpty()) {
+            updateUI()
         }
     }
 
