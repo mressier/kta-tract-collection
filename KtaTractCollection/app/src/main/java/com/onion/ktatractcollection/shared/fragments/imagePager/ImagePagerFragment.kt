@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import com.onion.ktatractcollection.R
+import kotlinx.android.synthetic.main.fragment_image_pager.*
 
 /**
  * A simple [Fragment] subclass.
@@ -23,9 +24,6 @@ class ImagePagerFragment : Fragment() {
     /* Parameters */
     private var imagePathArray: Array<String> = arrayOf()
     private var currentIndex: Int = 0
-
-    /* Outlets */
-    private lateinit var viewPager: ViewPager2
 
     /**
      * View Life Cycle
@@ -46,23 +44,28 @@ class ImagePagerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_image_pager, container, false)
-        setupView(view)
-        return view
+        return inflater.inflate(R.layout.fragment_image_pager, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViewPager()
+        setupTabLayout()
         updateUI()
     }
 
     /**
      * Setup
      */
-    private fun setupView(view: View) {
-        viewPager = view.findViewById(R.id.view_pager)
+    private fun setupViewPager() {
         viewPager.adapter = ImagePagerAdapter(this, imagePathArray)
         viewPager.currentItem = currentIndex
+    }
+
+    private fun setupTabLayout() {
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            Log.d(TAG, "tab: $tab, position: $position")
+        }.attach()
     }
 
     private fun updateUI() {}
@@ -70,5 +73,7 @@ class ImagePagerFragment : Fragment() {
     /**
      * Static methods
      */
-    companion object {}
+    companion object {
+        private const val TAG = "ImagePagerFragment"
+    }
 }
