@@ -29,7 +29,8 @@ class TractListViewModel: ViewModel() {
 
     /* Tract List UI parameters to save */
     var selectedTractPosition: Int? = null
-    var state: Parcelable? = null
+
+    var recyclerViewState: Parcelable? = null
 
     /**
      * Methods

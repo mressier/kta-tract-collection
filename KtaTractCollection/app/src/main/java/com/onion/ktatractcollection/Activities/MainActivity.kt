@@ -42,8 +42,7 @@ class MainActivity : AppCompatActivity(), TractListFragment.Callbacks, PicturesL
      */
 
     override fun onPictureListSelected(list: Array<TractPicture>,
-                                       pictureIndex: Int,
-                                       pictureView: View) {
+                                       pictureIndex: Int) {
         val paths = list.map { it.photoFilename }.toTypedArray()
         val action = TractFragmentDirections.showTractImages(paths, pictureIndex)
         findNavController(R.id.nav_host_fragment).navigate(action)

@@ -19,7 +19,7 @@ import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import kotlinx.android.synthetic.main.fragment_tract_list.*
-import kotlinx.android.synthetic.main.fragment_tract_list_header.*
+import kotlinx.android.synthetic.main.fragment_tract_list.view.*
 import java.util.*
 
 private const val TAG = "TractListFragment"
@@ -91,8 +91,11 @@ class TractListFragment :
         super.onViewCreated(view, savedInstanceState)
 
         setupView()
-        setupViewModelObserver()
         setupButtonListener()
+
+        if (savedInstanceState == null) {
+            setupViewModelObserver()
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -149,7 +152,6 @@ class TractListFragment :
         tractAdapter.notifyDataSetChanged()
 
         updateNoTractImageVisibility(previousTracts, tractListItems)
-        restoreRecyclerViewState()
     }
 
     private fun updateNoTractImageVisibility(previousTracts: List<TractWithPicture>,
@@ -165,13 +167,19 @@ class TractListFragment :
     }
 
     private fun saveRecyclerViewState() {
-        tractListViewModel.state = tractRecyclerView.layoutManager?.onSaveInstanceState()
+        tractListViewModel.recyclerViewState = tractRecyclerView.layoutManager?.onSaveInstanceState()
+
+        Log.d(TAG, "Save recycler view state ${tractListViewModel.recyclerViewState}")
     }
 
     private fun restoreRecyclerViewState() {
-        tractListViewModel.state?.let {
+        Log.d(TAG, "Restore recycler view state ${tractListViewModel.recyclerViewState}?")
+
+        tractListViewModel.recyclerViewState?.let {
             tractRecyclerView.layoutManager?.onRestoreInstanceState(it)
         }
+
+        tractListViewModel.recyclerViewState = null
     }
 
     private fun updateTractListLayout() {
@@ -201,8 +209,10 @@ class TractListFragment :
     }
 
     private fun setupFragments() {
-        fabFragment = childFragmentManager.findFragmentById(R.id.fabFragment) as FabImageMenuFragment
-        headerFragment = childFragmentManager.findFragmentById(R.id.headerFragment) as TractListHeaderFragment
+        fabFragment =
+            childFragmentManager.findFragmentById(R.id.fabFragment) as FabImageMenuFragment
+        headerFragment =
+            childFragmentManager.findFragmentById(R.id.headerFragment) as TractListHeaderFragment
     }
 
     private fun setupNoTractView() {
@@ -232,6 +242,7 @@ class TractListFragment :
 
     private fun setupImagesForTracts() {
         val tracts = parametersViewModel.getDisplayedTracts(currentTracts)
+        var count = tracts.size
         tractListViewModel.saveAsTractsWithPicture(tracts)
 
         for (tractId in tracts.map { it.id }) {
@@ -239,8 +250,12 @@ class TractListFragment :
                 owner = viewLifecycleOwner,
                 onChanged = { items ->
                     tractListViewModel.addPicturesToTractItem(tractId, items)
+                    count--
 
-                    updateTractListContent(tractListViewModel.tractsWithPicture)
+                    if (count == 0) {
+                        updateTractListContent(tractListViewModel.tractsWithPicture)
+                        restoreRecyclerViewState()
+                    }
                 }
             )
         }
@@ -273,10 +288,13 @@ class TractListFragment :
      * Callbacks
      */
 
-    override fun onTractSelected(tractId: UUID) {
+    private fun saveCurrentListPosition() {
         val index = tractLayout.findFirstVisibleItemPosition()
         tractListViewModel.selectedTractPosition = index
+    }
 
+    override fun onTractSelected(tractId: UUID) {
+        saveCurrentListPosition()
         callbacks?.onTractSelected(tractId)
     }
 
@@ -293,6 +311,7 @@ class TractListFragment :
         val list = tractListViewModel.getSavedTractWithPictures(tractId)?.pictures
 
         list?.toTypedArray()?.let {
+            saveCurrentListPosition()
             callbacks?.onTractPictureSelected(it, imageIndex)
         }
     }

@@ -21,6 +21,7 @@
             app:popEnterAnim="@anim/wait"
             app:popExitAnim="@anim/slide_right" />
     </fragment>
+
     <fragment
         android:id="@+id/tractListFragment"
         android:name="com.onion.ktatractcollection.Fragments.TractList.TractListFragment"

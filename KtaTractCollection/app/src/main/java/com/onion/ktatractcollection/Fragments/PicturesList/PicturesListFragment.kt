@@ -22,8 +22,7 @@ class PicturesListFragment : Fragment(), PictureItemCallback {
 
     interface Callbacks {
         fun onPictureListSelected(list: Array<TractPicture>,
-                                  pictureIndex: Int,
-                                  pictureView: View)
+                                  pictureIndex: Int)
     }
 
     /**
@@ -116,7 +115,7 @@ class PicturesListFragment : Fragment(), PictureItemCallback {
 
     override fun onPictureSelected(path: String) {
         val index = pictures.indexOfFirst { it.photoFilename == path }
-        callbacks?.onPictureListSelected(pictures.toTypedArray(), index, recyclerView[index])
+        callbacks?.onPictureListSelected(pictures.toTypedArray(), index)
     }
 
     override fun onDeleteButtonSelected(path: String) {
