@@ -1,6 +1,5 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
-import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.ImageButton
@@ -19,7 +18,7 @@ class TractGridViewHolder(
     /**
      * Properties
      */
-    private val pictureView: ImageView = view.findViewById(R.id.tract_image_view)
+    private val pictureView: ImageView = view.findViewById(R.id.tractImageView)
     private val contentTextView: TextView = view.findViewById(R.id.content_text)
     private val likeImageButton: ImageButton = view.findViewById(R.id.like_image_button)
 

@@ -16,6 +16,7 @@ interface TractListCallbacks {
     fun onTractSelected(tractId: UUID)
     fun onTractLongSelected(tractId: UUID)
     fun onTractLikeToggled(tractId: UUID)
+    fun onTractImageSelected(imageIndex: Int, tractId: UUID)
 }
 
 /**

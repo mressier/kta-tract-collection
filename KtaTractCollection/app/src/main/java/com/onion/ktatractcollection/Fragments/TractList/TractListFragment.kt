@@ -17,6 +17,7 @@ import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParamet
 import com.onion.ktatractcollection.Fragments.TractList.header.TractListHeaderFragment
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
+import com.onion.ktatractcollection.Models.TractPicture
 import kotlinx.android.synthetic.main.fragment_tract_list.*
 import kotlinx.android.synthetic.main.fragment_tract_list_header.*
 import java.util.*
@@ -47,6 +48,7 @@ class TractListFragment :
      */
     interface Callbacks {
         fun onTractSelected(tractId: UUID)
+        fun onTractPictureSelected(list: Array<TractPicture>, pictureIndex: Int)
     }
 
     /**
@@ -285,6 +287,14 @@ class TractListFragment :
     override fun onTractLikeToggled(tractId: UUID) {
         tractListViewModel.toggleLike(tractId)
         updateTractListContent(tractListViewModel.tractsWithPicture)
+    }
+
+    override fun onTractImageSelected(imageIndex: Int, tractId: UUID) {
+        val list = tractListViewModel.getSavedTractWithPictures(tractId)?.pictures
+
+        list?.toTypedArray()?.let {
+            callbacks?.onTractPictureSelected(it, imageIndex)
+        }
     }
 
     override fun onDelete(tractId: UUID) {

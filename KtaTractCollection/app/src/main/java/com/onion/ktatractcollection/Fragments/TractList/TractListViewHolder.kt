@@ -1,6 +1,5 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
-import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.ImageButton
@@ -24,7 +23,7 @@ class TractListViewHolder(
     private val authorText: TextView = view.findViewById(R.id.content_text)
     private val discoveryDateText: TextView = view.findViewById(R.id.discovery_date_text)
     private val datingText: TextView = view.findViewById(R.id.dating_text)
-    private val pictureView: ImageView = view.findViewById(R.id.tract_image_view)
+    private val pictureView: ImageView = view.findViewById(R.id.tractImageView)
     private val commentsTextView: TextView = view.findViewById(R.id.tract_comment_text)
     private val likeImageButton: ImageButton = view.findViewById(R.id.like_image_button)
 
@@ -105,6 +104,10 @@ class TractListViewHolder(
 
         likeImageButton.setOnClickListener {
             callbacks?.onTractLikeToggled(tract.id)
+        }
+
+        pictureView.setOnClickListener {
+            callbacks?.onTractImageSelected(0, tract.id)
         }
     }
 

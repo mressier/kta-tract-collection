@@ -72,7 +72,7 @@ class TractListViewModel: ViewModel() {
         }
     }
 
-    private fun getSavedTractWithPictures(tractId: UUID): TractWithPicture? {
+    fun getSavedTractWithPictures(tractId: UUID): TractWithPicture? {
         return tractsWithPicture.find { it.tract.id == tractId }
     }
 

@@ -14,7 +14,7 @@
             android:name="tractId"
             app:argType="string" />
         <action
-            android:id="@+id/showImages"
+            android:id="@+id/showTractImages"
             app:destination="@id/imagePagerFragment" />
     </fragment>
     <fragment
@@ -29,6 +29,9 @@
             app:exitAnim="@anim/wait"
             app:popEnterAnim="@anim/wait"
             app:popExitAnim="@anim/slide_right"/>
+        <action
+            android:id="@+id/showTractImages"
+            app:destination="@id/imagePagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/imagePagerFragment"
