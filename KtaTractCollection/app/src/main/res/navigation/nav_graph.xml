@@ -15,7 +15,11 @@
             app:argType="string" />
         <action
             android:id="@+id/showTractImages"
-            app:destination="@id/imagePagerFragment" />
+            app:destination="@id/imagePagerFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right" />
     </fragment>
     <fragment
         android:id="@+id/tractListFragment"
@@ -31,7 +35,11 @@
             app:popExitAnim="@anim/slide_right"/>
         <action
             android:id="@+id/showTractImages"
-            app:destination="@id/imagePagerFragment" />
+            app:destination="@id/imagePagerFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right" />
     </fragment>
     <fragment
         android:id="@+id/imagePagerFragment"
