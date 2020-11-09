@@ -48,20 +48,4 @@ class FabImageMenuViewModel: ViewModel() {
             tractPicture
         }
     }
-
-    fun savePictures(uri: Array<Uri>): Array<TractPicture> {
-        val tractId = this.tractId ?: repository.addEmptyTract()
-        this.tractId = tractId
-
-        val pictures = uri.map {
-            TractPicture(
-                tractId = tractId,
-                photoFilename = it.toString()
-            )
-        }
-
-        pictures.forEach { repository.addPicture(it) }
-
-        return pictures.toTypedArray()
-    }
 }
