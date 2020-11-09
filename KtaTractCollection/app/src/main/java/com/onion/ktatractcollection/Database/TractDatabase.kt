@@ -3,8 +3,6 @@ package com.onion.ktatractcollection.Database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 
@@ -13,4 +11,6 @@ import com.onion.ktatractcollection.Models.TractPicture
 abstract class TractDatabase: RoomDatabase() {
 
     abstract fun tractDao(): TractDao
+
+    abstract fun pictureDao(): PictureDao
 }

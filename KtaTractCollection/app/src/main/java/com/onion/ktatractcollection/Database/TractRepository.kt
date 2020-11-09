@@ -2,7 +2,6 @@ package com.onion.ktatractcollection.Database
 
 import android.content.Context
 import android.net.Uri
-import androidx.core.net.toFile
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.onion.ktatractcollection.Models.Tract
@@ -27,6 +26,8 @@ class TractRepository private constructor(context: Context) {
 
     private val tractDao = database.tractDao()
 
+    private val pictureDao = database.pictureDao()
+
     private val executor = Executors.newSingleThreadExecutor()
 
     private val filesDir = context.applicationContext.filesDir
@@ -40,7 +41,11 @@ class TractRepository private constructor(context: Context) {
     fun getTract(id: UUID): LiveData<Tract?> = tractDao.getTract(id)
 
     fun addTract(tract: Tract) {
-        executor.execute() { tractDao.addTract(tract) }
+        executor.execute { tractDao.addTract(tract) }
+    }
+
+    fun addTracts(tracts: List<Tract>) {
+        executor.execute { tractDao.addTracts(tracts) }
     }
 
     fun addEmptyTract(): UUID {
@@ -50,13 +55,18 @@ class TractRepository private constructor(context: Context) {
     }
 
     fun updateTract(tract: Tract) {
-        executor.execute() { tractDao.updateTract(tract) }
+        executor.execute { tractDao.updateTract(tract) }
     }
+
+    /**
+     * Tract Delete
+     */
+
 
     fun deleteTract(tract: Tract) {
         executor.execute() {
             tractDao.deleteTract(tract)
-            tractDao.deletePicturesForTract(tract.id)
+            pictureDao.deletePicturesForTract(tract.id)
         }
     }
 
@@ -65,13 +75,21 @@ class TractRepository private constructor(context: Context) {
      */
 
     fun getPictures(tractId: UUID): LiveData<List<TractPicture>> =
-        tractDao.getPicturesForTract(tractId)
+        pictureDao.getPicturesForTract(tractId)
 
     fun getPictureFile(filename: String): File = File(filesDir, filename)
 
     fun addPicture(picture: TractPicture) {
-        executor.execute() { tractDao.addPicture(picture) }
+        executor.execute() { pictureDao.addPicture(picture) }
     }
+
+    fun addPictures(pictures: List<TractPicture>) {
+        executor.execute() { pictureDao.addPictures(pictures) }
+    }
+
+    /**
+     * Pictures Delete
+     */
 
     fun deletePictures(pictures: List<TractPicture>) {
         pictures.forEach { deletePicture(it) }
@@ -79,12 +97,12 @@ class TractRepository private constructor(context: Context) {
 
     fun deletePicture(picture: TractPicture) {
         executor.execute() {
-            deleteAppPictureWithPath(picture.photoFilename)
-            tractDao.deletePicture(picture)
+            deletePicture(picture.photoFilename)
+            pictureDao.deletePicture(picture)
         }
     }
 
-    private fun deleteAppPictureWithPath(path: String) {
+    private fun deletePicture(path: String) {
         val uri = Uri.parse(path)
         val file = uri.lastPathSegment?.let { filename ->
             getPictureFile(filename)
@@ -96,6 +114,7 @@ class TractRepository private constructor(context: Context) {
      * Instance
      */
     companion object {
+
         private var INSTANCE: TractRepository? = null
 
         fun initialize(context: Context) {

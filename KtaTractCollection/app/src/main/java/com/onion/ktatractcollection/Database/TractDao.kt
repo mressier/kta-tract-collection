@@ -21,25 +21,14 @@ interface TractDao {
     @Update
     fun updateTract(tract: Tract)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addTract(tract: Tract)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @JvmSuppressWildcards
+    fun addTracts(tracts: List<Tract>)
 
     @Delete
     fun deleteTract(tract: Tract)
-
-    /**
-     * Pictures
-     */
-    @Query("SELECT * FROM tractpicture WHERE tractId=(:tractId)")
-    fun getPicturesForTract(tractId: UUID): LiveData<List<TractPicture>>
-
-    @Insert
-    fun addPicture(picture: TractPicture)
-
-    @Delete
-    fun deletePicture(picture: TractPicture)
-
-    @Query("DELETE FROM tractpicture WHERE tractId=(:tractId)")
-    fun deletePicturesForTract(tractId: UUID)
 
 }
