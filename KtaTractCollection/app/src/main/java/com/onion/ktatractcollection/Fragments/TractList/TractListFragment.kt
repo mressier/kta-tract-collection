@@ -23,8 +23,6 @@ import com.onion.ktatractcollection.shared.dialogs.showTractActionDialog
 import kotlinx.android.synthetic.main.fragment_tract_list.*
 import java.util.*
 
-private const val TAG = "TractListFragment"
-
 /**
  * A fragment representing a list of Items.
  */
@@ -327,5 +325,13 @@ class TractListFragment :
     override fun onDisplayModeChanged(displayMode: TractListParameters.DisplayMode) {
         parametersViewModel.displayMode = displayMode
         updateTractListLayout()
+    }
+
+    /**
+     * Companion
+     */
+
+    companion object {
+        private val TAG = TractListFragment::class.simpleName
     }
 }

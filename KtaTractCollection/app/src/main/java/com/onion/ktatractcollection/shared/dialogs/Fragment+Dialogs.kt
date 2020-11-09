@@ -7,7 +7,6 @@ import com.onion.ktatractcollection.R
 import kotlinx.android.synthetic.main.fragment_tract_dialog.view.*
 import java.util.*
 
-
 /**
  * Sort List Dialog
  */
