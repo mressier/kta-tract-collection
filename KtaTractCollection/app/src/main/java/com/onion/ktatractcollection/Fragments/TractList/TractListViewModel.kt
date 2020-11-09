@@ -1,5 +1,6 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
+import android.net.Uri
 import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -89,15 +90,17 @@ class TractListViewModel: ViewModel() {
      * Export
      */
 
-    fun exportCollection() {
-        exporter.export(tractsList, picturesList)
+    fun exportCollection(destination: Uri) {
+        exporter.export(destination, tractsList, picturesList)
     }
 
     /**
      * Import
      */
 
-    fun importCollection() {
+    fun importCollection(source: Uri) {
+        exporter.unzipFile(source)
+
         val tracts = exporter.importTracts() ?: listOf()
         tractRepository.addTracts(tracts)
 

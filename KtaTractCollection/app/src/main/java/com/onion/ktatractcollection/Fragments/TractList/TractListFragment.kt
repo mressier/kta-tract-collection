@@ -1,6 +1,8 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -13,6 +15,7 @@ import com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParametersViewModel
 import com.onion.ktatractcollection.Fragments.TractList.header.TractListHeaderFragment
+import com.onion.ktatractcollection.Models.MimeType
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
@@ -103,6 +106,24 @@ class TractListFragment :
         saveRecyclerViewState()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                GET_ZIP_DIRECTORY_REQUEST ->
+                    data?.data?.let { uri ->
+                        Log.i(TAG, "Get uri: $uri")
+                        tractListViewModel.exportCollection(uri)
+                    }
+                GET_ZIP_FILE_REQUEST ->
+                    data?.data?.let { uri ->
+                        Log.i(TAG, "Get uri: $uri")
+                        tractListViewModel.importCollection(uri)
+                    }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     /**
      * Menu
      */
@@ -119,15 +140,30 @@ class TractListFragment :
                 true
             }
             R.id.export_collection -> {
-                tractListViewModel.exportCollection()
+                selectZipDirectory()
                 true
             }
             R.id.import_collection -> {
-                tractListViewModel.importCollection()
+                selectZipFile()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    /**
+     * Start intent
+     */
+    private fun selectZipDirectory() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        startActivityForResult(intent, GET_ZIP_DIRECTORY_REQUEST)
+    }
+
+    private fun selectZipFile() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = MimeType.ZIP.string
+        startActivityForResult(intent, GET_ZIP_FILE_REQUEST)
+
     }
 
     /**
@@ -335,5 +371,8 @@ class TractListFragment :
 
     companion object {
         private val TAG = TractListFragment::class.simpleName
+
+        private const val GET_ZIP_DIRECTORY_REQUEST = 0
+        private const val GET_ZIP_FILE_REQUEST = 1
     }
 }

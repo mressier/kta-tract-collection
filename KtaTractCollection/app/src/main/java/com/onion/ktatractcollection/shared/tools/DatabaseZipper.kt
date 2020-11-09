@@ -1,7 +1,12 @@
 package com.onion.ktatractcollection.shared.tools
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toFile
+import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
+import com.onion.ktatractcollection.Models.MimeType
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.shared.extensions.jsonToObject
@@ -10,7 +15,7 @@ import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-class DatabaseZipper(context: Context) {
+class DatabaseZipper(private val context: Context) {
 
     /**
      * Properties
@@ -22,7 +27,7 @@ class DatabaseZipper(context: Context) {
      * Methods | Export
      */
 
-    fun export(tracts: List<Tract>, pictures: List<TractPicture>) {
+    fun export(destination: Uri, tracts: List<Tract>, pictures: List<TractPicture>) {
         Log.i(TAG, "Export tract and pictures collections")
 
         export(tracts, TRACT_LIST_JSON_FILENAME)
@@ -31,9 +36,15 @@ class DatabaseZipper(context: Context) {
         val files = arrayOf(
             TRACT_LIST_JSON_FILENAME,
             PICTURE_LIST_JSON_FILENAME
-        ) + pictures.map { it.photoFilename }
+        ) + pictures.map { it.photoFilename.toUri().lastPathSegment ?: "" }
 
-        zip(ZIP_FILENAME, files)
+        val documentFile = DocumentFile.fromTreeUri(context, destination)
+        val destinationFile =
+            documentFile?.createFile(MimeType.ZIP.string, ZIP_FILENAME)
+
+        destinationFile?.let { file ->
+            Zipper(context).zip(file.uri, files.map { File(filesDir, it) }.toTypedArray())
+        }
     }
 
     private fun export(objectToExport: Any, filename: String) {
@@ -46,6 +57,10 @@ class DatabaseZipper(context: Context) {
     /**
      * Methods | Import
      */
+
+    fun unzipFile(uri: Uri) {
+        Unzipper(context).unzip(uri)
+    }
 
     fun importTracts(): List<Tract>? {
         return importObject<List<Tract>>(TRACT_LIST_JSON_FILENAME)
@@ -68,53 +83,6 @@ class DatabaseZipper(context: Context) {
     }
 
     /**
-     * Methods | Zip export
-     */
-
-    fun zip(filename: String, files: Array<String>) {
-        try {
-            val destinationFile = FileOutputStream(File(filesDir, filename))
-            val outputZip = ZipOutputStream(BufferedOutputStream(destinationFile))
-
-            files.forEach { filename ->
-                addFileToZip(filename, outputZip)
-            }
-
-            outputZip.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun addFileToZip(filename: String, zip: ZipOutputStream) {
-        val file = File(filesDir, filename)
-
-        Log.v("Compress", "Adding: ${file.path}")
-
-        if (!file.exists()) { return }
-
-        addFileToZip(file, zip)
-    }
-
-    // Extract from https://androidpedia.net/en/tutorial/8137/zip-file-in-android
-    private fun addFileToZip(file: File, zip: ZipOutputStream) {
-
-        val data = ByteArray(BUFFER)
-        val fi = FileInputStream(file)
-        val origin = BufferedInputStream(fi, BUFFER)
-
-        val entry = ZipEntry(file.path.substring(file.path.lastIndexOf("/") + 1))
-        zip.putNextEntry(entry)
-
-        var count: Int
-        while (origin.read(data, 0, BUFFER).also { count = it } != -1) {
-            zip.write(data, 0, count)
-        }
-
-        origin.close()
-    }
-
-    /**
      * Companion
      */
 
@@ -123,7 +91,6 @@ class DatabaseZipper(context: Context) {
         private const val TRACT_LIST_JSON_FILENAME = "tractList.json"
         private const val PICTURE_LIST_JSON_FILENAME = "pictureList.json"
         private const val ZIP_FILENAME = "export.zip"
-        private const val BUFFER = 2048
 
         private val TAG = DatabaseZipper::class.simpleName ?: "Default"
 
