@@ -2,15 +2,15 @@ package com.onion.ktatractcollection.shared.tools
 
 import android.content.Context
 import android.util.Log
-import com.onion.ktatractcollection.Database.TractRepository
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.shared.extensions.jsonToObject
 import com.onion.ktatractcollection.shared.extensions.toJson
-import java.io.File
-import java.lang.IllegalStateException
+import java.io.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
-class TractExporter(context: Context) {
+class DatabaseZipper(context: Context) {
 
     /**
      * Properties
@@ -28,6 +28,12 @@ class TractExporter(context: Context) {
         export(tracts, TRACT_LIST_JSON_FILENAME)
         export(pictures, PICTURE_LIST_JSON_FILENAME)
 
+        val files = arrayOf(
+            TRACT_LIST_JSON_FILENAME,
+            PICTURE_LIST_JSON_FILENAME
+        ) + pictures.map { it.photoFilename }
+
+        zip(ZIP_FILENAME, files)
     }
 
     private fun export(objectToExport: Any, filename: String) {
@@ -62,6 +68,53 @@ class TractExporter(context: Context) {
     }
 
     /**
+     * Methods | Zip export
+     */
+
+    fun zip(filename: String, files: Array<String>) {
+        try {
+            val destinationFile = FileOutputStream(File(filesDir, filename))
+            val outputZip = ZipOutputStream(BufferedOutputStream(destinationFile))
+
+            files.forEach { filename ->
+                addFileToZip(filename, outputZip)
+            }
+
+            outputZip.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun addFileToZip(filename: String, zip: ZipOutputStream) {
+        val file = File(filesDir, filename)
+
+        Log.v("Compress", "Adding: ${file.path}")
+
+        if (!file.exists()) { return }
+
+        addFileToZip(file, zip)
+    }
+
+    // Extract from https://androidpedia.net/en/tutorial/8137/zip-file-in-android
+    private fun addFileToZip(file: File, zip: ZipOutputStream) {
+
+        val data = ByteArray(BUFFER)
+        val fi = FileInputStream(file)
+        val origin = BufferedInputStream(fi, BUFFER)
+
+        val entry = ZipEntry(file.path.substring(file.path.lastIndexOf("/") + 1))
+        zip.putNextEntry(entry)
+
+        var count: Int
+        while (origin.read(data, 0, BUFFER).also { count = it } != -1) {
+            zip.write(data, 0, count)
+        }
+
+        origin.close()
+    }
+
+    /**
      * Companion
      */
 
@@ -69,16 +122,18 @@ class TractExporter(context: Context) {
 
         private const val TRACT_LIST_JSON_FILENAME = "tractList.json"
         private const val PICTURE_LIST_JSON_FILENAME = "pictureList.json"
+        private const val ZIP_FILENAME = "export.zip"
+        private const val BUFFER = 2048
 
-        private val TAG = TractExporter::class.simpleName ?: "Default"
+        private val TAG = DatabaseZipper::class.simpleName ?: "Default"
 
-        private var INSTANCE: TractExporter? = null
+        private var INSTANCE: DatabaseZipper? = null
 
         fun initialize(context: Context) {
-            INSTANCE = TractExporter(context)
+            INSTANCE = DatabaseZipper(context)
         }
 
-        fun get(): TractExporter {
+        fun get(): DatabaseZipper {
             return INSTANCE ?: throw IllegalStateException("TractExporter must be initialized")
         }
      }
