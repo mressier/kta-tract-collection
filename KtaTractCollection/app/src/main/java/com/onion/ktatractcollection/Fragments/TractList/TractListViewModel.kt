@@ -1,5 +1,6 @@
 package com.onion.ktatractcollection.Fragments.TractList
 
+import android.content.Context
 import android.net.Uri
 import android.os.Parcelable
 import androidx.lifecycle.LiveData
@@ -7,7 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.onion.ktatractcollection.Database.TractRepository
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
-import com.onion.ktatractcollection.shared.tools.DatabaseZipper
+import com.onion.ktatractcollection.shared.tools.database.DatabaseExporter
+import com.onion.ktatractcollection.shared.tools.database.DatabaseImporter
 import java.util.*
 
 
@@ -18,8 +20,8 @@ class TractListViewModel: ViewModel() {
     /**
      * Properties
      */
+
     private val tractRepository = TractRepository.get()
-    private val exporter = DatabaseZipper.get()
 
     /**
      * Live Data
@@ -90,21 +92,22 @@ class TractListViewModel: ViewModel() {
      * Export
      */
 
-    fun exportCollection(destination: Uri) {
-        exporter.export(destination, tractsList, picturesList)
+    fun exportCollection(context: Context, destination: Uri) {
+        DatabaseExporter(context).export(destination, tractsList, picturesList)
     }
 
     /**
      * Import
      */
 
-    fun importCollection(source: Uri) {
-        exporter.unzipFile(source)
+    fun importCollection(context: Context, source: Uri) {
+        val importer = DatabaseImporter(context)
+        importer.unzipFile(source)
 
-        val tracts = exporter.importTracts() ?: listOf()
+        val tracts = importer.importTracts() ?: listOf()
         tractRepository.addTracts(tracts)
 
-        val pictures = exporter.importPictures() ?: listOf()
+        val pictures = importer.importPictures() ?: listOf()
         tractRepository.addPictures(pictures)
     }
 }

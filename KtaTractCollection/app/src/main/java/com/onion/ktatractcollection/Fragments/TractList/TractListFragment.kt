@@ -111,13 +111,11 @@ class TractListFragment :
             when (requestCode) {
                 GET_ZIP_DIRECTORY_REQUEST ->
                     data?.data?.let { uri ->
-                        Log.i(TAG, "Get uri: $uri")
-                        tractListViewModel.exportCollection(uri)
+                        tractListViewModel.exportCollection(requireContext(), uri)
                     }
                 GET_ZIP_FILE_REQUEST ->
                     data?.data?.let { uri ->
-                        Log.i(TAG, "Get uri: $uri")
-                        tractListViewModel.importCollection(uri)
+                        tractListViewModel.importCollection(requireContext(), uri)
                     }
             }
         }
@@ -163,7 +161,6 @@ class TractListFragment :
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = MimeType.ZIP.string
         startActivityForResult(intent, GET_ZIP_FILE_REQUEST)
-
     }
 
     /**
