@@ -119,9 +119,11 @@ class TractListFragment :
                 true
             }
             R.id.export_collection -> {
+                tractListViewModel.exportCollection()
                 true
             }
             R.id.import_collection -> {
+                tractListViewModel.importCollection()
                 true
             }
             else -> super.onOptionsItemSelected(item)

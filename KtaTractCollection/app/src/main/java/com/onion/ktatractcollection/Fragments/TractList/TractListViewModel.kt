@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.onion.ktatractcollection.Database.TractRepository
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
+import com.onion.ktatractcollection.shared.tools.DatabaseZipper
 import java.util.*
 
 
@@ -17,6 +18,7 @@ class TractListViewModel: ViewModel() {
      * Properties
      */
     private val tractRepository = TractRepository.get()
+    private val exporter = DatabaseZipper.get()
 
     /**
      * Live Data
@@ -24,6 +26,9 @@ class TractListViewModel: ViewModel() {
 
     /** Tract list saved locally **/
     val tracts: LiveData<List<Tract>> = tractRepository.getTracts()
+
+    private var tractsList: List<Tract> = listOf()
+    private var picturesList: MutableList<TractPicture> = mutableListOf()
 
     var tractsWithPicture: List<TractWithPicture> = listOf()
 
@@ -47,6 +52,8 @@ class TractListViewModel: ViewModel() {
      */
 
     fun saveAsTractsWithPicture(tracts: List<Tract>) {
+        tractsList = tracts
+
         val newTractsWithPicture = tracts.map { tract ->
             val oldPicture = getSavedTractWithPictures(tract.id)?.pictures
             TractWithPicture(tract, oldPicture ?: listOf())
@@ -56,6 +63,10 @@ class TractListViewModel: ViewModel() {
     }
 
     fun addPicturesToTractItem(tractId: UUID, pictures: List<TractPicture>) {
+        val oldPictures = picturesList.filter { it.tractId == tractId }
+        picturesList.removeAll(oldPictures)
+        picturesList.addAll(pictures)
+
         getSavedTractWithPictures(tractId)?.pictures = pictures
     }
 
@@ -74,4 +85,23 @@ class TractListViewModel: ViewModel() {
         return tractsWithPicture.find { it.tract.id == tractId }
     }
 
+    /**
+     * Export
+     */
+
+    fun exportCollection() {
+        exporter.export(tractsList, picturesList)
+    }
+
+    /**
+     * Import
+     */
+
+    fun importCollection() {
+        val tracts = exporter.importTracts() ?: listOf()
+        tractRepository.addTracts(tracts)
+
+        val pictures = exporter.importPictures() ?: listOf()
+        tractRepository.addPictures(pictures)
+    }
 }
