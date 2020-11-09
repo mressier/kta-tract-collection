@@ -1,6 +1,7 @@
 package com.onion.ktatractcollection.shared.dialogs
 
 import android.app.AlertDialog
+import android.content.Context
 import androidx.fragment.app.Fragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
 import com.onion.ktatractcollection.R
@@ -15,16 +16,17 @@ interface SortListCallbacks {
     fun onParameterSelected(parameter: TractListParameters)
 }
 
-fun Fragment.showSortListDialog(parameters: TractListParameters, callbacks: SortListCallbacks): AlertDialog {
+fun Fragment.showSortListDialog(
+    parameters: TractListParameters,
+    callbacks: SortListCallbacks
+): AlertDialog {
     val builder = AlertDialog.Builder(requireContext())
 
-    setupChoiceItems(builder, parameters, callbacks)
-
+    builder.setChoiceItems(parameters, callbacks)
     builder.setTitle(R.string.tract_sort_dialog_title)
     builder.setPositiveButton(R.string.tract_sort_button) { dialogInterface, _ ->
         dialogInterface.dismiss()
     }
-
     builder.setCancelable(true)
 
     val alertDialog = builder.create()
@@ -32,16 +34,17 @@ fun Fragment.showSortListDialog(parameters: TractListParameters, callbacks: Sort
     return alertDialog
 }
 
-private fun Fragment.setupChoiceItems(
-    builder: AlertDialog.Builder,
+/** AlertDialog custom set **/
+
+private fun AlertDialog.Builder.setChoiceItems(
     parameters: TractListParameters,
     callbacks: SortListCallbacks
 ) {
     val items = TractListParameters.SortBy.values()
     val selectedItem = parameters.sortOption.ordinal
-    val strings = items.map { getString(it.stringId) }.toTypedArray()
+    val strings = items.map { context.getString(it.stringId) }.toTypedArray()
 
-    builder.setSingleChoiceItems(strings, selectedItem) { _, index ->
+    setSingleChoiceItems(strings, selectedItem) { _, index ->
         val newParameters = TractListParameters().apply {
             sortOption = TractListParameters.SortBy.values()[index]
         }
