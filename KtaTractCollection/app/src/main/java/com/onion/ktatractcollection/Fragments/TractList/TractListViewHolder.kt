@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
+import com.onion.ktatractcollection.shared.extensions.shortString
 import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.*
 import java.text.DateFormat
 import java.util.*
@@ -28,10 +29,6 @@ class TractListViewHolder(
      * Properties
      */
 
-    private val dateInstance: DateFormat by lazy {
-        DateFormat.getDateInstance(DateFormat.SHORT)
-    }
-
     override fun toString(): String {
         return super.toString() + " '" + listView.authorText.text + "'"
     }
@@ -49,8 +46,8 @@ class TractListViewHolder(
     private fun setupTract(tract: Tract) {
         setupAuthor(tract.author)
         setupComment(tract.comment)
-        setupDiscoveryDate(tract.discoveryDate)
-        setupDatingDate(tract.dating)
+        setupDiscoveryDate(tract.discoveryDate.shortString)
+        setupDatingDate(tract.dating?.shortString)
         setupLikeButton(tract.isFavorite)
     }
 
@@ -66,31 +63,31 @@ class TractListViewHolder(
         }
     }
 
-    private fun setupDiscoveryDate(date: Date) {
-        listView.discoveryDateText.text = itemView.context.getString(R.string.tract_found_on)
-            .format(dateInstance.format(date))
+    private fun setupDiscoveryDate(date: String) {
+        listView.discoveryDateText.text = itemView.context.getString(R.string.tract_found_on).format(date)
     }
 
-    private fun setupDatingDate(date: Date?) {
+    private fun setupDatingDate(date: String?) {
         date?.let {
-            listView.datingText.text =
-                itemView.context.getString(R.string.tract_dating_from).format(dateInstance.format(it))
+            listView.datingText.text = itemView.context.getString(R.string.tract_dating_from).format(it)
         } ?: run { listView.datingText.text = "" }
     }
 
     private fun setupLikeButton(isFavorite: Boolean) {
-        listView.likeImageButton.apply {
-            val resource = if (isFavorite) {
-                R.drawable.ic_baseline_star_24
-            } else {
-                R.drawable.ic_baseline_star_border_24
-            }
+        val resource = if (isFavorite) {
+            R.drawable.ic_baseline_star_24
+        } else {
+            R.drawable.ic_baseline_star_border_24
+        }
 
-            val descriptionId = if (isFavorite) {
-                R.string.btn_desc_do_not_like_action
-            } else {
-                R.string.btn_desc_like_action
-            }
+        val descriptionId = if (isFavorite) {
+            R.string.btn_desc_do_not_like_action
+        } else {
+            R.string.btn_desc_like_action
+        }
+
+        listView.likeImageButton.apply {
+
             setImageResource(resource)
             contentDescription = itemView.context.getString(descriptionId)
         }

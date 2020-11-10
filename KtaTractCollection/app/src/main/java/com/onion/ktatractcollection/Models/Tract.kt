@@ -2,6 +2,7 @@ package com.onion.ktatractcollection.Models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.onion.ktatractcollection.shared.extensions.*
 import java.util.*
 
 /**
@@ -27,8 +28,13 @@ data class Tract(
     /**
      * Methods
      */
+
     fun contains(text: String): Boolean {
         return author.toLowerCase(Locale.ROOT).contains(text)
                 || comment.toLowerCase(Locale.ROOT).contains(text)
+                || (dating?.longString ?: "").toLowerCase(Locale.ROOT).contains(text)
+                || (dating?.shortString ?: "").toLowerCase(Locale.ROOT).contains(text)
+                || discoveryDate.longString.toLowerCase(Locale.ROOT).contains(text)
+                || discoveryDate.shortString.toLowerCase(Locale.ROOT).contains(text)
     }
 }

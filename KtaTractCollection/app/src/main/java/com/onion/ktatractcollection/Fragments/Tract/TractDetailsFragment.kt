@@ -5,15 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputEditText
+import com.onion.ktatractcollection.shared.extensions.*
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.DatePickerFragment
 import com.onion.ktatractcollection.shared.tools.TextChangedWatcher
 import kotlinx.android.synthetic.main.fragment_tract_details.*
-import java.text.DateFormat
 import java.util.*
 
 class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
@@ -69,9 +67,8 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
         authorTextField.setText(tract.author)
         commentsTextField.setText(tract.comment)
 
-        val dateInstance =  DateFormat.getDateInstance(DateFormat.LONG)
-        discoveryDateButton.text = dateInstance.format(tract.discoveryDate)
-        datingButton.text = tract.dating?.let { dateInstance.format(it) } ?: "UNKNOWN"
+        discoveryDateButton.text = tract.discoveryDate.longString
+        datingButton.text = tract.dating?.longString ?: getString(R.string.unknown)
     }
 
     /**
