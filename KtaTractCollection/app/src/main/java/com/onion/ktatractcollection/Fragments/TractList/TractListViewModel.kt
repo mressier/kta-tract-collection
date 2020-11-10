@@ -10,6 +10,8 @@ import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.shared.tools.database.DatabaseExporter
 import com.onion.ktatractcollection.shared.tools.database.DatabaseImporter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import java.util.*
 
 
@@ -102,13 +104,15 @@ class TractListViewModel: ViewModel() {
      */
 
     fun importCollection(context: Context, source: Uri) {
-        val importer = DatabaseImporter(context)
-        importer.unzipFile(source)
+        GlobalScope.async {
+            val importer = DatabaseImporter(context)
+            importer.unzipFile(source)
 
-        val tracts = importer.importTracts() ?: listOf()
-        tractRepository.addTracts(tracts)
+            val tracts = importer.importTracts() ?: listOf()
+            tractRepository.addTracts(tracts)
 
-        val pictures = importer.importPictures() ?: listOf()
-        tractRepository.addPictures(pictures)
+            val pictures = importer.importPictures() ?: listOf()
+            tractRepository.addPictures(pictures)
+        }
     }
 }

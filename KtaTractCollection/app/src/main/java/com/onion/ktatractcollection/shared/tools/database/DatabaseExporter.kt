@@ -10,6 +10,8 @@ import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.shared.extensions.toJson
 import com.onion.ktatractcollection.shared.tools.zip.Zipper
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import java.io.*
 
 class DatabaseExporter(private val context: Context) {
@@ -27,21 +29,24 @@ class DatabaseExporter(private val context: Context) {
     fun export(destination: Uri, tracts: List<Tract>, pictures: List<TractPicture>) {
         Log.i(TAG, "Export tract and pictures collections")
 
-        export(tracts, DatabaseFiles.TRACT_LIST_JSON_FILENAME)
-        export(pictures, DatabaseFiles.PICTURE_LIST_JSON_FILENAME)
+        GlobalScope.async {
+            export(tracts, DatabaseFiles.TRACT_LIST_JSON_FILENAME)
+            export(pictures, DatabaseFiles.PICTURE_LIST_JSON_FILENAME)
 
-        val files = arrayOf(
-            DatabaseFiles.TRACT_LIST_JSON_FILENAME,
-            DatabaseFiles.PICTURE_LIST_JSON_FILENAME
-        ) + pictures.map { it.photoFilename.toUri().lastPathSegment ?: "" }
+            val files = arrayOf(
+                DatabaseFiles.TRACT_LIST_JSON_FILENAME,
+                DatabaseFiles.PICTURE_LIST_JSON_FILENAME
+            ) + pictures.map { it.photoFilename.toUri().lastPathSegment ?: "" }
 
-        val documentFile = DocumentFile.fromTreeUri(context, destination)
-        val destinationFile =
-            documentFile?.createFile(MimeType.ZIP.string, DatabaseFiles.ZIP_FILENAME)
+            val documentFile = DocumentFile.fromTreeUri(context, destination)
+            val destinationFile =
+                documentFile?.createFile(MimeType.ZIP.string, DatabaseFiles.ZIP_FILENAME)
 
-        destinationFile?.let { file ->
-            Zipper(context).zip(file.uri, files.map { File(filesDir, it) }.toTypedArray())
+            destinationFile?.let { file ->
+                Zipper(context).zip(file.uri, files.map { File(filesDir, it) }.toTypedArray())
+            }
         }
+
     }
 
     private fun export(objectToExport: Any, filename: String) {

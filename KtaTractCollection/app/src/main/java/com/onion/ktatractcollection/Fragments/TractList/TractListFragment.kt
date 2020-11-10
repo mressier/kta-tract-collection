@@ -204,6 +204,9 @@ class TractListFragment :
             noTractResultText.visibility = View.GONE
             updateNoTractImageVisibility(previousTracts, newTracts)
             return
+        } else {
+            noTractImageView.visibility = View.GONE
+            noTractText.visibility = View.GONE
         }
 
         if (previousTracts.isNotEmpty() && newTracts.isNotEmpty()) { return }
