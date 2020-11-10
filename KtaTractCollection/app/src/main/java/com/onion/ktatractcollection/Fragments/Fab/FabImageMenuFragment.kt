@@ -187,6 +187,9 @@ class FabImageMenuFragment : Fragment() {
         if (imageMenuViewModel.shouldShowMultipleImport) {
             multipleImportButton.show()
             multipleImportText.visibility = View.VISIBLE
+        } else {
+            multipleImportButton.hide()
+            multipleImportText.visibility = View.GONE
         }
 
         backgroundView.isClickable = true
