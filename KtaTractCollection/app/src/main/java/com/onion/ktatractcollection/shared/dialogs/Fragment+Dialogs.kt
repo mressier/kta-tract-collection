@@ -3,8 +3,9 @@ package com.onion.ktatractcollection.shared.dialogs
 import android.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.onion.ktatractcollection.R
-import kotlinx.android.synthetic.main.fragment_loading_dialog.view.*
-import kotlinx.android.synthetic.main.fragment_tract_dialog.view.*
+import kotlinx.android.synthetic.main.dialog_loading_view.view.*
+import kotlinx.android.synthetic.main.dialog_text_view.view.*
+import kotlinx.android.synthetic.main.dialog_tract_action.view.*
 import java.util.*
 
 /**
@@ -22,12 +23,29 @@ interface TractActionCallback {
 fun Fragment.showLoadingDialog(): AlertDialog {
     val builder = AlertDialog.Builder(requireContext())
 
-    val customView = layoutInflater.inflate(R.layout.fragment_loading_dialog, null)
+    val customView = layoutInflater.inflate(R.layout.dialog_loading_view, null)
     customView.progressBar.isIndeterminate = true
 
     builder.setTitle(R.string.loading_in_progress)
     builder.setView(customView)
     builder.setCancelable(false)
+
+    val alert = builder.create()
+    alert.show()
+    return alert
+}
+
+fun Fragment.showErrorDialog(title: String, text: String): AlertDialog {
+    val builder = AlertDialog.Builder(requireContext())
+    val textView = layoutInflater.inflate(R.layout.dialog_text_view, null).apply {
+        textView.text = text
+    }
+
+    builder.setTitle(title)
+    builder.setView(textView)
+    builder.setPositiveButton(R.string.ok) { dialogInterface, _ ->
+        dialogInterface.dismiss()
+    }
 
     val alert = builder.create()
     alert.show()
@@ -44,7 +62,7 @@ fun Fragment.showLoadingDialog(): AlertDialog {
 fun Fragment.showTractActionDialog(tractId: UUID, callbacks: TractActionCallback): AlertDialog {
     val builder = AlertDialog.Builder(requireContext())
 
-    val customView = layoutInflater.inflate(R.layout.fragment_tract_dialog, null)
+    val customView = layoutInflater.inflate(R.layout.dialog_tract_action, null)
     builder.setView(customView)
     builder.setNegativeButton(getString(android.R.string.cancel)) { dialog, _ -> dialog.dismiss() }
 

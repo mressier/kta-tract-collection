@@ -131,13 +131,15 @@ class TractListFragment :
         GlobalScope.async {
             try {
                 tractListViewModel.importCollection(requireContext(), uri)
+                requireActivity().runOnUiThread { dialog.dismiss() }
             } catch (e: FileNotFoundException) {
                 requireActivity().runOnUiThread {
+                    dialog.dismiss()
+
+                    val title = getString(R.string.import_failed)
                     val text = getString(R.string.import_missing_files).format(e.message)
-                    Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
+                    showErrorDialog(title, text)
                 }
-            } finally {
-                requireActivity().runOnUiThread { dialog.dismiss() }
             }
         }
     }

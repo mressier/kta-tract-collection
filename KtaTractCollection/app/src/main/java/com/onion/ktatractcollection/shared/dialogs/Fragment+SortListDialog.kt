@@ -7,7 +7,7 @@ import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
 import com.onion.ktatractcollection.R
-import kotlinx.android.synthetic.main.fragment_tract_list_sort_dialog.view.*
+import kotlinx.android.synthetic.main.dialog_sort_tract_list.view.*
 
 /**
  * Sort List Dialog
@@ -67,7 +67,7 @@ private fun getParameters(view: View): TractListParameters {
 private fun Fragment.inflateTractListSortView(
     parameters: TractListParameters,
 ): View {
-    val customView = layoutInflater.inflate(R.layout.fragment_tract_list_sort_dialog, null)
+    val customView = layoutInflater.inflate(R.layout.dialog_sort_tract_list, null)
     val buttonValues = TractListParameters.SortBy.values()
     val radioButtons = buttonValues.map { requireContext().getString(it.stringId) }.toTypedArray()
 

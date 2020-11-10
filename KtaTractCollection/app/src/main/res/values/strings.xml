@@ -49,7 +49,8 @@
     <string name="sort_favorite">Show only favorites</string>
 
     <string name="loading_in_progress">Loading in progress</string>
-    <string name="import_missing_files">Missing some files in zip: %1$s</string>
+    <string name="import_failed">Import failed</string>
+    <string name="import_missing_files">Some of these files seems to be missing in the zip: %1$s.</string>
 
     <string name="take_picture">Take a picture</string>
     <string name="choose_from_gallery">Choose from gallery</string>
