@@ -361,6 +361,14 @@ class TractListFragment :
         callbacks?.onTractSelected(tractId)
     }
 
+    override fun onTractsSaved(tractIds: Array<UUID>) {
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.add_tracts_success).format(tractIds.size),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     override fun onDisplayModeChanged(displayMode: TractListParameters.DisplayMode) {
         parametersViewModel.displayMode = displayMode
         updateTractListLayout()

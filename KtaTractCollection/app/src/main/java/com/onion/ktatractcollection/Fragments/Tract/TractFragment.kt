@@ -98,7 +98,11 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
     }
 
     override fun onTractSaved(tractId: UUID) {
-        println("saved")
+        Log.v(TAG, "Tract saved $tractId")
+    }
+
+    override fun onTractsSaved(tractIds: Array<UUID>) {
+        Log.e(TAG, "Not implemented - no multiple import")
     }
 
     /**

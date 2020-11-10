@@ -29,6 +29,7 @@ class FabImageMenuFragment : Fragment() {
 
     interface Callbacks {
         fun onTractSaved(tractId: UUID)
+        fun onTractsSaved(tractIds: Array<UUID>)
     }
 
     /**
@@ -90,6 +91,7 @@ class FabImageMenuFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
+                REQUEST_MULTIPLE_IMPORT_INTENT -> data?.let { saveTracts(it) }
                 REQUEST_GALLERY_INTENT -> data?.let { savePictures(it) }
                 REQUEST_CAMERA_INTENT -> savePicture()
             }
@@ -140,6 +142,25 @@ class FabImageMenuFragment : Fragment() {
         }
 
         imageMenuViewModel.tractId?.let { callbacks?.onTractSaved(it) }
+
+        hideMenu()
+    }
+
+    private fun saveTracts(intent: Intent) {
+        val picturesUri = intent.dataAsUriArray()
+
+        val tracts = picturesUri.map { uri ->
+            val tract = imageMenuViewModel.generateTract()
+            val dest = imageMenuViewModel.generatePictureFile().toUri()
+
+            if (requireContext().contentResolver.copy(uri, dest)) {
+                imageMenuViewModel.savePictureFile()
+            }
+
+            tract
+        }
+
+        callbacks?.onTractsSaved(tracts.toTypedArray())
 
         hideMenu()
     }
@@ -229,6 +250,15 @@ class FabImageMenuFragment : Fragment() {
     }
 
     /**
+     * Multiple Gallery
+     */
+
+    private fun multipleImportFromGallery() {
+        val galleryIntent = buildGalleryIntent(retainDocument = true, allowMultipleFiles = true)
+        startActivityForResult(galleryIntent, REQUEST_MULTIPLE_IMPORT_INTENT)
+    }
+
+    /**
      * Setup
      */
 
@@ -251,6 +281,8 @@ class FabImageMenuFragment : Fragment() {
         cameraButton.setOnClickListener { takePicture() }
 
         galleryButton.setOnClickListener { importFromGallery() }
+
+        multipleImportButton.setOnClickListener { multipleImportFromGallery() }
     }
 
     /**
@@ -259,6 +291,7 @@ class FabImageMenuFragment : Fragment() {
     companion object {
         private const val REQUEST_CAMERA_INTENT = 0
         private const val REQUEST_GALLERY_INTENT = 1
+        private const val REQUEST_MULTIPLE_IMPORT_INTENT = 2
 
         private val TAG = FabImageMenuFragment::class.simpleName ?: "Default"
     }

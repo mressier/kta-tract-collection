@@ -35,6 +35,12 @@ class FabImageMenuViewModel: ViewModel() {
         return file
     }
 
+    fun generateTract(): UUID {
+        val tract = repository.addEmptyTract()
+        this.tractId = tract
+        return tract
+    }
+
     fun savePictureFile(): TractPicture? {
         return pictureFile?.let { file ->
 
