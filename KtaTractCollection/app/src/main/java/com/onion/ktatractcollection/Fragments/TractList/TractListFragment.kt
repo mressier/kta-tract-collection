@@ -85,10 +85,7 @@ class TractListFragment :
 
         setupView()
         setupButtonListener()
-
-        if (savedInstanceState == null) {
-            setupViewModelObserver()
-        }
+        setupViewModelObserver()
     }
 
     override fun onAttach(context: Context) {
@@ -231,9 +228,14 @@ class TractListFragment :
     }
 
     private fun setupRecyclerView() {
-        Log.d(TAG, "Setup Recycler view !")
+        val parameters = parametersViewModel.parameters
+
+        tractLayout = GridLayoutManager(context, parameters.displayMode.spanCount)
         tractAdapter = TractListAdapter(this)
-        tractLayout = GridLayoutManager(context, 1)
+        tractAdapter.parameters = parameters
+
+        tractAdapter.submitList(tractListViewModel.tractsWithPicture)
+        tractAdapter.notifyDataSetChanged()
 
         tractRecyclerView.adapter = tractAdapter
         tractRecyclerView.layoutManager = tractLayout
@@ -262,7 +264,7 @@ class TractListFragment :
             owner = viewLifecycleOwner,
             onChanged = { items ->
                 items.let {
-                    Log.i(TAG, "Got items ${it.size}")
+                    Log.i(TAG, "Got tract items ${it.size}")
                     currentTracts = items
                     setupImagesForTracts()
                 }
@@ -273,6 +275,7 @@ class TractListFragment :
     private fun setupImagesForTracts() {
         val tracts = parametersViewModel.getDisplayedTracts(currentTracts)
         var count = tracts.size
+
         tractListViewModel.saveAsTractsWithPicture(tracts)
 
         tracts.map { it.id }.forEach { tractId ->
