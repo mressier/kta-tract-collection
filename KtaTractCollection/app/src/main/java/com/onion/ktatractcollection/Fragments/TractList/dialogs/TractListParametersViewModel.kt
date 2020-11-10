@@ -23,10 +23,14 @@ class TractListParametersViewModel: ViewModel() {
         get() = parameters.displayMode
         set(value) { parameters.displayMode = value }
 
+    var showOnlyFavorites: Boolean
+        get() = parameters.showOnlyFavorites
+        set(value) { parameters.showOnlyFavorites = value }
+
     var searchText: String? = null
 
     val isInSearchMode: Boolean
-        get() = !searchText.isNullOrBlank()
+        get() = !searchText.isNullOrBlank() || showOnlyFavorites
 
     /**
      * Methods
@@ -37,17 +41,12 @@ class TractListParametersViewModel: ViewModel() {
         return filterTractsWithSearchText(sortedTracts)
     }
 
-    fun reverseDisplayMode(): TractListParameters.DisplayMode {
-        parameters.reverseDisplayMode()
-        return parameters.displayMode
-    }
-
     /**
      * Private Methods
      */
 
     private fun sortTracts(tracts: List<Tract>): List<Tract> {
-        return parameters.sortList(tracts)
+        return parameters.filterAndSortList(tracts)
     }
 
     private fun filterTractsWithSearchText(tracts: List<Tract>): List<Tract> {

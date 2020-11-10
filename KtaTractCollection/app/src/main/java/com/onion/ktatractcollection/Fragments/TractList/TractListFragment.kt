@@ -375,6 +375,7 @@ class TractListFragment :
             override fun onParameterSelected(parameter: TractListParameters) {
                 parametersViewModel.sortOrder = parameter.sortOrder
                 parametersViewModel.sortBy = parameter.sortOption
+                parametersViewModel.showOnlyFavorites = parameter.showOnlyFavorites
                 updateUI()
             }
         })

@@ -35,6 +35,8 @@
     <string name="delete_tract_success">Your tract has been successfully deleted</string>
     <string name="add_tracts_success">%1$d tracts created</string>
 
+    <string name="tract_sort_by">Sort By…</string>
+    <string name="tract_sort_other_options">Other options…</string>
     <string name="tract_sort_dialog_title">Sort tract list</string>
     <string name="tract_sort_button">Sort</string>
     <string name="tract_sort_default">Default (most recently added first)</string>
@@ -43,6 +45,8 @@
     <string name="tract_sort_dating">Date</string>
     <string name="sort_order_ascending">Ascending</string>
     <string name="sort_order_descending">Descending</string>
+    <string name="sort_order_is_descending">Is Descending ?</string>
+    <string name="sort_favorite">Show only favorites</string>
 
     <string name="take_picture">Take a picture</string>
     <string name="choose_from_gallery">Choose from gallery</string>

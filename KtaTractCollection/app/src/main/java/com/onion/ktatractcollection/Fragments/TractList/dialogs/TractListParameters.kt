@@ -36,6 +36,7 @@ class TractListParameters() {
     var sortOption = SortBy.DEFAULT
     var sortOrder = SortOrder.DESCENDING
     var displayMode = DisplayMode.LIST
+    var showOnlyFavorites = false
 
     val isList: Boolean
         get() = displayMode == DisplayMode.LIST
@@ -47,13 +48,15 @@ class TractListParameters() {
      * Methods
      */
 
-    fun sortList(tract: List<Tract>): List<Tract> {
-        return when (sortOption) {
+    fun filterAndSortList(tract: List<Tract>): List<Tract> {
+        val list = when (sortOption) {
             SortBy.DEFAULT -> tract.sortedBy(isNaturalOrder) { it.databaseAddingDate }
             SortBy.AUTHOR -> tract.sortedBy(isNaturalOrder) { it.author }
             SortBy.DATING -> tract.sortedBy(isNaturalOrder) { it.dating }
             SortBy.DISCOVERY_DATE -> tract.sortedBy(isNaturalOrder) { it.discoveryDate }
         }
+
+        return if (showOnlyFavorites) list.filter { it.isFavorite } else list
     }
 
     fun reverseDisplayMode() {
