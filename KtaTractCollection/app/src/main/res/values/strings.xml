@@ -58,6 +58,7 @@
     <string name="unknown">Unknown</string>
 
     <!-- Fab -->
+    <string name="fab_btn_multiple_import">Multiple import from gallery</string>
     <string name="fab_btn_import_from_gallery">Import from gallery</string>
     <string name="fab_btn_take_picture">Take a picture</string>
     <string name="fab_desc_create_tract_from_gallery">Use gallery images to create a tract</string>

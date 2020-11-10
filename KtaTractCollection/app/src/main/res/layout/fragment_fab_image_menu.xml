@@ -22,6 +22,29 @@
         tools:ignore="ContentDescription" />
 
     <TextView
+        android:id="@+id/multipleImportText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:labelFor="@id/galleryButton"
+        android:text="@string/fab_btn_multiple_import"
+        app:layout_constraintBottom_toBottomOf="@+id/multipleImportButton"
+        app:layout_constraintEnd_toStartOf="@+id/multipleImportButton"
+        app:layout_constraintTop_toTopOf="@+id/multipleImportButton" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/multipleImportButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_baseline_collections_24"
+        android:tint="@color/primaryTextColor"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/galleryButton"
+        app:layout_constraintEnd_toEndOf="@+id/newTractButton"
+        app:layout_constraintStart_toStartOf="@+id/newTractButton" />
+
+    <TextView
         android:id="@+id/galleryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

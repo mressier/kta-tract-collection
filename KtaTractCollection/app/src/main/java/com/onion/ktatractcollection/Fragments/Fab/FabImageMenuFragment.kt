@@ -9,9 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.extensions.*
@@ -113,6 +116,10 @@ class FabImageMenuFragment : Fragment() {
         imageMenuViewModel.tractId = tractId
     }
 
+    fun setShouldShowMultipleImportButton(shouldShowMultipleImportButton: Boolean) {
+        imageMenuViewModel.shouldShowMultipleImport = shouldShowMultipleImportButton
+    }
+
     private fun savePicture() {
         imageMenuViewModel.savePictureFile()
 
@@ -156,6 +163,11 @@ class FabImageMenuFragment : Fragment() {
         cameraButton.show()
         cameraText.visibility = View.VISIBLE
 
+        if (imageMenuViewModel.shouldShowMultipleImport) {
+            multipleImportButton.show()
+            multipleImportText.visibility = View.VISIBLE
+        }
+
         backgroundView.isClickable = true
 
         backgroundView.animate().alpha(0.7F).duration = duration
@@ -175,6 +187,9 @@ class FabImageMenuFragment : Fragment() {
 
         cameraButton.hide()
         cameraText.visibility = View.GONE
+
+        multipleImportButton.hide()
+        multipleImportText.visibility = View.GONE
 
         backgroundView.isClickable = false
 
@@ -245,6 +260,6 @@ class FabImageMenuFragment : Fragment() {
         private const val REQUEST_CAMERA_INTENT = 0
         private const val REQUEST_GALLERY_INTENT = 1
 
-        private const val TAG = "FabImageMenuFgmt"
+        private val TAG = FabImageMenuFragment::class.simpleName ?: "Default"
     }
 }

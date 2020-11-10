@@ -54,6 +54,7 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
         tabsFragment.setTract(tractId)
         detailsFragment.setTract(tractId)
         fabFragment.setTract(tractId)
+        fabFragment.setShouldShowMultipleImportButton(false)
         setupListeners()
 
         ViewCompat.setTranslationZ(view, 100f)

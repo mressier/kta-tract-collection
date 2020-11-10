@@ -15,6 +15,8 @@ class FabImageMenuViewModel: ViewModel() {
      * Properties
      */
 
+    var shouldShowMultipleImport = true
+
     var isMenuVisible = false
 
     var pictureFile: File? = null

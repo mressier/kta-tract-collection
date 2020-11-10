@@ -298,6 +298,7 @@ class TractListFragment :
     private fun setupButtonListener() {
         fabFragment.callbacks = this
         fabFragment.setTract(null)
+        fabFragment.setShouldShowMultipleImportButton(true)
     }
 
     /**
