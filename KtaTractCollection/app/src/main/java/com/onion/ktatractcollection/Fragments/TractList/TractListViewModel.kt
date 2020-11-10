@@ -3,15 +3,15 @@ package com.onion.ktatractcollection.Fragments.TractList
 import android.content.Context
 import android.net.Uri
 import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.onion.ktatractcollection.Database.TractRepository
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
-import com.onion.ktatractcollection.shared.tools.database.DatabaseExporter
-import com.onion.ktatractcollection.shared.tools.database.DatabaseImporter
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import com.onion.ktatractcollection.shared.tools.collection.CollectionExporter
+import com.onion.ktatractcollection.shared.tools.collection.CollectionImporter
+import java.io.FileNotFoundException
 import java.util.*
 
 
@@ -96,23 +96,28 @@ class TractListViewModel: ViewModel() {
      */
 
     fun exportCollection(context: Context, destination: Uri) {
-        DatabaseExporter(context).export(destination, tractsList, picturesList)
+        CollectionExporter(context).export(destination, tractsList, picturesList)
     }
 
     /**
      * Import
      */
 
+    @Throws(FileNotFoundException::class)
     fun importCollection(context: Context, source: Uri) {
-        GlobalScope.async {
-            val importer = DatabaseImporter(context)
+        val importer = CollectionImporter(context)
+
+        try {
             importer.unzipFile(source)
-
-            val tracts = importer.importTracts() ?: listOf()
-            tractRepository.addTracts(tracts)
-
-            val pictures = importer.importPictures() ?: listOf()
-            tractRepository.addPictures(pictures)
+        } catch (e: Error) {
+            Log.e("pouet", "Error $e")
+            throw e
         }
+
+        val tracts = importer.importTracts() ?: listOf()
+        tractRepository.addTracts(tracts)
+
+        val pictures = importer.importPictures() ?: listOf()
+        tractRepository.addPictures(pictures)
     }
 }

@@ -3,6 +3,7 @@ package com.onion.ktatractcollection.Fragments.TractList
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -20,11 +21,11 @@ import com.onion.ktatractcollection.Models.MimeType
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.Models.TractPicture
-import com.onion.ktatractcollection.shared.dialogs.SortListCallbacks
-import com.onion.ktatractcollection.shared.dialogs.TractActionCallback
-import com.onion.ktatractcollection.shared.dialogs.showSortListDialog
-import com.onion.ktatractcollection.shared.dialogs.showTractActionDialog
+import com.onion.ktatractcollection.shared.dialogs.*
 import kotlinx.android.synthetic.main.fragment_tract_list.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import java.io.FileNotFoundException
 import java.util.*
 
 /**
@@ -109,16 +110,36 @@ class TractListFragment :
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 GET_ZIP_DIRECTORY_REQUEST ->
-                    data?.data?.let { uri ->
-                        tractListViewModel.exportCollection(requireContext(), uri)
-                    }
+                    data?.data?.let { uri -> exportCollection(uri) }
                 GET_ZIP_FILE_REQUEST ->
-                    data?.data?.let { uri ->
-                        tractListViewModel.importCollection(requireContext(), uri)
-                    }
+                    data?.data?.let { uri -> importCollection(uri) }
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun exportCollection(uri: Uri) {
+        val dialog = showLoadingDialog()
+        GlobalScope.async {
+            tractListViewModel.exportCollection(requireContext(), uri)
+            requireActivity().runOnUiThread { dialog.dismiss() }
+        }
+    }
+
+    private fun importCollection(uri: Uri) {
+        val dialog = showLoadingDialog()
+        GlobalScope.async {
+            try {
+                tractListViewModel.importCollection(requireContext(), uri)
+            } catch (e: FileNotFoundException) {
+                requireActivity().runOnUiThread {
+                    val text = "Missing some files in zip: ${e.message}"
+                    Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
+                }
+            } finally {
+                requireActivity().runOnUiThread { dialog.dismiss() }
+            }
+        }
     }
 
     /**

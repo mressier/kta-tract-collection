@@ -48,6 +48,8 @@
     <string name="sort_order_is_descending">Is Descending ?</string>
     <string name="sort_favorite">Show only favorites</string>
 
+    <string name="loading_in_progress">Loading in progress</string>
+
     <string name="take_picture">Take a picture</string>
     <string name="choose_from_gallery">Choose from gallery</string>
 

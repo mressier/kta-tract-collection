@@ -15,28 +15,37 @@ class Unzipper(context: Context) {
      */
 
     private val contentResolver = context.contentResolver
-    private val filesDir = context.applicationContext.filesDir
 
     /**
      * Methods
      */
 
-    fun unzip(file: Uri) {
-        val inputStream = contentResolver.openInputStream(file)
+    fun unzip(zipUri: Uri, outputDir: File) {
+        val inputStream = contentResolver.openInputStream(zipUri)
+
         val zipInput = ZipInputStream(inputStream)
 
         var zipEntry: ZipEntry?
         while (zipInput.nextEntry.also { zipEntry = it } != null) {
-            zipEntry?.let { unzipFileEntry(zipInput, it) }
+            zipEntry?.let { unzipFileEntry(zipInput, it, outputDir) }
         }
 
         zipInput.close()
     }
 
-    private fun unzipFileEntry(zip: ZipInputStream, entry: ZipEntry) {
+    fun containsFiles(zipUri: Uri, files: Array<String>): Boolean {
+        val filenames = getZipEntriesName(zipUri)
+        val missingFiles = files.filter { !filenames.contains(it) }
+
+        Log.v(TAG, "Missing files list : ${missingFiles.joinToString()}")
+
+        return missingFiles.isEmpty()
+    }
+
+    private fun unzipFileEntry(zip: ZipInputStream, entry: ZipEntry, outputDir: File) {
         Log.v(TAG, "Reading file ${entry.name} from zip")
 
-        val fileOutput = File(filesDir, entry.name)
+        val fileOutput = File(outputDir, entry.name)
         val outputStream = FileOutputStream(fileOutput)
 
         var length: Int
@@ -45,6 +54,22 @@ class Unzipper(context: Context) {
         }
         zip.closeEntry()
         outputStream.close()
+    }
+
+    private fun getZipEntriesName(zipUri: Uri): Array<String> {
+        val filenames = mutableListOf<String>()
+
+        val inputStream = contentResolver.openInputStream(zipUri)
+        val zipInput = ZipInputStream(inputStream)
+        var zipEntry: ZipEntry?
+
+        while (zipInput.nextEntry.also { zipEntry = it } != null) {
+            zipEntry?.name?.let { filenames.add(it) }
+        }
+
+        zipInput.close()
+
+        return filenames.toTypedArray()
     }
 
     /**
