@@ -133,7 +133,7 @@ class TractListFragment :
                 tractListViewModel.importCollection(requireContext(), uri)
             } catch (e: FileNotFoundException) {
                 requireActivity().runOnUiThread {
-                    val text = "Missing some files in zip: ${e.message}"
+                    val text = getString(R.string.import_missing_files).format(e.message)
                     Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
                 }
             } finally {
