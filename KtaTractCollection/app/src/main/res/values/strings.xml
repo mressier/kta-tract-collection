@@ -58,6 +58,15 @@
     <string name="fab_desc_create_tract_from_gallery">Use gallery images to create a tract</string>
     <string name="fab_desc_create_tract_from_camera">Use camera to create a tract</string>
 
+    <!--  About Page -->
+    <string name="about_title">Thanks you for using KtaTract !</string>
+    <string name="about_description">My name is Mathilde and I\'ve done this app on my free-time to improve myself as an Android Developer and as a noob UX/UI designer. Please be kind with me !</string>
+    <string name="about_suggestion_description">If you have any problem or suggestion,\nclick here to send me a mail.</string>
+    <string name="contact_email">mathilderessier@hotmail.fr</string>
+    <string name="about_app_title">What is KtaTract ?</string>
+    <string name="about_app_description">KtaTract is a storage for all your tracts so you\'ll never loose one again.\nEasy to save, easy to find. Keep a track of all your discovery.\nAdd personal comments, date indications, save favorites. Export and import collections so you can easily share your tracts with friends or save it on your computer.\n</string>
+    <string name="about_app_description2">There is no internet usage (except for reporting crash) so you can be sure that no one is accessing your data, and you can safely use it without any connection.</string>
+
     <!--  Basics  -->
     <string name="i_understand">I understand</string>
     <string name="ok">OK</string>
@@ -76,5 +85,7 @@
     <string name="btn_desc_do_not_like_action">Do not like this tract anymore</string>
 
     <string name="image_desc_no_tract_in_list">Tract list is empty.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

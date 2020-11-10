@@ -36,6 +36,10 @@ class MainActivity : AppCompatActivity(), TractListFragment.Callbacks, PicturesL
         findNavController(R.id.nav_host_fragment).navigate(action)
     }
 
+    override fun onAboutPageSelected() {
+        val action = TractListFragmentDirections.showAboutPage()
+        findNavController(R.id.nav_host_fragment).navigate(action)
+    }
 
     /**
      * Callbacks | PicturesListFragment

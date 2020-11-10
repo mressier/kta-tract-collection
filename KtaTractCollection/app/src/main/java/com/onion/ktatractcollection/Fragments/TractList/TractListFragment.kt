@@ -43,6 +43,7 @@ class TractListFragment :
     interface Callbacks {
         fun onTractSelected(tractId: UUID)
         fun onTractPictureSelected(list: Array<TractPicture>, pictureIndex: Int)
+        fun onAboutPageSelected()
     }
 
     /**
@@ -144,6 +145,10 @@ class TractListFragment :
             }
             R.id.import_collection -> {
                 selectZipFile()
+                true
+            }
+            R.id.about -> {
+                callbacks?.onAboutPageSelected()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -41,6 +41,13 @@
             app:exitAnim="@anim/wait"
             app:popEnterAnim="@anim/wait"
             app:popExitAnim="@anim/slide_right" />
+        <action
+            android:id="@+id/showAboutPage"
+            app:destination="@id/aboutPageFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right" />
     </fragment>
     <fragment
         android:id="@+id/imagePagerFragment"
@@ -54,4 +61,9 @@
             android:name="current_index"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutPageFragment"
+        android:name="com.onion.ktatractcollection.AboutPageFragment"
+        android:label="fragment_about_page"
+        tools:layout="@layout/fragment_about_page" />
 </navigation>
