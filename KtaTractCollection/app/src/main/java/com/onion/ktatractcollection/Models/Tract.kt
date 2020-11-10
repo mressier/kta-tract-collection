@@ -32,9 +32,7 @@ data class Tract(
     fun contains(text: String): Boolean {
         return author.toLowerCase(Locale.ROOT).contains(text)
                 || comment.toLowerCase(Locale.ROOT).contains(text)
-                || (dating?.longString ?: "").toLowerCase(Locale.ROOT).contains(text)
                 || (dating?.shortString ?: "").toLowerCase(Locale.ROOT).contains(text)
-                || discoveryDate.longString.toLowerCase(Locale.ROOT).contains(text)
                 || discoveryDate.shortString.toLowerCase(Locale.ROOT).contains(text)
     }
 }

@@ -52,9 +52,9 @@
     <string name="no_camera_error">No camera available</string>
 
     <!-- Fab -->
-    <string name="fab_btn_multiple_import">Multiple import from gallery</string>
-    <string name="fab_btn_import_from_gallery">Import from gallery</string>
-    <string name="fab_btn_take_picture">Take a picture</string>
+    <string name="fab_btn_multiple_import">Add multiple tracts from gallery</string>
+    <string name="fab_btn_import_from_gallery">Add one tract from gallery</string>
+    <string name="fab_btn_take_picture">Add one tract with picture</string>
     <string name="fab_desc_create_tract_from_gallery">Use gallery images to create a tract</string>
     <string name="fab_desc_create_tract_from_camera">Use camera to create a tract</string>
 
