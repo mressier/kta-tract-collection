@@ -22,4 +22,13 @@ data class Tract(
     /* Comments about the tract */
     var comment: String = "",
     /* User set tract as a favorite */
-    var isFavorite: Boolean = false) {}
+    var isFavorite: Boolean = false) {
+
+    /**
+     * Methods
+     */
+    fun contains(text: String): Boolean {
+        return author.toLowerCase(Locale.ROOT).contains(text)
+                || comment.toLowerCase(Locale.ROOT).contains(text)
+    }
+}

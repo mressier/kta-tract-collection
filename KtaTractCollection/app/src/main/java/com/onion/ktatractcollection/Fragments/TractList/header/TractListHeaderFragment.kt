@@ -42,7 +42,6 @@ class TractListHeaderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModelObserver()
         setupTractListButtonListener()
 
         updateHeaderView()
@@ -68,21 +67,13 @@ class TractListHeaderFragment : Fragment() {
         tractListButton.contentDescription = getString(displayMode.titleId)
     }
 
-    private fun updateTractNumber(count: Int) {
+    fun updateTractNumber(count: Int) {
         tractCountTextView.text = getString(R.string.tract_count).format(count)
     }
 
     /**
      * Setup
      */
-    private fun setupViewModelObserver() {
-        viewModel.tracts.observe(
-            owner = viewLifecycleOwner,
-            onChanged = { items ->
-                updateTractNumber(items.size)
-            }
-        )
-    }
 
     private fun setupTractListButtonListener() {
         tractListButton.setOnClickListener {

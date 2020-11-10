@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -126,6 +127,9 @@ class TractListFragment :
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.tract_list_menu, menu)
+
+        setupSearchItemMenu(menu)
+        parametersViewModel.searchText = null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -179,7 +183,30 @@ class TractListFragment :
         tractAdapter.submitList(tractListItems)
         tractAdapter.notifyDataSetChanged()
 
-        updateNoTractImageVisibility(previousTracts, tractListItems)
+        updateNoTractResultVisibility(
+            previousTracts,
+            tractListItems,
+            parametersViewModel.isInSearchMode
+        )
+
+        headerFragment.updateTractNumber(tractListItems.size)
+    }
+
+    private fun updateNoTractResultVisibility(previousTracts: List<TractWithPicture>,
+                                              newTracts: List<TractWithPicture>,
+                                              isSearchMode: Boolean) {
+        if (!isSearchMode) {
+            noTractResultText.visibility = View.GONE
+            updateNoTractImageVisibility(previousTracts, newTracts)
+            return
+        }
+
+        if (previousTracts.isNotEmpty() && newTracts.isNotEmpty()) { return }
+
+        noTractResultText.visibility =
+            if (newTracts.isNotEmpty()) { View.GONE } else { View.VISIBLE }
+        tractListLayout.visibility =
+            if (newTracts.isEmpty()) { View.GONE } else { View.VISIBLE }
     }
 
     private fun updateNoTractImageVisibility(previousTracts: List<TractWithPicture>,
@@ -302,6 +329,25 @@ class TractListFragment :
         fabFragment.callbacks = this
         fabFragment.setTract(null)
         fabFragment.setShouldShowMultipleImportButton(true)
+    }
+
+    private fun setupSearchItemMenu(menu: Menu) {
+        val searchItem = menu.findItem(R.id.app_bar_search)
+
+        (searchItem?.actionView as? SearchView)?.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    parametersViewModel.searchText = query
+                    updateUI()
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    parametersViewModel.searchText = newText
+                    updateUI()
+                    return true
+                }
+            })
     }
 
     /**

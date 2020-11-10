@@ -59,7 +59,8 @@ class TractListViewModel: ViewModel() {
 
         val newTractsWithPicture = tracts.map { tract ->
             val oldPicture = getSavedTractWithPictures(tract.id)?.pictures
-            TractWithPicture(tract, oldPicture ?: listOf())
+            val pictures = oldPicture ?: picturesList.filter { it.tractId == tract.id }
+            TractWithPicture(tract, pictures)
         }
 
         tractsWithPicture = newTractsWithPicture

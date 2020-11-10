@@ -78,6 +78,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/noTractResultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:labelFor="@id/noTractImageView"
+        android:text="@string/no_tract_result"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fabFragment"
         android:name="com.onion.ktatractcollection.Fragments.Fab.FabImageMenuFragment"
