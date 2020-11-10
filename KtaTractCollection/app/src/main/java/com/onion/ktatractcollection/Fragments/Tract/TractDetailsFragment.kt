@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.shared.fragments.DatePickerFragment
 import com.onion.ktatractcollection.shared.tools.TextChangedWatcher
+import kotlinx.android.synthetic.main.fragment_tract_details.*
 import java.text.DateFormat
 import java.util.*
 
@@ -21,12 +21,6 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
     /**
      * Properties
      */
-
-    /* Outlets */
-    private lateinit var authorTextField: TextInputEditText
-    private lateinit var discoveryDateButton: Button
-    private lateinit var datingButton: Button
-    private lateinit var commentsTextField: TextInputEditText
 
     /* View Model */
     private val tractViewModel: TractViewModel by lazy {
@@ -49,9 +43,7 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_tract_details, container, false)
-        setupOutlets(view)
-        return view
+        return inflater.inflate(R.layout.fragment_tract_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,7 +64,7 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
         tractViewModel.loadTract(tractId)
     }
 
-    fun updateUI(tract: Tract) {
+    private fun updateUI(tract: Tract) {
         this.tract = tract
         authorTextField.setText(tract.author)
         commentsTextField.setText(tract.comment)
@@ -85,13 +77,6 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
     /**
      * Setup
      */
-
-    private fun setupOutlets(view: View) {
-        authorTextField = view.findViewById(R.id.author_text_field)
-        discoveryDateButton = view.findViewById(R.id.discovery_date_button)
-        datingButton = view.findViewById(R.id.dating_button)
-        commentsTextField = view.findViewById(R.id.comments_text_field)
-    }
 
     private fun setupViewModelObserver() {
         tractViewModel.tract.observe(

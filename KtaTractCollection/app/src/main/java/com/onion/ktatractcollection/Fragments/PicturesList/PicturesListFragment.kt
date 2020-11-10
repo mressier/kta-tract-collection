@@ -18,11 +18,10 @@ import java.util.*
 /**
  * A fragment representing a list of Items.
  */
-class PicturesListFragment : Fragment(), PictureItemCallback {
+class PicturesListFragment : Fragment(), PictureItemViewHolder.Callback {
 
     interface Callbacks {
-        fun onPictureListSelected(list: Array<TractPicture>,
-                                  pictureIndex: Int)
+        fun onPictureListSelected(list: Array<TractPicture>, pictureIndex: Int)
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.onion.ktatractcollection.Fragments.Tract.TractTabLayout
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.onion.ktatractcollection.R
+import kotlinx.android.synthetic.main.fragment_tract_details_tabs.*
 import java.util.*
 
 class TractDetailsTabsFragment : Fragment() {
@@ -18,10 +18,6 @@ class TractDetailsTabsFragment : Fragment() {
     /**
      * Properties
      */
-
-    /* Outlets */
-    private lateinit var tractViewPager: ViewPager2
-    private lateinit var tractTabLayout: TabLayout
 
     private lateinit var adapter : TractDetailsTabsAdapter
 
@@ -40,9 +36,13 @@ class TractDetailsTabsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_tract_details_tabs, container, false)
-        setupView(view)
-        return view
+        return inflater.inflate(R.layout.fragment_tract_details_tabs, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupAdapter()
+        setupTabLayout()
     }
 
     /**
@@ -56,12 +56,8 @@ class TractDetailsTabsFragment : Fragment() {
     /**
      * Setup
      */
-    private fun setupView(view: View) {
-        tractViewPager = view.findViewById(R.id.tract_view_pager)
-        tractTabLayout = view.findViewById(R.id.tract_tab_layout)
 
-        setupAdapter()
-
+    private fun setupTabLayout() {
         TabLayoutMediator(tractTabLayout, tractViewPager) { tab, position ->
             tab.text = tabs[position]
         }.attach()

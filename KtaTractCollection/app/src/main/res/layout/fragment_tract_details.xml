@@ -7,7 +7,7 @@
     tools:context=".Fragments.Tract.TractDetailsFragment">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/author_input"
+        android:id="@+id/authorInput"
         style="@style/TextInputEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/author_text_field"
+            android:id="@+id/authorTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="author"
@@ -32,7 +32,7 @@
 
 
     <LinearLayout
-        android:id="@+id/linear_layout"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -41,7 +41,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/author_input"
+        app:layout_constraintTop_toBottomOf="@+id/authorInput"
         android:baselineAligned="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,13 +55,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:labelFor="@id/discovery_date_image_view"
+                android:labelFor="@id/discoveryDateImageView"
                 android:text="@string/tract_discovery_date_title"
-                app:layout_constraintStart_toEndOf="@+id/discovery_date_image_view"
+                app:layout_constraintStart_toEndOf="@+id/discoveryDateImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/discovery_date_image_view"
+                android:id="@+id/discoveryDateImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_baseline_calendar_today_24"
@@ -72,14 +72,14 @@
                 tools:ignore="ContentDescription" />
 
             <Button
-                android:id="@+id/discovery_date_button"
+                android:id="@+id/discoveryDateButton"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_desc_date_not_set"
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/discovery_date_image_view"
+                app:layout_constraintStart_toEndOf="@+id/discoveryDateImageView"
                 app:layout_constraintTop_toBottomOf="@+id/discoveryDateText" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,28 +90,28 @@
             android:layout_weight="50">
 
             <TextView
-                android:id="@+id/dating_title"
+                android:id="@+id/datingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:labelFor="@id/dating_image_view"
+                android:labelFor="@id/datingImageView"
                 android:text="@string/tract_dating_title"
-                app:layout_constraintStart_toEndOf="@+id/dating_image_view"
+                app:layout_constraintStart_toEndOf="@+id/datingImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/dating_button"
+                android:id="@+id/datingButton"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_desc_date_not_set"
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/dating_image_view"
-                app:layout_constraintTop_toBottomOf="@+id/dating_title" />
+                app:layout_constraintStart_toEndOf="@+id/datingImageView"
+                app:layout_constraintTop_toBottomOf="@+id/datingTitle" />
 
             <ImageView
-                android:id="@+id/dating_image_view"
+                android:id="@+id/datingImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/ic_baseline_image_search_24"
@@ -133,10 +133,10 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linear_layout">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/comments_text_field"
+            android:id="@+id/commentsTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

@@ -7,17 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import com.onion.ktatractcollection.R
 
 class PicturesListAdapter(
-    private val callbacks: PictureItemCallback
+    private val callbacks: PictureItemViewHolder.Callback
 ) : ListAdapter<String, PictureItemViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_pictures_item, parent, false)
         return PictureItemViewHolder(view, callbacks)
-    }
-
-    override fun getItemCount(): Int {
-        return super.getItemCount()
     }
 
     override fun onBindViewHolder(holder: PictureItemViewHolder, position: Int) {

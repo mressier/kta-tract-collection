@@ -7,19 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
-import com.github.chrisbanes.photoview.PhotoView
 import com.onion.ktatractcollection.R
+import kotlinx.android.synthetic.main.fragment_image_view.*
 
 class ImageViewFragment: Fragment() {
 
     /**
      * Properties
      */
+
     /* Parameters */
     private var photoPath: String? = null
-
-    /* Outlets */
-    private lateinit var photoView: PhotoView
 
     /**
      * View Life Cycle
@@ -38,9 +36,7 @@ class ImageViewFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_image_view, container, false)
-        setupView(view)
-        return view
+        return inflater.inflate(R.layout.fragment_image_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,9 +47,6 @@ class ImageViewFragment: Fragment() {
     /**
      * Setup
      */
-    private fun setupView(view: View) {
-        photoView = view.findViewById(R.id.photo_view)
-    }
     
     private fun updateUI() {
         photoPath?.let { updatePhoto(it) }
@@ -70,6 +63,7 @@ class ImageViewFragment: Fragment() {
     /**
      * Static methods
      */
+
     companion object {
 
         private const val PARAM_PATH_ID = "path_id"
