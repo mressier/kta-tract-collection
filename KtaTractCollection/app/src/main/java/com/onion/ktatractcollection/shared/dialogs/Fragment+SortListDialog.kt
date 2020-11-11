@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
-import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
+import com.onion.ktatractcollection.Fragments.TractList.parameters.TractListParameters
 import com.onion.ktatractcollection.R
 import kotlinx.android.synthetic.main.dialog_sort_tract_list.view.*
 
@@ -27,7 +27,7 @@ fun Fragment.showSortListDialog(
     builder.setView(customView)
     builder.setTitle(R.string.tract_sort_dialog_title)
     builder.setPositiveButton(R.string.tract_sort_button) { dialogInterface, _ ->
-        callbacks.onParameterSelected(getParameters(customView))
+        callbacks.onParameterSelected(updateParameters(parameters, customView))
         dialogInterface.dismiss()
     }
 
@@ -36,7 +36,7 @@ fun Fragment.showSortListDialog(
     }
 
     builder.setOnCancelListener {
-        callbacks.onParameterSelected(getParameters(customView))
+        callbacks.onParameterSelected(updateParameters(parameters, customView))
     }
 
     builder.setCancelable(true)
@@ -46,8 +46,8 @@ fun Fragment.showSortListDialog(
     return alertDialog
 }
 
-private fun getParameters(view: View): TractListParameters {
-    val sortBy = TractListParameters.SortBy.values()[view.sortByRadioGroup.checkedRadioButtonId]
+private fun updateParameters(parameters: TractListParameters, view: View): TractListParameters {
+    val sortBy = TractListParameters.SortOption.values()[view.sortByRadioGroup.checkedRadioButtonId]
 
     val sortOrder = if (view.descendingCheckBox.isChecked) {
         TractListParameters.SortOrder.DESCENDING
@@ -57,7 +57,7 @@ private fun getParameters(view: View): TractListParameters {
 
     val showFavorites = view.favoriteCheckBox.isChecked
 
-    return TractListParameters().apply {
+    return parameters.apply {
         this.sortOption = sortBy
         this.sortOrder = sortOrder
         this.showOnlyFavorites = showFavorites
@@ -68,7 +68,7 @@ private fun Fragment.inflateTractListSortView(
     parameters: TractListParameters,
 ): View {
     val customView = layoutInflater.inflate(R.layout.dialog_sort_tract_list, null)
-    val buttonValues = TractListParameters.SortBy.values()
+    val buttonValues = TractListParameters.SortOption.values()
     val radioButtons = buttonValues.map { requireContext().getString(it.stringId) }.toTypedArray()
 
     setupSortListRadioButtons(customView.sortByRadioGroup, radioButtons)

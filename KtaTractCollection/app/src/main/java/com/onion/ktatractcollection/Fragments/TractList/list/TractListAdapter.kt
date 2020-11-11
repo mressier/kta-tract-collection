@@ -1,23 +1,24 @@
-package com.onion.ktatractcollection.Fragments.TractList
+package com.onion.ktatractcollection.Fragments.TractList.list
 
-import android.content.Context
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
+import com.onion.ktatractcollection.Fragments.TractList.TractWithPicture
+import com.onion.ktatractcollection.Fragments.TractList.parameters.DisplayMode
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.Tract
+import com.onion.ktatractcollection.Models.TractPicture
 import java.util.*
 
 interface TractListCallbacks {
     fun onTractSelected(tractId: UUID)
     fun onTractLongSelected(tractId: UUID)
-    fun onTractLikeToggled(tractId: UUID)
-    fun onTractImageSelected(imageIndex: Int, tractId: UUID)
+    fun onTractToggleFavorite(tractId: UUID, isFavorite: Boolean)
+    fun onTractImageSelected(imageIndex: Int, tractId: UUID, pictures: List<TractPicture>)
+    fun onItemCountChanged(numberOfItems: Int)
 }
 
 /**
@@ -30,7 +31,7 @@ class TractListAdapter(
     /**
      * Properties
      */
-    var parameters = TractListParameters()
+    var displayMode = DisplayMode.LIST
 
     enum class ViewTypeValue(val layoutId: Int) {
         LIST(R.layout.fragment_tract_list_item),
@@ -51,7 +52,7 @@ class TractListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
 
-        if (parameters.isList) {
+        if (displayMode == DisplayMode.LIST) {
             (holder as? TractListViewHolder)?.bind(item)
         } else {
             (holder as? TractGridViewHolder)?.bind(item)
@@ -59,7 +60,7 @@ class TractListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (parameters.isList) {
+        return if (displayMode == DisplayMode.LIST) {
             ViewTypeValue.LIST.ordinal
         } else {
             ViewTypeValue.GRID.ordinal
@@ -75,7 +76,7 @@ class TractListAdapter(
     }
 
     private fun getTractViewHolder(view: View): RecyclerView.ViewHolder {
-        return if (parameters.isList) {
+        return if (displayMode == DisplayMode.LIST) {
             TractListViewHolder(view, callbacks)
         } else {
             TractGridViewHolder(view, callbacks)
@@ -95,7 +96,7 @@ class TractListAdapter(
                     && oldItem.tract.discoveryDate == newItem.tract.discoveryDate
                     && oldItem.tract.dating == newItem.tract.dating
                     && oldItem.tract.isFavorite == newItem.tract.isFavorite
-                    && oldItem.pictures.firstOrNull()?.id == newItem.pictures.firstOrNull()?.id
+                    && oldItem.pictures.map { it.id } == newItem.pictures.map { it.id }
         }
     }
 }

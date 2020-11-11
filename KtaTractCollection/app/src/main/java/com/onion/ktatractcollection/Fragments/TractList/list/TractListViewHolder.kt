@@ -1,15 +1,12 @@
-package com.onion.ktatractcollection.Fragments.TractList
+package com.onion.ktatractcollection.Fragments.TractList.list
 
-import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.onion.ktatractcollection.Fragments.TractList.TractWithPicture
 import com.onion.ktatractcollection.Models.Tract
 import com.onion.ktatractcollection.R
+import com.onion.ktatractcollection.shared.extensions.setTractImage
 import com.onion.ktatractcollection.shared.extensions.shortString
-import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.*
-import java.text.DateFormat
-import java.util.*
 import kotlinx.android.synthetic.main.fragment_tract_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_tract_list_item.view.authorText
 import kotlinx.android.synthetic.main.fragment_tract_list_item.view.likeImageButton
@@ -38,9 +35,9 @@ class TractListViewHolder(
      */
 
     fun bind(tractItem: TractWithPicture) {
-        setupTractImage(tractItem)
+        setTractImage(tractItem, listView.pictureView)
         setupTract(tractItem.tract)
-        setupListeners(tractItem.tract)
+        setupListeners(tractItem)
     }
 
     private fun setupTract(tract: Tract) {
@@ -93,34 +90,27 @@ class TractListViewHolder(
         }
     }
 
-    private fun setupListeners(tract: Tract) {
-        itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
+    private fun setupListeners(tract: TractWithPicture) {
+        val tractId = tract.tract.id
+
+        itemView.setOnClickListener { callbacks?.onTractSelected(tractId) }
+
         itemView.setOnLongClickListener {
-            callbacks?.onTractLongSelected(tract.id)
+            callbacks?.onTractLongSelected(tractId)
             true
         }
 
         listView.likeImageButton.setOnClickListener {
-            callbacks?.onTractLikeToggled(tract.id)
+            callbacks?.onTractToggleFavorite(tractId, !tract.tract.isFavorite)
         }
 
         listView.pictureView.setOnClickListener {
-            callbacks?.onTractImageSelected(0, tract.id)
+            callbacks?.onTractImageSelected(0, tractId, tract.pictures)
         }
+
         listView.pictureView.setOnLongClickListener {
-            callbacks?.onTractLongSelected(tract.id)
+            callbacks?.onTractLongSelected(tractId)
             true
         }
     }
-
-    private fun setupTractImage(tractItem: TractWithPicture) {
-        val picture = tractItem.pictures.firstOrNull() ?: run { return }
-
-        Glide.with(itemView.context)
-            .load(Uri.parse(picture.photoFilename))
-            .centerCrop()
-            .placeholder(R.drawable.ic_no_tract_photo)
-            .into(listView.pictureView)
-    }
-
 }

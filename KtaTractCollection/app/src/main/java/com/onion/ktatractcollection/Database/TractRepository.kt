@@ -77,6 +77,9 @@ class TractRepository private constructor(context: Context) {
     fun getPictures(tractId: UUID): LiveData<List<TractPicture>> =
         pictureDao.getPicturesForTract(tractId)
 
+    fun getPictures(): LiveData<List<TractPicture>> =
+        pictureDao.getPictures()
+
     fun getPictureFile(filename: String): File = File(filesDir, filename)
 
     fun addPicture(picture: TractPicture) {

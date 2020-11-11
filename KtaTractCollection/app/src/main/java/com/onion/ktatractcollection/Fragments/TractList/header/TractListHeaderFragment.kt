@@ -7,15 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
-import com.onion.ktatractcollection.Fragments.TractList.dialogs.TractListParameters
+import com.onion.ktatractcollection.Fragments.TractList.parameters.DisplayMode
 import com.onion.ktatractcollection.R
 import kotlinx.android.synthetic.main.fragment_tract_list_header.*
 
 class TractListHeaderFragment : Fragment() {
 
     interface Callbacks {
-        fun onDisplayModeChanged(displayMode: TractListParameters.DisplayMode)
+        fun onDisplayModeChanged(displayMode: DisplayMode)
     }
 
     /**

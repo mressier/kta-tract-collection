@@ -23,24 +23,20 @@
                 android:name="com.onion.ktatractcollection.Fragments.TractList.header.TractListHeaderFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="10"
                 android:scrollbars="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tractRecyclerView"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/tractRecyclerFragment"
+                android:name="com.onion.ktatractcollection.Fragments.TractList.recycler.TractRecyclerFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="90"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/nestedScrollView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/headerFragment"
-                tools:listitem="@layout/fragment_tract_list_item">
-
-            </androidx.recyclerview.widget.RecyclerView>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:layout_width="match_parent"
@@ -90,8 +86,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fabFragment"

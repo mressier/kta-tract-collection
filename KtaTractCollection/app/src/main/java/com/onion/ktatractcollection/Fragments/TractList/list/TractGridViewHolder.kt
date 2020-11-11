@@ -1,11 +1,14 @@
-package com.onion.ktatractcollection.Fragments.TractList
+package com.onion.ktatractcollection.Fragments.TractList.list
 
 import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.onion.ktatractcollection.Fragments.TractList.TractWithPicture
 import com.onion.ktatractcollection.Models.Tract
+import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
+import com.onion.ktatractcollection.shared.extensions.setTractImage
 import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.authorText
 import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.likeImageButton
 import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.pictureView
@@ -26,8 +29,8 @@ class TractGridViewHolder(
 
     fun bind(tractItem: TractWithPicture) {
         setupTract(tractItem.tract)
-        setupTractImage(tractItem)
-        setupListeners(tractItem.tract)
+        setTractImage(tractItem, gridView.pictureView)
+        setupListeners(tractItem)
     }
 
     /**
@@ -42,11 +45,12 @@ class TractGridViewHolder(
         setupLikeButton(tract.isFavorite)
     }
 
-    private fun setupTractImage(tractItem: TractWithPicture) {
-        val picture = tractItem.pictures.firstOrNull() ?: run { return }
+    private fun setupTractImage(pictures: List<TractPicture>) {
+        val picture = pictures.firstOrNull()
+        val uri = picture?.let { Uri.parse(it.photoFilename) }
 
         Glide.with(itemView.context)
-            .load(Uri.parse(picture.photoFilename))
+            .load(uri)
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(gridView.pictureView)
@@ -74,22 +78,25 @@ class TractGridViewHolder(
      * Listeners
      */
 
-    private fun setupListeners(tract: Tract) {
-        itemView.setOnClickListener { callbacks?.onTractSelected(tract.id) }
+    private fun setupListeners(tract: TractWithPicture) {
+        val tractId = tract.tract.id
+
+        itemView.setOnClickListener { callbacks?.onTractSelected(tractId) }
+
         itemView.setOnLongClickListener {
-            callbacks?.onTractLongSelected(tract.id)
+            callbacks?.onTractLongSelected(tractId)
             true
         }
 
         gridView.likeImageButton.setOnClickListener {
-            callbacks?.onTractLikeToggled(tract.id)
+            callbacks?.onTractToggleFavorite(tractId, !tract.tract.isFavorite)
         }
 
         gridView.pictureView.setOnClickListener {
-            callbacks?.onTractImageSelected(0, tract.id)
+            callbacks?.onTractImageSelected(0, tractId, tract.pictures)
         }
         gridView.pictureView.setOnLongClickListener {
-            callbacks?.onTractLongSelected(tract.id)
+            callbacks?.onTractLongSelected(tractId)
             true
         }
     }

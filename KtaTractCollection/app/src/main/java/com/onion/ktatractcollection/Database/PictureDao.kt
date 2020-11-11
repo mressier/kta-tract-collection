@@ -10,6 +10,9 @@ interface PictureDao {
     /**
      * Pictures
      */
+    @Query("SELECT * FROM tractpicture")
+    fun getPictures(): LiveData<List<TractPicture>>
+
     @Query("SELECT * FROM tractpicture WHERE tractId=(:tractId)")
     fun getPicturesForTract(tractId: UUID): LiveData<List<TractPicture>>
 

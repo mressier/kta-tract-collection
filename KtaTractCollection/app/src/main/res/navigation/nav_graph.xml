@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/tractListFragment"
-        android:name="com.onion.ktatractcollection.Fragments.TractList.TractListFragment"
+        android:name="com.onion.ktatractcollection.Fragments.TractList.AllTractsFragment"
         android:label="fragment_tract_list"
         tools:layout="@layout/fragment_tract_list" >
         <action

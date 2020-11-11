@@ -2,19 +2,16 @@ package com.onion.ktatractcollection.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.onion.ktatractcollection.Fragments.PicturesList.PicturesListFragment
 import com.onion.ktatractcollection.Fragments.Tract.TractFragmentDirections
-import com.onion.ktatractcollection.Fragments.TractList.TractListFragment
+import com.onion.ktatractcollection.Fragments.TractList.AllTractsFragment
 import com.onion.ktatractcollection.Fragments.TractList.TractListFragmentDirections
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
 import java.util.*
 
-class MainActivity : AppCompatActivity(), TractListFragment.Callbacks, PicturesListFragment.Callbacks {
+class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, PicturesListFragment.Callbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
