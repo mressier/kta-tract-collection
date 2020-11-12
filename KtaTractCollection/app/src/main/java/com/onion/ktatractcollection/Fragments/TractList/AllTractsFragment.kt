@@ -21,6 +21,7 @@ import com.onion.ktatractcollection.Models.MimeType
 import com.onion.ktatractcollection.R
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.shared.dialogs.*
+import com.onion.ktatractcollection.shared.extensions.hideKeyboard
 import com.onion.ktatractcollection.shared.extensions.setIsVisible
 import kotlinx.android.synthetic.main.fragment_tract_list.*
 import kotlinx.coroutines.GlobalScope
@@ -295,6 +296,7 @@ class AllTractsFragment :
      **********************************************************************************************/
 
     override fun onTractSelected(tractId: UUID) {
+        requireActivity().hideKeyboard()
         callbacks?.onTractSelected(tractId)
     }
 
@@ -307,6 +309,7 @@ class AllTractsFragment :
     }
 
     override fun onTractImageSelected(imageIndex: Int, tractId: UUID, pictures: List<TractPicture>) {
+        requireActivity().hideKeyboard()
         if (pictures.isEmpty()) {
             callbacks?.onTractSelected(tractId)
         } else {

@@ -30,7 +30,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/tractRecyclerFragment"
-                android:name="com.onion.ktatractcollection.Fragments.TractList.recycler.TractRecyclerFragment"
+                android:name="com.onion.ktatractcollection.Fragments.TractList.list.TractListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"

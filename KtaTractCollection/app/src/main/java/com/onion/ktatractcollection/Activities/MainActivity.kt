@@ -6,7 +6,7 @@ import androidx.navigation.findNavController
 import com.onion.ktatractcollection.Fragments.PicturesList.PicturesListFragment
 import com.onion.ktatractcollection.Fragments.Tract.TractFragmentDirections
 import com.onion.ktatractcollection.Fragments.TractList.AllTractsFragment
-import com.onion.ktatractcollection.Fragments.TractList.TractListFragmentDirections
+import com.onion.ktatractcollection.Fragments.TractList.AllTractsFragmentDirections
 import com.onion.ktatractcollection.Models.TractPicture
 import com.onion.ktatractcollection.R
 import java.util.*
@@ -23,18 +23,18 @@ class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, PicturesL
      */
 
     override fun onTractSelected(tractId: UUID) {
-        val action = TractListFragmentDirections.showTract(tractId.toString())
+        val action = AllTractsFragmentDirections.showTract(tractId.toString())
         findNavController(R.id.nav_host_fragment).navigate(action)
     }
 
     override fun onTractPictureSelected(list: Array<TractPicture>, pictureIndex: Int) {
         val paths = list.map { it.photoFilename }.toTypedArray()
-        val action = TractListFragmentDirections.showTractImages(paths, pictureIndex)
+        val action = AllTractsFragmentDirections.showTractImages(paths, pictureIndex)
         findNavController(R.id.nav_host_fragment).navigate(action)
     }
 
     override fun onAboutPageSelected() {
-        val action = TractListFragmentDirections.showAboutPage()
+        val action = AllTractsFragmentDirections.showAboutPage()
         findNavController(R.id.nav_host_fragment).navigate(action)
     }
 
