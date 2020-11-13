@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.unicorpdev.ktatract.Fragments.TractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import kotlinx.android.synthetic.main.fragment_tract_list_header.*
 
 class TractListHeaderFragment : Fragment() {
@@ -76,8 +78,9 @@ class TractListHeaderFragment : Fragment() {
 
     private fun setupTractListButtonListener() {
         tractListButton.setOnClickListener {
-            viewModel.displayMode = viewModel.displayMode.reversed
+            KtaTractAnalytics.logSelectItem(SelectEvent.LIST_DISPLAY)
 
+            viewModel.displayMode = viewModel.displayMode.reversed
             updateHeaderView()
             callbacks?.onDisplayModeChanged(viewModel.displayMode)
         }

@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractWithPicture
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import com.unicorpdev.ktatract.shared.extensions.setTractImage
 import com.unicorpdev.ktatract.shared.extensions.shortString
 import kotlinx.android.synthetic.main.fragment_tract_list_item.view.*
@@ -100,6 +102,7 @@ class TractListViewHolder(
         }
 
         listView.likeImageButton.setOnClickListener {
+            KtaTractAnalytics.logSelectItem(SelectEvent.LIKE)
             callbacks?.onTractToggleFavorite(tractId, !tract.tract.isFavorite)
         }
 

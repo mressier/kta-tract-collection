@@ -14,6 +14,8 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import com.unicorpdev.ktatract.shared.extensions.*
 import com.unicorpdev.ktatract.shared.extensions.*
 import kotlinx.android.synthetic.main.fragment_fab_image_menu.*
@@ -279,11 +281,20 @@ class FabImageMenuFragment : Fragment() {
 
         backgroundView.setOnClickListener { hideMenu() }
 
-        cameraButton.setOnClickListener { takePicture() }
+        cameraButton.setOnClickListener {
+            KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_ONE_PICTURE)
+            takePicture()
+        }
 
-        galleryButton.setOnClickListener { importFromGallery() }
+        galleryButton.setOnClickListener {
+            KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_ONE_GALLERY)
+            importFromGallery()
+        }
 
-        multipleImportButton.setOnClickListener { multipleImportFromGallery() }
+        multipleImportButton.setOnClickListener {
+            KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_MULTIPLE)
+            multipleImportFromGallery()
+        }
     }
 
     /**

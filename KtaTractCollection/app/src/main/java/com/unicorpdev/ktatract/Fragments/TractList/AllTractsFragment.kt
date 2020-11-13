@@ -21,6 +21,8 @@ import com.unicorpdev.ktatract.models.MimeType
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.models.TractWithPicture
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import com.unicorpdev.ktatract.shared.dialogs.*
 import com.unicorpdev.ktatract.shared.extensions.hideKeyboard
 import com.unicorpdev.ktatract.shared.extensions.setIsVisible
@@ -137,18 +139,22 @@ class AllTractsFragment :
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.sort_list -> {
+                KtaTractAnalytics.logSelectItem(SelectEvent.SORT_LIST)
                 showSortTractListDialog()
                 true
             }
             R.id.export_collection -> {
+                KtaTractAnalytics.logSelectItem(SelectEvent.EXPORT_COLLECTION)
                 selectZipDirectory()
                 true
             }
             R.id.import_collection -> {
+                KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_COLLECTION)
                 selectZipFile()
                 true
             }
             R.id.about -> {
+                KtaTractAnalytics.logSelectItem(SelectEvent.ABOUT)
                 callbacks?.onAboutPageSelected()
                 true
             }
@@ -242,8 +248,9 @@ class AllTractsFragment :
 
     private fun setupSearchItemMenu(menu: Menu) {
         val searchItem = menu.findItem(R.id.app_bar_search)
+        val searchView = searchItem?.actionView as? SearchView
 
-        (searchItem?.actionView as? SearchView)?.setOnQueryTextListener(
+        searchView?.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     tractsFragment.searchText = query ?: ""
@@ -255,6 +262,10 @@ class AllTractsFragment :
                     return true
                 }
             })
+
+        searchView?.setOnSearchClickListener {
+            KtaTractAnalytics.logSelectItem(SelectEvent.SEARCH)
+        }
     }
 
     private fun setupObservers() {
@@ -278,6 +289,7 @@ class AllTractsFragment :
     private fun showTractDialog(tractId: UUID) {
         showTractActionDialog(tractId, object: TractActionCallback {
             override fun onDelete(tractId: UUID) {
+                KtaTractAnalytics.logSelectItem(SelectEvent.DELETE_TRACT)
                 allTractsViewModel.deleteTract(tractId)
                 Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT)
                     .show()

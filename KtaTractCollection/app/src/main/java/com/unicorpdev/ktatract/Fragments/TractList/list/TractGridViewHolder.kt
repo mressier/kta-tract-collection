@@ -8,6 +8,8 @@ import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractWithPicture
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import com.unicorpdev.ktatract.shared.extensions.setTractImage
 import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.authorText
 import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.likeImageButton
@@ -89,12 +91,14 @@ class TractGridViewHolder(
         }
 
         gridView.likeImageButton.setOnClickListener {
+            KtaTractAnalytics.logSelectItem(SelectEvent.LIKE)
             callbacks?.onTractToggleFavorite(tractId, !tract.tract.isFavorite)
         }
 
         gridView.pictureView.setOnClickListener {
             callbacks?.onTractImageSelected(0, tract)
         }
+
         gridView.pictureView.setOnLongClickListener {
             callbacks?.onTractLongSelected(tractId)
             true

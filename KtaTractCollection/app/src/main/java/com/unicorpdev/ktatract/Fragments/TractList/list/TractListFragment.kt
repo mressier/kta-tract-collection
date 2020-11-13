@@ -57,9 +57,6 @@ class TractListFragment : Fragment() {
 
     /** Computed **/
 
-    val itemCount: Int
-        get() = tractAdapter.itemCount
-
     val isInSearchMode: Boolean
         get() = viewModel.listParameters.isInSearchMode
 

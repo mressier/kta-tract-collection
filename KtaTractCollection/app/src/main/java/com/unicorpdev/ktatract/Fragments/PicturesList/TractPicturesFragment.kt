@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import java.io.File
 import java.util.*
 
@@ -115,6 +117,8 @@ class TractPicturesFragment : Fragment(), TractPictureViewHolder.Callback {
     }
 
     override fun onDeleteButtonSelected(path: String) {
+        KtaTractAnalytics.logSelectItem(SelectEvent.DELETE_PICTURE)
+
         picturesViewModel.savedPictures.find { it.photoFilename == path }?.let { tractPicture ->
             Log.i(TAG, "Delete picture ${tractPicture.photoFilename}")
             picturesViewModel.deletePicture(tractPicture)
