@@ -6,18 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.unicorpdev.ktatract.Fragments.TractList.TractWithPicture
 import com.unicorpdev.ktatract.Fragments.TractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
+import com.unicorpdev.ktatract.models.TractWithPicture
 import java.util.*
 
 interface TractListCallbacks {
     fun onTractSelected(tractId: UUID)
     fun onTractLongSelected(tractId: UUID)
     fun onTractToggleFavorite(tractId: UUID, isFavorite: Boolean)
-    fun onTractImageSelected(imageIndex: Int, tractId: UUID, pictures: List<TractPicture>)
+    fun onTractImageSelected(imageIndex: Int, tract: TractWithPicture)
     fun onItemCountChanged(numberOfItems: Int)
 }
 

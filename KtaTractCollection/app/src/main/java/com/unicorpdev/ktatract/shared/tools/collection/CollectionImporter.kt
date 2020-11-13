@@ -3,8 +3,8 @@ package com.unicorpdev.ktatract.shared.tools.collection
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.shared.extensions.jsonToObject
 import com.unicorpdev.ktatract.shared.tools.zip.Unzipper
 import java.io.File

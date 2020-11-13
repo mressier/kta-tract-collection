@@ -1,9 +1,8 @@
 package com.unicorpdev.ktatract.shared.extensions
 
 import com.google.common.truth.Truth.assertThat
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
-import com.unicorpdev.ktatract.shared.extensions.groupedByTractId
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
 import junit.framework.TestCase
 import org.junit.Test
 

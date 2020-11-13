@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.Models
+package com.unicorpdev.ktatract.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

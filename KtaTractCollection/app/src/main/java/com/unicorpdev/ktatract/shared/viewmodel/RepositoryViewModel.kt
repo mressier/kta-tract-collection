@@ -3,8 +3,8 @@ package com.unicorpdev.ktatract.shared.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.unicorpdev.ktatract.Database.TractRepository
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
 
 open class RepositoryViewModel: ViewModel() {
 

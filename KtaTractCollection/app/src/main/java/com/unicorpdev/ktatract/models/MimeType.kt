@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.Models
+package com.unicorpdev.ktatract.models
 
 enum class MimeType(val string: String) {
     ZIP("application/zip")

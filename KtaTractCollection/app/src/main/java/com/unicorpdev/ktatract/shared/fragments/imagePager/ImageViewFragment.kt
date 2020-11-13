@@ -5,19 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.unicorpdev.ktatract.R
 import kotlinx.android.synthetic.main.fragment_image_view.*
+import java.io.File
 
 class ImageViewFragment: Fragment() {
 
-    /**
+    /***********************************************************************************************
      * Properties
-     */
+     **********************************************************************************************/
 
-    /* Parameters */
-    private var photoPath: String? = null
+    private val viewModel: ImageViewModel by lazy {
+        ViewModelProvider(this).get(ImageViewModel::class.java)
+    }
 
     /**
      * View Life Cycle
@@ -27,7 +30,7 @@ class ImageViewFragment: Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            this.photoPath = it.getSerializable(PARAM_PATH_ID) as? String
+            viewModel.imagePath = it.getSerializable(PARAM_PATH_ID) as? String
         }
     }
 
@@ -49,12 +52,12 @@ class ImageViewFragment: Fragment() {
      */
     
     private fun updateUI() {
-        photoPath?.let { updatePhoto(it) }
+        viewModel.getPictureFile()?.let { updatePhoto(it) }
     }
 
-    private fun updatePhoto(path: String) {
+    private fun updatePhoto(file: File) {
         Glide.with(requireContext())
-            .load(path)
+            .load(file)
             .centerInside()
             .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
             .into(photoView)

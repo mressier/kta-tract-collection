@@ -2,7 +2,7 @@ package com.unicorpdev.ktatract.Database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.TractPicture
 import java.util.*
 
 @Dao

@@ -2,9 +2,9 @@ package com.unicorpdev.ktatract.Fragments.TractList.list
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.unicorpdev.ktatract.Fragments.TractList.TractWithPicture
-import com.unicorpdev.ktatract.Models.Tract
+import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.extensions.setTractImage
 import com.unicorpdev.ktatract.shared.extensions.shortString
 import kotlinx.android.synthetic.main.fragment_tract_list_item.view.*
@@ -84,7 +84,6 @@ class TractListViewHolder(
         }
 
         listView.likeImageButton.apply {
-
             setImageResource(resource)
             contentDescription = itemView.context.getString(descriptionId)
         }
@@ -105,7 +104,7 @@ class TractListViewHolder(
         }
 
         listView.pictureView.setOnClickListener {
-            callbacks?.onTractImageSelected(0, tractId, tract.pictures)
+            callbacks?.onTractImageSelected(0, tract)
         }
 
         listView.pictureView.setOnLongClickListener {

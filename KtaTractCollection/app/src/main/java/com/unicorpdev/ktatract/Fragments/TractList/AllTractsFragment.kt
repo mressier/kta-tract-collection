@@ -17,16 +17,17 @@ import com.unicorpdev.ktatract.Fragments.TractList.header.TractListHeaderFragmen
 import com.unicorpdev.ktatract.Fragments.TractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.Fragments.TractList.list.TractListCallbacks
 import com.unicorpdev.ktatract.Fragments.TractList.list.TractListFragment
-import com.unicorpdev.ktatract.Models.MimeType
+import com.unicorpdev.ktatract.models.MimeType
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.TractPicture
+import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.dialogs.*
 import com.unicorpdev.ktatract.shared.extensions.hideKeyboard
 import com.unicorpdev.ktatract.shared.extensions.setIsVisible
-import com.unicorpdev.ktatract.shared.dialogs.*
 import kotlinx.android.synthetic.main.fragment_tract_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
 
@@ -43,7 +44,7 @@ class AllTractsFragment :
 
     interface Callbacks {
         fun onTractSelected(tractId: UUID)
-        fun onTractPictureSelected(list: Array<TractPicture>, pictureIndex: Int)
+        fun onTractPictureSelected(list: Array<File>, pictureIndex: Int)
         fun onAboutPageSelected()
     }
 
@@ -309,12 +310,15 @@ class AllTractsFragment :
         allTractsViewModel.updateTractIsFavorite(tractId, isFavorite)
     }
 
-    override fun onTractImageSelected(imageIndex: Int, tractId: UUID, pictures: List<TractPicture>) {
+    override fun onTractImageSelected(imageIndex: Int, tract: TractWithPicture) {
         requireActivity().hideKeyboard()
-        if (pictures.isEmpty()) {
-            callbacks?.onTractSelected(tractId)
+        if (tract.pictures.isEmpty()) {
+            callbacks?.onTractSelected(tract.tract.id)
         } else {
-            callbacks?.onTractPictureSelected(pictures.toTypedArray(), imageIndex)
+            callbacks?.onTractPictureSelected(
+                tract.pictures.map { tract.picturesFile[it.id] ?: error("") }.toTypedArray(),
+                imageIndex
+            )
         }
     }
 

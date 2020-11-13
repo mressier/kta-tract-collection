@@ -5,9 +5,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
-import com.unicorpdev.ktatract.Models.MimeType
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.MimeType
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.shared.extensions.toJson
 import com.unicorpdev.ktatract.shared.tools.zip.Zipper
 import java.io.*

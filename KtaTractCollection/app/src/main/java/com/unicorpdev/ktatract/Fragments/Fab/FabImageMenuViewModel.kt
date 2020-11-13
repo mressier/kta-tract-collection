@@ -1,9 +1,9 @@
 package com.unicorpdev.ktatract.Fragments.Fab
 
-import androidx.core.net.toUri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.unicorpdev.ktatract.Database.TractRepository
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.TractPicture
 import java.io.File
 import java.util.*
 
@@ -45,9 +45,11 @@ class FabImageMenuViewModel: ViewModel() {
             val tractId = this.tractId ?: repository.addEmptyTract()
             this.tractId = tractId
 
+            Log.d("Pouet", "Filename: ${file.name}")
+
             val tractPicture = TractPicture(
                 tractId = tractId,
-                photoFilename = file.toUri().toString()
+                photoFilename = file.name
             )
 
             repository.addPicture(tractPicture)

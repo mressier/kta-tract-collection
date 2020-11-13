@@ -2,16 +2,18 @@ package com.unicorpdev.ktatract.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.net.toUri
 import androidx.navigation.findNavController
-import com.unicorpdev.ktatract.Fragments.PicturesList.PicturesListFragment
+import com.unicorpdev.ktatract.Fragments.PicturesList.TractPicturesFragment
 import com.unicorpdev.ktatract.Fragments.Tract.TractFragmentDirections
 import com.unicorpdev.ktatract.Fragments.TractList.AllTractsFragment
 import com.unicorpdev.ktatract.Fragments.TractList.AllTractsFragmentDirections
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.R
+import java.io.File
 import java.util.*
 
-class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, PicturesListFragment.Callbacks {
+class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, TractPicturesFragment.Callbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +29,8 @@ class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, PicturesL
         findNavController(R.id.nav_host_fragment).navigate(action)
     }
 
-    override fun onTractPictureSelected(list: Array<TractPicture>, pictureIndex: Int) {
-        val paths = list.map { it.photoFilename }.toTypedArray()
+    override fun onTractPictureSelected(list: Array<File>, pictureIndex: Int) {
+        val paths = list.map { it.name }.toTypedArray()
         val action = AllTractsFragmentDirections.showTractImages(paths, pictureIndex)
         findNavController(R.id.nav_host_fragment).navigate(action)
     }
@@ -42,9 +44,9 @@ class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, PicturesL
      * Callbacks | PicturesListFragment
      */
 
-    override fun onPictureListSelected(list: Array<TractPicture>,
-                                       pictureIndex: Int) {
-        val paths = list.map { it.photoFilename }.toTypedArray()
+    override fun onPictureSelected(pictureList: Array<File>,
+                                   pictureIndex: Int) {
+        val paths = pictureList.map { it.name }.toTypedArray()
         val action = TractFragmentDirections.showTractImages(paths, pictureIndex)
         findNavController(R.id.nav_host_fragment).navigate(action)
     }

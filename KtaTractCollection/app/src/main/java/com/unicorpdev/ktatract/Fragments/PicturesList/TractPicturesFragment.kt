@@ -9,24 +9,23 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.R
+import java.io.File
 import java.util.*
 
 /**
  * A fragment representing a list of Items.
  */
-class PicturesListFragment : Fragment(), PictureItemViewHolder.Callback {
+class TractPicturesFragment : Fragment(), TractPictureViewHolder.Callback {
 
     interface Callbacks {
-        fun onPictureListSelected(list: Array<TractPicture>, pictureIndex: Int)
+        fun onPictureSelected(pictureList: Array<File>, pictureIndex: Int)
     }
 
     /**
      * Properties
      */
-    private lateinit var tractId: UUID
-    private lateinit var pictures: MutableList<TractPicture>
 
     /* View Model */
     private val picturesViewModel: TractPicturesViewModel by lazy {
@@ -35,7 +34,7 @@ class PicturesListFragment : Fragment(), PictureItemViewHolder.Callback {
 
     /* Outlets */
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: PicturesListAdapter
+    private lateinit var adapter: TractPicturesAdapter
 
     /* Callbacks */
     var callbacks: Callbacks? = null
@@ -61,7 +60,7 @@ class PicturesListFragment : Fragment(), PictureItemViewHolder.Callback {
         // Set the adapter
         if (view is RecyclerView) {
             recyclerView = view
-            adapter = PicturesListAdapter(this)
+            adapter = TractPicturesAdapter(this)
             recyclerView.adapter = adapter
         }
         setupViewModel()
@@ -83,12 +82,11 @@ class PicturesListFragment : Fragment(), PictureItemViewHolder.Callback {
      */
     private fun setTract(tractId: UUID) {
         Log.d(TAG, "Set tract id: $tractId. Load pictures...")
-        this.tractId = tractId
         picturesViewModel.loadPicturesForTractId(tractId)
     }
 
     private fun updateUI() {
-        adapter.submitList(picturesViewModel.getPicturesPath(pictures))
+        adapter.submitList(picturesViewModel.savedPicturesFile)
     }
 
     /**
@@ -99,9 +97,9 @@ class PicturesListFragment : Fragment(), PictureItemViewHolder.Callback {
         picturesViewModel.pictures.observe(
             viewLifecycleOwner,
             { picturesList ->
-                pictures = picturesList.toMutableList()
+                Log.d(TAG, "Get pictures ${picturesList.map { it.photoFilename }}")
+                picturesViewModel.savedPictures = picturesList
                 updateUI()
-                Log.d(TAG, "Get pictures ${pictures.map { it.photoFilename }}")
             }
         )
     }
@@ -111,18 +109,18 @@ class PicturesListFragment : Fragment(), PictureItemViewHolder.Callback {
      */
 
     override fun onPictureSelected(path: String) {
-        val index = pictures.indexOfFirst { it.photoFilename == path }
-        callbacks?.onPictureListSelected(pictures.toTypedArray(), index)
+        val index = picturesViewModel.savedPictures.indexOfFirst { it.photoFilename == path }
+        Log.d(TAG, "File $path - index $index")
+        callbacks?.onPictureSelected(picturesViewModel.savedPicturesFile.toTypedArray(), index)
     }
 
     override fun onDeleteButtonSelected(path: String) {
-        pictures.find { it.photoFilename == path }?.let { tractPicture ->
+        picturesViewModel.savedPictures.find { it.photoFilename == path }?.let { tractPicture ->
             Log.i(TAG, "Delete picture ${tractPicture.photoFilename}")
             picturesViewModel.deletePicture(tractPicture)
-            pictures.remove(tractPicture)
-            updateUI()
         }
     }
+
     /**
      * Initialize
      */
@@ -132,11 +130,11 @@ class PicturesListFragment : Fragment(), PictureItemViewHolder.Callback {
 
         private const val PARAM_TRACT_ID = "tract_id"
 
-        fun newInstance(tractId: UUID? = null): PicturesListFragment {
+        fun newInstance(tractId: UUID? = null): TractPicturesFragment {
             val args = Bundle().apply {
                 tractId?.let { putString(PARAM_TRACT_ID, it.toString()) }
             }
-            return PicturesListFragment().apply { arguments = args }
+            return TractPicturesFragment().apply { arguments = args }
         }
     }
 

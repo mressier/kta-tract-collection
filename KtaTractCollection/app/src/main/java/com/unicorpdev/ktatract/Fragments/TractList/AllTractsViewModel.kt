@@ -3,17 +3,15 @@ package com.unicorpdev.ktatract.Fragments.TractList
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.shared.extensions.filterByTractId
 import com.unicorpdev.ktatract.shared.tools.collection.CollectionExporter
 import com.unicorpdev.ktatract.shared.tools.collection.CollectionImporter
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel
+import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
-
-
-class TractWithPicture(val tract: Tract, var pictures: List<TractPicture> = listOf()) {}
 
 class AllTractsViewModel: RepositoryViewModel() {
 

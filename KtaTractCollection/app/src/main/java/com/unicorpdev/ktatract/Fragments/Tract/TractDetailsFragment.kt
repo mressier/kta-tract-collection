@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.unicorpdev.ktatract.shared.extensions.*
-import com.unicorpdev.ktatract.Models.Tract
+import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.shared.fragments.DatePickerFragment
 import com.unicorpdev.ktatract.shared.tools.TextChangedWatcher

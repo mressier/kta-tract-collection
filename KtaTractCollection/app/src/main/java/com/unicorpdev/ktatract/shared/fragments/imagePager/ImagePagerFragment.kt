@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.shared.fragments.imagePager.ImagePagerFragmentArgs
@@ -18,25 +19,25 @@ import kotlinx.android.synthetic.main.fragment_image_pager.*
  */
 class ImagePagerFragment : Fragment() {
 
-    /**
+    /***********************************************************************************************
      * Properties
-     */
+     **********************************************************************************************/
 
-    /* Parameters */
-    private var imagePathArray: Array<String> = arrayOf()
-    private var currentIndex: Int = 0
+    private val viewModel: ImagePagerViewModel by lazy {
+        ViewModelProvider(this).get(ImagePagerViewModel::class.java)
+    }
 
-    /**
+    /***********************************************************************************************
      * View Life Cycle
-     */
+     **********************************************************************************************/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             val args = ImagePagerFragmentArgs.fromBundle(it)
-            this.imagePathArray = args.pathArray
-            this.currentIndex = args.currentIndex
+            viewModel.imagePathArray = args.pathArray
+            viewModel.currentIndex = args.currentIndex
         }
     }
 
@@ -55,14 +56,15 @@ class ImagePagerFragment : Fragment() {
         updateUI()
     }
 
-    /**
+    /***********************************************************************************************
      * Setup
-     */
-    private fun setupViewPager() {
-        viewPager.adapter = ImagePagerAdapter(this, imagePathArray)
-        viewPager.currentItem = currentIndex
+     **********************************************************************************************/
 
-        if (imagePathArray.isEmpty() || imagePathArray.size == 1) {
+    private fun setupViewPager() {
+        viewPager.adapter = ImagePagerAdapter(this, viewModel.imagePathArray)
+        Log.d(TAG, "current index ${viewModel.currentIndex}")
+
+        if (viewModel.imagePathArray.size <= 1) {
             tabLayout.visibility = View.GONE
         }
     }
@@ -73,12 +75,15 @@ class ImagePagerFragment : Fragment() {
         }.attach()
     }
 
-    private fun updateUI() {}
+    private fun updateUI() {
+        viewPager.currentItem = viewModel.currentIndex
+    }
 
-    /**
-     * Static methods
-     */
+    /***********************************************************************************************
+     * Companion
+     **********************************************************************************************/
+
     companion object {
-        private const val TAG = "ImagePagerFragment"
+        private val TAG = ImagePagerFragment::class.simpleName ?: "Default"
     }
 }

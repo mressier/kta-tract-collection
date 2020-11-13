@@ -1,10 +1,10 @@
 package com.unicorpdev.ktatract.Fragments.TractList.list
 
-import com.unicorpdev.ktatract.Fragments.TractList.TractWithPicture
 import com.unicorpdev.ktatract.Fragments.TractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.Fragments.TractList.parameters.TractListParameters
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
+import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.extensions.mergeWithPictures
 import com.unicorpdev.ktatract.shared.extensions.sortAndFilter
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel
@@ -29,11 +29,22 @@ class TractListViewModel: RepositoryViewModel() {
 
     val savedTractWithPictures: List<TractWithPicture>
         get() {
-            return savedTracts.sortAndFilter(listParameters).mergeWithPictures(savedPictures)
+            val tracts = savedTracts.sortAndFilter(listParameters).mergeWithPictures(savedPictures)
+            return addPicturesFile(tracts)
         }
 
     /***********************************************************************************************
      * Methods
      **********************************************************************************************/
+
+    private fun addPicturesFile(tractsWithPicture: List<TractWithPicture>): List<TractWithPicture> {
+        return tractsWithPicture.map { tractWithPicture ->
+            tractWithPicture.apply {
+                picturesFile = pictures.map {
+                    it.id to tractRepository.getPictureFile(it.photoFilename)
+                }.toMap()
+            }
+        }
+    }
 }
 

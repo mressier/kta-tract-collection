@@ -4,10 +4,10 @@ import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.unicorpdev.ktatract.Fragments.TractList.TractWithPicture
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.extensions.setTractImage
 import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.authorText
 import kotlinx.android.synthetic.main.fragment_tract_grid_item.view.likeImageButton
@@ -93,7 +93,7 @@ class TractGridViewHolder(
         }
 
         gridView.pictureView.setOnClickListener {
-            callbacks?.onTractImageSelected(0, tractId, tract.pictures)
+            callbacks?.onTractImageSelected(0, tract)
         }
         gridView.pictureView.setOnLongClickListener {
             callbacks?.onTractLongSelected(tractId)

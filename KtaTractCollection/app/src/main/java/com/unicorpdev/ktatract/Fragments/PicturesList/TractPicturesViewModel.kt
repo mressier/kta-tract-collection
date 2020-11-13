@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.unicorpdev.ktatract.Database.TractRepository
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.TractPicture
+import java.io.File
 import java.util.*
 
 class TractPicturesViewModel: ViewModel() {
@@ -24,13 +25,14 @@ class TractPicturesViewModel: ViewModel() {
         tractRepository.getPictures(id)
     }
 
+    var savedPictures: List<TractPicture> = listOf()
+
+    val savedPicturesFile: List<File>
+        get() = savedPictures.map { tractRepository.getPictureFile(it.photoFilename) }
+
     /**
      * Methods
      */
-
-    fun getPicturesPath(pictures: List<TractPicture>): List<String> {
-        return pictures.map { it.photoFilename }
-    }
 
     fun loadPicturesForTractId(id: UUID) {
         tractId.value = id

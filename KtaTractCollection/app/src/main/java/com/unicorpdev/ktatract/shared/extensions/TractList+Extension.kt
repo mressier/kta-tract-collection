@@ -1,9 +1,9 @@
 package com.unicorpdev.ktatract.shared.extensions
 
-import com.unicorpdev.ktatract.Fragments.TractList.TractWithPicture
 import com.unicorpdev.ktatract.Fragments.TractList.parameters.TractListParameters
-import com.unicorpdev.ktatract.Models.Tract
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractPicture
+import com.unicorpdev.ktatract.models.TractWithPicture
 import java.util.*
 
 fun List<Tract>.mergeWithPictures(pictures: List<TractPicture>): List<TractWithPicture> {

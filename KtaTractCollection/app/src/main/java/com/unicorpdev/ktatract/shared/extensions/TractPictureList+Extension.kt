@@ -1,6 +1,6 @@
 package com.unicorpdev.ktatract.shared.extensions
 
-import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.models.TractPicture
 import java.util.*
 
 fun List<TractPicture>.groupedByTractId(): Map<UUID, List<TractPicture>> {

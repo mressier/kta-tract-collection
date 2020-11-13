@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.unicorpdev.ktatract.R
 import kotlinx.android.synthetic.main.fragment_pictures_item.view.*
+import java.io.File
 
 /**
  * PictureItemViewHolder
  */
-class PictureItemViewHolder(
+class TractPictureViewHolder(
     val view: View,
     private val callbacks: Callback
 ) : RecyclerView.ViewHolder(view) {
@@ -23,31 +24,31 @@ class PictureItemViewHolder(
      * Methods
      */
 
-    fun bind(photoPath: String) {
-        setupPhoto(photoPath)
-        setupListeners(photoPath)
+    fun bind(photo: File) {
+        setupPhoto(photo)
+        setupListeners(photo)
         setDeleteButtonIsVisible(true)
     }
 
     /**
      * Setup
      */
-    private fun setupPhoto(path: String) {
+    private fun setupPhoto(file: File) {
         Glide.with(itemView.context)
-            .load(Uri.parse(path))
+            .load(file)
             .dontAnimate()
             .centerCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(view.pictureImageView)
     }
 
-    private fun setupListeners(path: String) {
+    private fun setupListeners(file: File) {
         view.pictureImageView.setOnClickListener {
-            callbacks.onPictureSelected(path)
+            callbacks.onPictureSelected(file.name)
         }
 
         view.deleteButton.setOnClickListener {
-            callbacks.onDeleteButtonSelected(path)
+            callbacks.onDeleteButtonSelected(file.name)
             setDeleteButtonIsVisible(false)
         }
     }
