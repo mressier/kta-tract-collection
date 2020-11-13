@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/tractFragment"
-        android:name="com.onion.ktatractcollection.Fragments.Tract.TractFragment"
+        android:name="com.unicorpdev.ktatract.Fragments.Tract.TractFragment"
         android:label="tract_fragment"
         tools:layout="@layout/fragment_tract" >
         <argument
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/tractListFragment"
-        android:name="com.onion.ktatractcollection.Fragments.TractList.AllTractsFragment"
+        android:name="com.unicorpdev.ktatract.Fragments.TractList.AllTractsFragment"
         android:label="fragment_tract_list"
         tools:layout="@layout/fragment_tract_list" >
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/imagePagerFragment"
-        android:name="com.onion.ktatractcollection.shared.fragments.imagePager.ImagePagerFragment"
+        android:name="com.unicorpdev.ktatract.shared.fragments.imagePager.ImagePagerFragment"
         android:label="fragment_image_pager"
         tools:layout="@layout/fragment_image_pager" >
         <argument
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/aboutPageFragment"
-        android:name="com.onion.ktatractcollection.AboutPageFragment"
+        android:name="com.unicorpdev.ktatract.AboutPageFragment"
         android:label="fragment_about_page"
         tools:layout="@layout/fragment_about_page" />
 </navigation>

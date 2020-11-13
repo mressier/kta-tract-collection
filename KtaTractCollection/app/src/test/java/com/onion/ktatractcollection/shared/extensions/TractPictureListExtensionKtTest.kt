@@ -1,8 +1,9 @@
-package com.onion.ktatractcollection.shared.extensions
+package com.unicorpdev.ktatract.shared.extensions
 
 import com.google.common.truth.Truth.assertThat
-import com.onion.ktatractcollection.Models.Tract
-import com.onion.ktatractcollection.Models.TractPicture
+import com.unicorpdev.ktatract.Models.Tract
+import com.unicorpdev.ktatract.Models.TractPicture
+import com.unicorpdev.ktatract.shared.extensions.groupedByTractId
 import junit.framework.TestCase
 import org.junit.Test
 

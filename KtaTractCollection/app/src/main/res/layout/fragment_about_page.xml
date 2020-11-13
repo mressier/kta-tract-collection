@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?android:colorBackground"
     android:orientation="vertical"
-    tools:context=".AboutPageFragment">
+    tools:context="com.unicorpdev.ktatract.AboutPageFragment">
 
     <ScrollView
         android:layout_width="match_parent"

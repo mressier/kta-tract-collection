@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
-    android:name="com.onion.ktatractcollection.PicturesFragment"
+    android:name="com.unicorpdev.ktatract.PicturesFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
     app:spanCount="2"
-    tools:context=".Fragments.PicturesList.PicturesListFragment"
+    tools:context="com.unicorpdev.ktatract.Fragments.PicturesList.PicturesListFragment"
     tools:listitem="@layout/fragment_pictures_item" />

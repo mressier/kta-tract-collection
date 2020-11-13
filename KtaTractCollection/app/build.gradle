@@ -13,7 +13,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.onion.ktatractcollection"
+        applicationId "com.unicorpdev.ktatract"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1

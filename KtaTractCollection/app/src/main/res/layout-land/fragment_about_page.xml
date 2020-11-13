@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?android:colorBackground"
     android:orientation="horizontal"
-    tools:context=".AboutPageFragment">
+    tools:context="com.unicorpdev.ktatract.AboutPageFragment">
 
     <ImageView
         android:id="@+id/imageView"

@@ -1,4 +1,4 @@
-package com.onion.ktatractcollection
+package com.unicorpdev.ktatract
 
 import org.junit.Test
 
