@@ -33,8 +33,9 @@
     <string name="tract_dialog_title">Tract actions</string>
 
     <string name="delete_tract">Delete the tract</string>
+    <string name="modify_tract">Modify the tract</string>
     <string name="delete_tract_success">Your tract has been successfully deleted</string>
-    <string name="add_tracts_success">%1$d tracts created</string>
+    <string name="add_tracts_success">%1$d tract(s) created</string>
 
     <string name="tract_sort_by">Sort By…</string>
     <string name="tract_sort_other_options">Other options…</string>

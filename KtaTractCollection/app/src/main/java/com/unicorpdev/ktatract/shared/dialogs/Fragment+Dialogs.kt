@@ -14,7 +14,9 @@ import java.util.*
 
 interface TractActionCallback {
     fun onDelete(tractId: UUID)
+    fun onModify(tractId: UUID)
 }
+
 /**
  * Show a dialog with a circle loading bar
  *
@@ -70,6 +72,11 @@ fun Fragment.showTractActionDialog(tractId: UUID, callbacks: TractActionCallback
 
     customView.deleteButton.setOnClickListener {
         callbacks.onDelete(tractId)
+        alertDialog.dismiss()
+    }
+
+    customView.modifyButton.setOnClickListener {
+        callbacks.onModify(tractId)
         alertDialog.dismiss()
     }
 

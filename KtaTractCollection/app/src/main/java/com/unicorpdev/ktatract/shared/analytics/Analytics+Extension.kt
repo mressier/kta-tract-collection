@@ -18,7 +18,8 @@ class KtaTractAnalytics {
         IMPORT_ONE_PICTURE,
         LIKE,
         DELETE_TRACT,
-        DELETE_PICTURE
+        DELETE_PICTURE,
+        MODIFY_TRACT
     }
 
     companion object {

@@ -294,6 +294,11 @@ class AllTractsFragment :
                 Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT)
                     .show()
             }
+
+            override fun onModify(tractId: UUID) {
+                KtaTractAnalytics.logSelectItem(SelectEvent.MODIFY_TRACT)
+                callbacks?.onTractSelected(tractId)
+            }
         })
     }
 
