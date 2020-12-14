@@ -35,4 +35,15 @@ data class Tract(
                 || (dating?.shortString ?: "").toLowerCase(Locale.ROOT).contains(text)
                 || discoveryDate.shortString.toLowerCase(Locale.ROOT).contains(text)
     }
+
+    override fun equals(other: Any?): Boolean {
+        val tract = other as? Tract ?: return super.equals(other)
+
+        return tract.databaseAddingDate == databaseAddingDate
+                && tract.author == author
+                && tract.discoveryDate == discoveryDate
+                && tract.dating == dating
+                && tract.comment == comment
+                && tract.isFavorite == isFavorite
+    }
 }
