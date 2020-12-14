@@ -59,6 +59,7 @@ class TractListViewHolder(
     private fun setupComment(comment: String) {
         listView.commentsTextView.apply {
             text = comment
+            visibility = if (comment.isEmpty()) View.GONE else View.VISIBLE
         }
     }
 

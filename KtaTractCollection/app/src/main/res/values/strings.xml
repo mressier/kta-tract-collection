@@ -19,9 +19,9 @@
     <string name="new_tract">New tract</string>
     <string name="sort_tract_list">Sort list</string>
     <string name="save_tract">Save tract</string>
-    <string name="like_tract">Like it</string>
+    <string name="like_tract">Like</string>
     <string name="search_tract">Search tract</string>
-    <string name="unlike_tract">Do not like it anymore</string>
+    <string name="unlike_tract">Unlike</string>
     <string name="show_as_list">Show as list</string>
     <string name="show_as_grid">Show as grid</string>
     <string name="export_collection">Export your collection</string>
