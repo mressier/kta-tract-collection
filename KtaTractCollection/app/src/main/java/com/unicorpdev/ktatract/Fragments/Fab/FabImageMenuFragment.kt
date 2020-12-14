@@ -80,6 +80,7 @@ class FabImageMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupListeners()
+        setupButtonsTexts()
 
         if (imageMenuViewModel.isMenuVisible) {
             showMenu(animated = false)
@@ -121,6 +122,10 @@ class FabImageMenuFragment : Fragment() {
     fun setShouldShowMultipleImportButton(shouldShowMultipleImportButton: Boolean) {
         imageMenuViewModel.shouldShowMultipleImport = shouldShowMultipleImportButton
     }
+    
+    /***********************************************************************************************
+     * Tools
+     **********************************************************************************************/
 
     private fun savePicture() {
         imageMenuViewModel.savePictureFile()
@@ -165,10 +170,10 @@ class FabImageMenuFragment : Fragment() {
         hideMenu()
     }
 
-    /**
+    /***********************************************************************************************
      * Menu
-     */
-
+     **********************************************************************************************/
+    
     private fun showMenu(animated: Boolean = true) {
         val duration: Long = if (animated) { 300 } else { 0 }
 
@@ -220,10 +225,10 @@ class FabImageMenuFragment : Fragment() {
         backgroundView.animate().alpha(0F).duration = duration
     }
 
-    /**
-     * Picture
-     */
-
+    /***********************************************************************************************
+     * Take Picture
+     **********************************************************************************************/
+    
     private fun takePicture() {
         checkCameraPermission(onPermissionGranted = { startCameraIntent() })
         hideMenu(animated = false)
@@ -237,10 +242,10 @@ class FabImageMenuFragment : Fragment() {
         hideMenu(animated = false)
     }
 
-    /**
+    /***********************************************************************************************
      * Gallery
-     */
-
+     **********************************************************************************************/
+    
     private fun importFromGallery() {
         val galleryIntent = buildGalleryIntent(retainDocument = true, allowMultipleFiles = true)
         startActivityForResult(galleryIntent, REQUEST_GALLERY_INTENT)
@@ -252,18 +257,18 @@ class FabImageMenuFragment : Fragment() {
         }
     }
 
-    /**
+    /***********************************************************************************************
      * Multiple Gallery
-     */
+     **********************************************************************************************/
 
     private fun multipleImportFromGallery() {
         val galleryIntent = buildGalleryIntent(retainDocument = true, allowMultipleFiles = true)
         startActivityForResult(galleryIntent, REQUEST_MULTIPLE_IMPORT_INTENT)
     }
 
-    /**
+    /***********************************************************************************************
      * Setup
-     */
+     **********************************************************************************************/
 
     private fun setupAnimations() {
         fabClock = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_rotate_clock);
@@ -295,6 +300,20 @@ class FabImageMenuFragment : Fragment() {
             KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_MULTIPLE)
             multipleImportFromGallery()
         }
+    }
+
+    private fun setupButtonsTexts() {
+        val galleryButtonText = if (imageMenuViewModel.tractId == null)
+            R.string.fab_btn_import_tract_from_gallery
+        else R.string.fab_btn_import_image_from_gallery
+
+        val cameraButtonText = if (imageMenuViewModel.tractId == null)
+            R.string.fab_btn_import_tract_take_picture
+        else R.string.fab_btn_import_image_take_picture
+
+        multipleImportText.text = getString(R.string.fab_btn_multiple_import)
+        galleryText.text = getString(galleryButtonText)
+        cameraText.text = getString(cameraButtonText)
     }
 
     /**

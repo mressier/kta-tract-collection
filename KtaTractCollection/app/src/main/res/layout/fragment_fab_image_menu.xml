@@ -28,6 +28,7 @@
         android:layout_marginEnd="16dp"
         android:labelFor="@id/galleryButton"
         android:text="@string/fab_btn_multiple_import"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="@+id/multipleImportButton"
         app:layout_constraintEnd_toStartOf="@+id/multipleImportButton"
         app:layout_constraintTop_toTopOf="@+id/multipleImportButton" />
@@ -50,7 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:labelFor="@id/galleryButton"
-        android:text="@string/fab_btn_import_from_gallery"
+        android:text="@string/fab_btn_import_tract_from_gallery"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="@+id/galleryButton"
         app:layout_constraintEnd_toStartOf="@+id/galleryButton"
         app:layout_constraintTop_toTopOf="@+id/galleryButton" />
@@ -73,7 +75,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:labelFor="@id/cameraButton"
-        android:text="@string/fab_btn_take_picture"
+        android:text="@string/fab_btn_import_tract_take_picture"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="@+id/cameraButton"
         app:layout_constraintEnd_toStartOf="@+id/cameraButton"
         app:layout_constraintTop_toTopOf="@+id/cameraButton" />
