@@ -2,7 +2,7 @@ package com.unicorpdev.ktatract.Fragments.Fab
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.unicorpdev.ktatract.Database.TractRepository
+import com.unicorpdev.ktatract.database.TractRepository
 import com.unicorpdev.ktatract.models.TractPicture
 import java.io.File
 import java.util.*

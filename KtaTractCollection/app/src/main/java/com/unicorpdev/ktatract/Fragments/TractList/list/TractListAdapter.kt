@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import com.unicorpdev.ktatract.Fragments.TractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.Tract
-import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.models.TractWithPicture
 import java.util.*
 

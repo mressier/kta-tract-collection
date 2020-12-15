@@ -1,8 +1,7 @@
 package com.unicorpdev.ktatract
 
 import android.app.Application
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.unicorpdev.ktatract.Database.TractRepository
+import com.unicorpdev.ktatract.database.TractRepository
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 
 /**

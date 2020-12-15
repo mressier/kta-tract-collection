@@ -19,7 +19,6 @@ import com.unicorpdev.ktatract.Fragments.TractList.list.TractListCallbacks
 import com.unicorpdev.ktatract.Fragments.TractList.list.TractListFragment
 import com.unicorpdev.ktatract.models.MimeType
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent

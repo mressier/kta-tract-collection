@@ -5,11 +5,9 @@ import android.net.Uri
 import android.util.Log
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractPicture
-import com.unicorpdev.ktatract.shared.extensions.filterByTractId
 import com.unicorpdev.ktatract.shared.tools.collection.CollectionExporter
 import com.unicorpdev.ktatract.shared.tools.collection.CollectionImporter
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel
-import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
 
@@ -29,10 +27,8 @@ class AllTractsViewModel: RepositoryViewModel() {
      **********************************************************************************************/
 
     fun deleteTract(tractId: UUID) {
-        val pictures = savedPictures.filterByTractId(tractId)
         val tract = savedTracts.find { it.id == tractId }
 
-        tractRepository.deletePictures(pictures)
         tract?.let { tractRepository.deleteTract(it) }
     }
 

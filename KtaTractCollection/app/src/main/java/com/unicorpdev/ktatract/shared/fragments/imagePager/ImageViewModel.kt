@@ -1,7 +1,7 @@
 package com.unicorpdev.ktatract.shared.fragments.imagePager
 
 import androidx.lifecycle.ViewModel
-import com.unicorpdev.ktatract.Database.TractRepository
+import com.unicorpdev.ktatract.database.TractRepository
 import java.io.File
 
 class ImageViewModel: ViewModel() {
