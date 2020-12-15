@@ -50,7 +50,10 @@ class AllTractsViewModel: RepositoryViewModel() {
      */
 
     fun exportCollection(context: Context, destination: Uri) {
-        CollectionExporter(context).export(destination, savedTracts, savedPictures)
+        val collections = tractRepository.getCollections()
+        val tracts = tractRepository.getTracts()
+        val pictures = tractRepository.getPictures()
+        CollectionExporter(context).export(destination, collections, tracts, pictures)
     }
 
     /**
@@ -67,6 +70,9 @@ class AllTractsViewModel: RepositoryViewModel() {
             Log.e("pouet", "Error $e")
             throw e
         }
+
+        val collections = importer.importCollections() ?: listOf()
+        tractRepository.addCollections(collections)
 
         val tracts = importer.importTracts() ?: listOf()
         tractRepository.addTracts(tracts)

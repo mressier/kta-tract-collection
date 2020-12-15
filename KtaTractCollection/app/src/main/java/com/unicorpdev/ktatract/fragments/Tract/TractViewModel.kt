@@ -21,7 +21,7 @@ class TractViewModel : ViewModel() {
 
     // Item to observe
     var tract: LiveData<Tract?> = Transformations.switchMap(tractId) { id ->
-        tractRepository.getTract(id)
+        tractRepository.getTractLiveData(id)
     }
 
     // fun to call to update tract information

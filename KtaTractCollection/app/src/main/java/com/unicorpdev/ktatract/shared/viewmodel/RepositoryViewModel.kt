@@ -18,7 +18,7 @@ open class RepositoryViewModel: ViewModel() {
 
     /** Live Data **/
 
-    val tracts: LiveData<List<Tract>> = tractRepository.getTracts()
-    val pictures: LiveData<List<TractPicture>> = tractRepository.getPictures()
+    val tracts: LiveData<List<Tract>> = tractRepository.getTractsLiveData()
+    val pictures: LiveData<List<TractPicture>> = tractRepository.getPicturesLiveData()
 
 }

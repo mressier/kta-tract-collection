@@ -36,15 +36,30 @@ class TractRepository private constructor(context: Context) {
     private val filesDir = context.applicationContext.filesDir
 
     /***********************************************************************************************
-     * Tracts
+     * Tracts - Get Live Data
      **********************************************************************************************/
 
-    fun getTracts(): LiveData<List<Tract>> = tractDao.getTractsLiveData()
+    fun getTractsLiveData(): LiveData<List<Tract>> = tractDao.getTractsLiveData()
 
-    fun getTract(id: UUID): LiveData<Tract?> = tractDao.getTractLiveData(id)
+    fun getTractLiveData(id: UUID): LiveData<Tract?> = tractDao.getTractLiveData(id)
 
-    fun getTracts(collectionId: UUID): LiveData<List<Tract>> =
+    fun getTractsLiveData(collectionId: UUID): LiveData<List<Tract>> =
         tractDao.getTractsForCollectionLiveData(collectionId)
+
+    /***********************************************************************************************
+     * Tracts - Get Raw Data
+     **********************************************************************************************/
+
+    fun getTracts(): List<Tract> = tractDao.getTracts()
+
+    fun getTract(id: UUID): Tract? = tractDao.getTract(id)
+
+    fun getTractsForCollection(collectionId: UUID): List<Tract> =
+        tractDao.getTractsForCollection(collectionId)
+
+    /***********************************************************************************************
+     * Tracts - Add / Update / Delete
+     **********************************************************************************************/
 
     fun addTract(tract: Tract) {
         executor.execute { tractDao.addTract(tract) }
@@ -70,17 +85,32 @@ class TractRepository private constructor(context: Context) {
     }
 
     /***********************************************************************************************
-     * Pictures
+     * Pictures - Get Live Data
      **********************************************************************************************/
     
-    fun getPictures(tractId: UUID): LiveData<List<TractPicture>> =
+    fun getPicturesLiveData(tractId: UUID): LiveData<List<TractPicture>> =
         pictureDao.getPicturesForTractLiveData(tractId)
 
-    fun getPictures(): LiveData<List<TractPicture>> =
+    fun getPicturesLiveData(): LiveData<List<TractPicture>> =
         pictureDao.getPicturesLiveData()
+
+
+    /***********************************************************************************************
+     * Pictures - Get Raw Data
+     **********************************************************************************************/
+
+    fun getPictures(tractId: UUID): List<TractPicture> =
+        pictureDao.getPicturesForTract(tractId)
+
+    fun getPictures(): List<TractPicture> =
+        pictureDao.getPictures()
 
     fun getPictureFile(filename: String): File = File(filesDir, filename)
 
+    /***********************************************************************************************
+     * Pictures - Add
+     **********************************************************************************************/
+    
     fun addPicture(picture: TractPicture) {
         executor.execute() { pictureDao.addPicture(picture) }
     }
@@ -131,8 +161,10 @@ class TractRepository private constructor(context: Context) {
      * Collections
      **********************************************************************************************/
 
-    fun getCollections(): LiveData<List<TractCollection>> =
+    fun getCollectionsLiveData(): LiveData<List<TractCollection>> =
         collectionDao.getCollectionsLiveData()
+
+    fun getCollections(): List<TractCollection> = collectionDao.getCollections()
 
     fun updateCollection(collection: TractCollection) {
         executor.execute { collectionDao.updateCollection(collection) }
@@ -148,6 +180,10 @@ class TractRepository private constructor(context: Context) {
 
     fun addCollection(collection: TractCollection) {
         executor.execute { collectionDao.addCollection(collection) }
+    }
+
+    fun addCollections(collections: List<TractCollection>) {
+        executor.execute { collectionDao.addCollections(collections) }
     }
 
     /***********************************************************************************************

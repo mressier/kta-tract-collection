@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import com.unicorpdev.ktatract.models.MimeType
 import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.shared.extensions.toJson
 import com.unicorpdev.ktatract.shared.tools.zip.Zipper
@@ -34,9 +35,15 @@ class CollectionExporter(private val context: Context) {
      * @property tracts list of tract to export
      * @property pictures list of pictures to export
      */
-    fun export(destination: Uri, tracts: List<Tract>, pictures: List<TractPicture>) {
+    fun export(
+        destination: Uri,
+        collections: List<TractCollection>,
+        tracts: List<Tract>,
+        pictures: List<TractPicture>
+    ) {
         Log.i(TAG, "Export tract and pictures collections")
 
+        export(collections, CollectionFiles.COLLECTION_LIST_JSON_FILENAME)
         export(tracts, CollectionFiles.TRACT_LIST_JSON_FILENAME)
         export(pictures, CollectionFiles.PICTURE_LIST_JSON_FILENAME)
 

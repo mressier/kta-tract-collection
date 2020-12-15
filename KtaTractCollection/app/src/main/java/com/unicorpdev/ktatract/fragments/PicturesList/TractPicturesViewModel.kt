@@ -22,7 +22,7 @@ class TractPicturesViewModel: ViewModel() {
 
     // Item to observe
     var pictures: LiveData<List<TractPicture>> = Transformations.switchMap(tractId) { id ->
-        tractRepository.getPictures(id)
+        tractRepository.getPicturesLiveData(id)
     }
 
     var savedPictures: List<TractPicture> = listOf()

@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.shared.extensions.jsonToObject
 import com.unicorpdev.ktatract.shared.tools.zip.Unzipper
@@ -68,6 +69,12 @@ class CollectionImporter(val context: Context) {
         jsonFilename: String = CollectionFiles.PICTURE_LIST_JSON_FILENAME
     ): List<TractPicture>? {
         return importObject<List<TractPicture>>(jsonFilename)
+    }
+
+    fun importCollections(
+        jsonFilename: String = CollectionFiles.COLLECTION_LIST_JSON_FILENAME
+    ): List<TractCollection>? {
+        return importObject<List<TractCollection>>(jsonFilename)
     }
     
     /***********************************************************************************************
