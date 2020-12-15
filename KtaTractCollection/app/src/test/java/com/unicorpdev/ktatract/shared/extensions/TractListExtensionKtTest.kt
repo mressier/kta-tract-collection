@@ -5,7 +5,7 @@ import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractPicture
 import junit.framework.TestCase
 
-class TractList_ExtensionKtTest : TestCase() {
+class TractListExtensionKtTest : TestCase() {
 
     fun testMergeWithPictures() {
         val tract1 = Tract()

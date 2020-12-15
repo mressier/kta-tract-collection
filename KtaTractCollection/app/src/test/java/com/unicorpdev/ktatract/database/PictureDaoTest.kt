@@ -1,13 +1,14 @@
 package com.unicorpdev.ktatract.database
 
 import android.content.Context
-import androidx.room.Room
+import android.graphics.Picture
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractPicture
+import com.unicorpdev.ktatract.utils.DatabaseMock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -22,12 +23,9 @@ class PictureDaoTest {
      * Properties
      **********************************************************************************************/
 
-    private val context: Context = ApplicationProvider.getApplicationContext()
-
     private lateinit var tractDao: TractDao
     private lateinit var pictureDao: PictureDao
-
-    private lateinit var db: TractDatabase
+    private var db = DatabaseMock()
 
     /***********************************************************************************************
      * Initialization
@@ -35,11 +33,9 @@ class PictureDaoTest {
 
     @Before
     fun createDb() {
-        db = Room.inMemoryDatabaseBuilder(context, TractDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-        tractDao = db.tractDao()
-        pictureDao = db.pictureDao()
+        db.create()
+        tractDao = db.tractDao
+        pictureDao = db.pictureDao
     }
 
     @After

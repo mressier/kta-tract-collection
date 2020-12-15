@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.unicorpdev.ktatract.models.TractCollection
+import com.unicorpdev.ktatract.utils.DatabaseMock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -19,11 +20,8 @@ class CollectionDaoTest {
      * Properties
      **********************************************************************************************/
 
-    private val context: Context = ApplicationProvider.getApplicationContext()
-
     private lateinit var collectionDao: CollectionDao
-
-    private lateinit var db: TractDatabase
+    private var db = DatabaseMock()
 
     /***********************************************************************************************
      * Initialization
@@ -31,10 +29,8 @@ class CollectionDaoTest {
 
     @Before
     fun createDb() {
-        db = Room.inMemoryDatabaseBuilder(context, TractDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-        collectionDao = db.collectionDao()
+        db.create()
+        collectionDao = db.collectionDao
     }
 
     @After
