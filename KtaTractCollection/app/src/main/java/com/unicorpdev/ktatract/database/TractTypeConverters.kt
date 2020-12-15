@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.Database
+package com.unicorpdev.ktatract.database
 
 import androidx.room.TypeConverter
 import java.util.*
@@ -14,7 +14,7 @@ class TractTypeConverters {
     }
 
     @TypeConverter
-    fun toUUID(uuid: String?): UUID? { return UUID.fromString(uuid) }
+    fun toUUID(uuid: String?): UUID? { return uuid?.let { UUID.fromString(it) } }
 
     @TypeConverter
     fun fromUUID(uuid: UUID?): String? { return uuid?.toString() }

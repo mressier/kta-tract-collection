@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.Database
+package com.unicorpdev.ktatract.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -9,14 +9,33 @@ import java.util.*
 interface TractDao {
 
     /***********************************************************************************************
-     * Query
+     * Query - Live Data
      **********************************************************************************************/
-    
+
     @Query("SELECT * FROM tract")
-    fun getTracts(): LiveData<List<Tract>>
+    fun getTractsLiveData(): LiveData<List<Tract>>
 
     @Query("SELECT * FROM tract WHERE id=(:id)")
-    fun getTract(id: UUID): LiveData<Tract?>
+    fun getTractLiveData(id: UUID): LiveData<Tract?>
+
+    @Query("SELECT * FROM tract WHERE collectionId=(:collectionId)")
+    fun getTractsForCollectionLiveData(collectionId: UUID): LiveData<List<Tract>>
+
+    /***********************************************************************************************
+     * Query - Raw Data
+     **********************************************************************************************/
+
+    @Query("SELECT * FROM tract")
+    fun getTracts(): List<Tract>
+
+    @Query("SELECT * FROM tract WHERE id=(:id)")
+    fun getTract(id: UUID): Tract?
+
+    @Query("SELECT * FROM tract WHERE collectionId=(:collectionId)")
+    fun getTractsForCollection(collectionId: UUID): List<Tract>
+
+    @Query("SELECT * FROM tract WHERE collectionId IS NULL")
+    fun getTractsWithoutCollection(): List<Tract>
 
     /***********************************************************************************************
      * Update
@@ -29,10 +48,10 @@ interface TractDao {
      * Insert
      **********************************************************************************************/
     
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addTract(tract: Tract)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     @JvmSuppressWildcards
     fun addTracts(tracts: List<Tract>)
 
@@ -43,4 +62,9 @@ interface TractDao {
     @Delete
     fun deleteTract(tract: Tract)
 
+    @Query("DELETE FROM tract WHERE collectionId=(:collectionId)")
+    fun deleteTractForCollection(collectionId: UUID)
+
+    @Query("DELETE FROM tract WHERE collectionId IS NULL")
+    fun deleteTractWithoutCollection()
 }
