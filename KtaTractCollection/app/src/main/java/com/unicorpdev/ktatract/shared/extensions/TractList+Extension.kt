@@ -1,6 +1,6 @@
 package com.unicorpdev.ktatract.shared.extensions
 
-import com.unicorpdev.ktatract.Fragments.TractList.parameters.TractListParameters
+import com.unicorpdev.ktatract.fragments.TractList.parameters.TractListParameters
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.models.TractWithPicture
