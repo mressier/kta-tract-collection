@@ -108,9 +108,11 @@ class TractRepository private constructor(context: Context) {
     }
 
     private fun deletePicturesForTract(tractId: UUID) {
-        val tractPictures = pictureDao.getPicturesForTract(tractId)
-        deletePictures(tractPictures)
-        executor.execute { pictureDao.deletePicturesForTract(tractId) }
+        executor.execute {
+            val tractPictures = pictureDao.getPicturesForTract(tractId)
+            deletePictures(tractPictures)
+            pictureDao.deletePicturesForTract(tractId)
+        }
     }
 
     private fun deletePicturesFile(paths: List<String>) {
