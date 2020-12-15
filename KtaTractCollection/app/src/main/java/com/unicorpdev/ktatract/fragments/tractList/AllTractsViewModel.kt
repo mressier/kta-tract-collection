@@ -14,21 +14,11 @@ import java.util.*
 class AllTractsViewModel: RepositoryViewModel() {
 
     /***********************************************************************************************
-     * Properties
-     **********************************************************************************************/
-
-    /** Saved repository data **/
-
-    var savedTracts: List<Tract> = listOf()
-    var savedPictures: List<TractPicture> = listOf()
-
-    /***********************************************************************************************
      * Methods
      **********************************************************************************************/
 
     fun deleteTract(tractId: UUID) {
-        val tract = savedTracts.find { it.id == tractId }
-
+        val tract = tractRepository.getTract(tractId)
         tract?.let { tractRepository.deleteTract(it) }
     }
 
@@ -37,7 +27,7 @@ class AllTractsViewModel: RepositoryViewModel() {
      */
 
     fun updateTractIsFavorite(tractId: UUID, isFavorite: Boolean) {
-        val tract = savedTracts.find { it.id == tractId  }
+        val tract = tractRepository.getTract(tractId)
 
         tract?.let {
             it.isFavorite = isFavorite

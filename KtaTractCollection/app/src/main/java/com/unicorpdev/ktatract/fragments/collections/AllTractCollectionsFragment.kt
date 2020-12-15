@@ -23,7 +23,7 @@ class TractCollectionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_tract_collections, container, false)
+        return inflater.inflate(R.layout.fragment_all_collections, container, false)
     }
 
     /***********************************************************************************************

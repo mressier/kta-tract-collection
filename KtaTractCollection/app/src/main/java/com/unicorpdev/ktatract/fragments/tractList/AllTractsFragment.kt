@@ -10,7 +10,6 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.unicorpdev.ktatract.fragments.fab.FabImageMenuFragment
 import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
 import com.unicorpdev.ktatract.fragments.tractList.header.TractListHeaderFragment
@@ -25,7 +24,7 @@ import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import com.unicorpdev.ktatract.shared.dialogs.*
 import com.unicorpdev.ktatract.shared.extensions.hideKeyboard
 import com.unicorpdev.ktatract.shared.extensions.setIsVisible
-import kotlinx.android.synthetic.main.fragment_tract_list.*
+import kotlinx.android.synthetic.main.fragment_all_tracts.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import java.io.File
@@ -86,7 +85,7 @@ class AllTractsFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_tract_list, container, false)
+        return inflater.inflate(R.layout.fragment_all_tracts, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -268,17 +267,6 @@ class AllTractsFragment :
     }
 
     private fun setupObservers() {
-        allTractsViewModel.tracts.observe(
-            owner = viewLifecycleOwner,
-            onChanged = { items ->
-                allTractsViewModel.savedTracts = items
-            })
-
-        allTractsViewModel.pictures.observe(
-            owner = viewLifecycleOwner,
-            onChanged = { items ->
-                allTractsViewModel.savedPictures = items
-            })
     }
 
     /***********************************************************************************************

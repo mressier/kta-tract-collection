@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.unicorpdev.ktatract.database.TractRepository
 import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractPicture
 
 open class RepositoryViewModel: ViewModel() {
@@ -18,7 +19,16 @@ open class RepositoryViewModel: ViewModel() {
 
     /** Live Data **/
 
-    val tracts: LiveData<List<Tract>> = tractRepository.getTractsLiveData()
-    val pictures: LiveData<List<TractPicture>> = tractRepository.getPicturesLiveData()
+    val tracts: LiveData<List<Tract>> by lazy {
+        tractRepository.getTractsLiveData()
+    }
+
+    val pictures: LiveData<List<TractPicture>> by lazy {
+        tractRepository.getPicturesLiveData()
+    }
+
+    val collections: LiveData<List<TractCollection>> by lazy {
+        tractRepository.getCollectionsLiveData()
+    }
 
 }

@@ -6,9 +6,11 @@
     tools:context=".fragments.TractCollectionsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.unicorpdev.ktatract.fragments.collections.TractCollectionListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Pouet pouet" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
