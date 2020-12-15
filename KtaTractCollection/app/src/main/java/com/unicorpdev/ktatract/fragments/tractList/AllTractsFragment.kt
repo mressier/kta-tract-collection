@@ -379,5 +379,8 @@ class AllTractsFragment :
 
         private const val GET_ZIP_DIRECTORY_REQUEST = 0
         private const val GET_ZIP_FILE_REQUEST = 1
+
+        @JvmStatic
+        fun newInstance() = AllTractsFragment()
     }
 }

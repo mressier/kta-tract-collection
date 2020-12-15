@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/tractListFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/tractFragment"
@@ -23,10 +23,28 @@
     </fragment>
 
     <fragment
-        android:id="@+id/tractListFragment"
-        android:name="com.unicorpdev.ktatract.fragments.tractList.AllTractsFragment"
-        android:label="fragment_tract_list"
-        tools:layout="@layout/fragment_tract_list" >
+        android:id="@+id/imagePagerFragment"
+        android:name="com.unicorpdev.ktatract.shared.fragments.imagePager.ImagePagerFragment"
+        android:label="fragment_image_pager"
+        tools:layout="@layout/fragment_image_pager" >
+        <argument
+            android:name="path_array"
+            app:argType="string[]" />
+        <argument
+            android:name="current_index"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutPageFragment"
+        android:name="com.unicorpdev.ktatract.AboutPageFragment"
+        android:label="fragment_about_page"
+        tools:layout="@layout/fragment_about_page" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.unicorpdev.ktatract.fragments.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/show_tract"
             app:destination="@id/tractFragment"
@@ -49,21 +67,4 @@
             app:popEnterAnim="@anim/wait"
             app:popExitAnim="@anim/slide_right" />
     </fragment>
-    <fragment
-        android:id="@+id/imagePagerFragment"
-        android:name="com.unicorpdev.ktatract.shared.fragments.imagePager.ImagePagerFragment"
-        android:label="fragment_image_pager"
-        tools:layout="@layout/fragment_image_pager" >
-        <argument
-            android:name="path_array"
-            app:argType="string[]" />
-        <argument
-            android:name="current_index"
-            app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/aboutPageFragment"
-        android:name="com.unicorpdev.ktatract.AboutPageFragment"
-        android:label="fragment_about_page"
-        tools:layout="@layout/fragment_about_page" />
 </navigation>

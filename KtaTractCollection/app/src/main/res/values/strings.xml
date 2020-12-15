@@ -2,6 +2,10 @@
     <string name="app_name">Kta Tract</string>
     <string name="app_fileprovider_authority">com.unicorpdev.ktatract.fileprovider</string>
 
+    <!--  Home  -->
+    <string name="tracts_tab">All Tracts</string>
+    <string name="collections_tab">Collections</string>
+
     <!--  Tract  -->
     <string name="tract_author_title">Author</string>
     <string name="tract_discovery_date_title">Discovery Date</string>
