@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.TractList
+package com.unicorpdev.ktatract.fragments.tractList
 
 import android.content.Context
 import android.net.Uri

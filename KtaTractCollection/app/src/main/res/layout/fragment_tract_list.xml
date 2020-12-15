@@ -20,7 +20,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/headerFragment"
-                android:name="com.unicorpdev.ktatract.fragments.TractList.header.TractListHeaderFragment"
+                android:name="com.unicorpdev.ktatract.fragments.tractList.header.TractListHeaderFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
@@ -30,7 +30,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/tractRecyclerFragment"
-                android:name="com.unicorpdev.ktatract.fragments.TractList.list.TractListFragment"
+                android:name="com.unicorpdev.ktatract.fragments.tractList.list.TractListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +89,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fabFragment"
-        android:name="com.unicorpdev.ktatract.fragments.Fab.FabImageMenuFragment"
+        android:name="com.unicorpdev.ktatract.fragments.fab.FabImageMenuFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

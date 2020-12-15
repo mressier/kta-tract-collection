@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.TractList
+package com.unicorpdev.ktatract.fragments.tractList
 
 import android.app.Activity
 import android.content.Context
@@ -11,12 +11,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
-import com.unicorpdev.ktatract.fragments.Fab.FabImageMenuFragment
-import com.unicorpdev.ktatract.fragments.TractList.parameters.TractListParameters
-import com.unicorpdev.ktatract.fragments.TractList.header.TractListHeaderFragment
-import com.unicorpdev.ktatract.fragments.TractList.parameters.DisplayMode
-import com.unicorpdev.ktatract.fragments.TractList.list.TractListCallbacks
-import com.unicorpdev.ktatract.fragments.TractList.list.TractListFragment
+import com.unicorpdev.ktatract.fragments.fab.FabImageMenuFragment
+import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
+import com.unicorpdev.ktatract.fragments.tractList.header.TractListHeaderFragment
+import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
+import com.unicorpdev.ktatract.fragments.tractList.list.TractListCallbacks
+import com.unicorpdev.ktatract.fragments.tractList.list.TractListFragment
 import com.unicorpdev.ktatract.models.MimeType
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractWithPicture

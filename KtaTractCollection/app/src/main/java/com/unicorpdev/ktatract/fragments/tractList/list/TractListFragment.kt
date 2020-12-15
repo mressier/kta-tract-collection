@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.TractList.list
+package com.unicorpdev.ktatract.fragments.tractList.list
 
 import android.content.Context
 import android.os.Bundle
@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
-import com.unicorpdev.ktatract.fragments.TractList.parameters.DisplayMode
-import com.unicorpdev.ktatract.fragments.TractList.parameters.TractListParameters
+import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
+import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
 import com.unicorpdev.ktatract.R
 import kotlinx.android.synthetic.main.fragment_tract_recycler.*
 

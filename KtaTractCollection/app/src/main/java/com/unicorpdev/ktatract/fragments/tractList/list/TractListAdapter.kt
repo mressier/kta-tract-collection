@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.TractList.list
+package com.unicorpdev.ktatract.fragments.tractList.list
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.unicorpdev.ktatract.fragments.TractList.parameters.DisplayMode
+import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractWithPicture

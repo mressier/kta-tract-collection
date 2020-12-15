@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.Fab
+package com.unicorpdev.ktatract.fragments.fab
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

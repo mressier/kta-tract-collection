@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
-import com.unicorpdev.ktatract.fragments.TractList.parameters.TractListParameters
+import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
 import com.unicorpdev.ktatract.R
 import kotlinx.android.synthetic.main.dialog_sort_tract_list.view.*
 

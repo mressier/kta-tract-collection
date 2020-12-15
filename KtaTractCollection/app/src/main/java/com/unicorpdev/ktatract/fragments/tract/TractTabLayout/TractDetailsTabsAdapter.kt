@@ -1,8 +1,8 @@
-package com.unicorpdev.ktatract.fragments.Tract.TractTabLayout
+package com.unicorpdev.ktatract.fragments.tract.TractTabLayout
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.unicorpdev.ktatract.fragments.PicturesList.TractPicturesFragment
+import com.unicorpdev.ktatract.fragments.picturesList.TractPicturesFragment
 import java.util.*
 
 class TractDetailsTabsAdapter(fragment: Fragment, val itemsCount: Int, var tractId: UUID?): FragmentStateAdapter(fragment) {

@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.PicturesList
+package com.unicorpdev.ktatract.fragments.picturesList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

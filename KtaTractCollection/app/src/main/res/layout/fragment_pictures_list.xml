@@ -9,5 +9,5 @@
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
     app:spanCount="2"
-    tools:context="com.unicorpdev.ktatract.fragments.PicturesList.TractPicturesFragment"
+    tools:context="com.unicorpdev.ktatract.fragments.picturesList.TractPicturesFragment"
     tools:listitem="@layout/fragment_pictures_item" />

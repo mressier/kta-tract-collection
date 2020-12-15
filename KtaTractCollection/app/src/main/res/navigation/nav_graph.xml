@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/tractFragment"
-        android:name="com.unicorpdev.ktatract.fragments.Tract.TractFragment"
+        android:name="com.unicorpdev.ktatract.fragments.tract.TractFragment"
         android:label="tract_fragment"
         tools:layout="@layout/fragment_tract" >
         <argument
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/tractListFragment"
-        android:name="com.unicorpdev.ktatract.fragments.TractList.AllTractsFragment"
+        android:name="com.unicorpdev.ktatract.fragments.tractList.AllTractsFragment"
         android:label="fragment_tract_list"
         tools:layout="@layout/fragment_tract_list" >
         <action

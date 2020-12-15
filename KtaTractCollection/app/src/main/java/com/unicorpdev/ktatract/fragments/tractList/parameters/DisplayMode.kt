@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.TractList.parameters
+package com.unicorpdev.ktatract.fragments.tractList.parameters
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.Fab
+package com.unicorpdev.ktatract.fragments.fab
 
 import android.app.Activity
 import android.content.Context

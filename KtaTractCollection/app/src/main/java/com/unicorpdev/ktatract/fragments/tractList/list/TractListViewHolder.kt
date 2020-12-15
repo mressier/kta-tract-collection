@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.TractList.list
+package com.unicorpdev.ktatract.fragments.tractList.list
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

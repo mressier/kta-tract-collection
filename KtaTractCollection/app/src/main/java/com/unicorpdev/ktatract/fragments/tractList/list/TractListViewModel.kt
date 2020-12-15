@@ -1,7 +1,7 @@
-package com.unicorpdev.ktatract.fragments.TractList.list
+package com.unicorpdev.ktatract.fragments.tractList.list
 
-import com.unicorpdev.ktatract.fragments.TractList.parameters.DisplayMode
-import com.unicorpdev.ktatract.fragments.TractList.parameters.TractListParameters
+import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
+import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.models.TractWithPicture

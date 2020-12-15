@@ -1,12 +1,12 @@
-package com.unicorpdev.ktatract.fragments.Tract
+package com.unicorpdev.ktatract.fragments.tract
 
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import com.unicorpdev.ktatract.fragments.Fab.FabImageMenuFragment
-import com.unicorpdev.ktatract.fragments.Tract.TractTabLayout.TractDetailsTabsFragment
+import com.unicorpdev.ktatract.fragments.fab.FabImageMenuFragment
+import com.unicorpdev.ktatract.fragments.tract.TractTabLayout.TractDetailsTabsFragment
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.shared.extensions.hideKeyboard
 import java.util.*

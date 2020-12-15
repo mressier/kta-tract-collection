@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:colorBackground"
-    tools:context="com.unicorpdev.ktatract.fragments.Tract.TractFragment">
+    tools:context="com.unicorpdev.ktatract.fragments.tract.TractFragment">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/tract_detail_fragment"
-        android:name="com.unicorpdev.ktatract.fragments.Tract.TractDetailsFragment"
+        android:name="com.unicorpdev.ktatract.fragments.tract.TractDetailsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?android:colorBackground"
@@ -21,7 +21,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/tract_tab_fragment"
-        android:name="com.unicorpdev.ktatract.fragments.Tract.TractTabLayout.TractDetailsTabsFragment"
+        android:name="com.unicorpdev.ktatract.fragments.tract.TractTabLayout.TractDetailsTabsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
@@ -32,7 +32,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fabFragment"
-        android:name="com.unicorpdev.ktatract.fragments.Fab.FabImageMenuFragment"
+        android:name="com.unicorpdev.ktatract.fragments.fab.FabImageMenuFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.Tract
+package com.unicorpdev.ktatract.fragments.tract
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -54,6 +54,7 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
         super.onStop()
         tractViewModel.saveTract(tract)
     }
+
     /**
      * Methods
      */

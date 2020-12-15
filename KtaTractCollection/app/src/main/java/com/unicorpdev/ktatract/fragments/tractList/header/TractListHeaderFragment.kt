@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.TractList.header
+package com.unicorpdev.ktatract.fragments.tractList.header
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.unicorpdev.ktatract.fragments.TractList.parameters.DisplayMode
+import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent

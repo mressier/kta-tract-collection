@@ -1,7 +1,7 @@
-package com.unicorpdev.ktatract.fragments.TractList.header
+package com.unicorpdev.ktatract.fragments.tractList.header
 
 import androidx.lifecycle.ViewModel
-import com.unicorpdev.ktatract.fragments.TractList.parameters.DisplayMode
+import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
 
 class TractListHeaderViewModel : ViewModel() {
 

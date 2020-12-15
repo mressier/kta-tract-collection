@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.Tract.TractTabLayout
+package com.unicorpdev.ktatract.fragments.tract.TractTabLayout
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.Tract
+package com.unicorpdev.ktatract.fragments.tract
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
