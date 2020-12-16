@@ -7,24 +7,40 @@
     android:orientation="horizontal"
     tools:context=".fragments.collectionList.AllTractCollectionsFragment">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/headerFragment"
-        android:name="com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/collectionFragment"
-        android:name="com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionListFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerFragment" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/headerFragment"
+                android:name="com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/addCollectionFragment"
+                android:name="com.unicorpdev.ktatract.shared.fragments.AddButtonFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp" />
+
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/collectionFragment"
+                android:name="com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,8 +21,10 @@
 
     <!--  Collection List  -->
     <string name="collection_count">Collection(s)</string>
+    <string name="add_collection_button">Create a collection</string>
 
     <!-- List Header -->
+
     <string name="list_format">%1$d %2$s</string>
     <string name="list_default_count">Item(s)</string>
 

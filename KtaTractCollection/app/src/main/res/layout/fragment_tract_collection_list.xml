@@ -6,8 +6,8 @@
     android:name="com.unicorpdev.ktatract.fragments.collections.TractCollectionListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".fragments.collectionList.list.TractCollectionListFragment"
     tools:listitem="@layout/fragment_tract_collection_item" />
