@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.fragments.collections.TractCollectionsFragment
+import com.unicorpdev.ktatract.fragments.collections.AllTractCollectionsFragment
 import com.unicorpdev.ktatract.fragments.tractList.AllTractsFragment
 
 class TractAndCollectionsTabsAdapter(
@@ -26,7 +26,7 @@ class TractAndCollectionsTabsAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (items[position]) {
             TabContent.ALL_TRACTS -> AllTractsFragment.newInstance()
-            TabContent.COLLECTIONS -> TractCollectionsFragment.newInstance()
+            TabContent.COLLECTIONS -> AllTractCollectionsFragment.newInstance()
         }
     }
 }

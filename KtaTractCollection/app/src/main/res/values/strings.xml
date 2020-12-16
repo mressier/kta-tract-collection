@@ -17,7 +17,14 @@
     <string name="no_tract_result">No tract found…</string>
     <string name="tract_dating_from">Dating from %1$s</string>
     <string name="tract_found_on">Found on %1$s</string>
-    <string name="tract_count">%1$d Tract(s)</string>
+    <string name="tract_count">Tract(s)</string>
+
+    <!--  Collection List  -->
+    <string name="collection_count">Collection(s)</string>
+
+    <!-- List Header -->
+    <string name="list_format">%1$d %2$s</string>
+    <string name="list_default_count">Item(s)</string>
 
     <!--  Menus  -->
     <string name="new_tract">New tract</string>

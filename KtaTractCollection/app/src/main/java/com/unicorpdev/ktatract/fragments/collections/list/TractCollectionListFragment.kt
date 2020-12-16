@@ -1,5 +1,6 @@
 package com.unicorpdev.ktatract.fragments.collections.list
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.fragments.collections.AllTractCollectionsFragment
 import com.unicorpdev.ktatract.models.TractCollection
 import kotlinx.android.synthetic.main.fragment_tract_collection_list.*
 import java.util.*
@@ -18,12 +20,22 @@ import java.util.*
  */
 class TractCollectionListFragment : Fragment(), TractCollectionCallback {
 
+    interface Callbacks: TractCollectionCallback {
+        fun onItemCountChanged(itemCount: Int)
+    }
+
+    /***********************************************************************************************
+     * Properties
+     **********************************************************************************************/
+
     private val viewModel by viewModels<TractCollectionViewModel>()
 
     private val defaultCollection =
         TractCollection(title = "Unclassified", description = "Tracts with no collection")
 
     private lateinit var adapter: TractCollectionListAdapter
+
+    private var callbacks: Callbacks? = null
 
     /***********************************************************************************************
      * View Life Cycle
@@ -35,9 +47,9 @@ class TractCollectionListFragment : Fragment(), TractCollectionCallback {
     ): View? {
         val view =
             inflater.inflate(R.layout.fragment_tract_collection_list, container, false)
-        
+
         (view as? RecyclerView)?.let { setupRecyclerView(it) }
-        
+
         return view
     }
 
@@ -45,7 +57,17 @@ class TractCollectionListFragment : Fragment(), TractCollectionCallback {
         super.onViewCreated(view, savedInstanceState)
         setupObserver()
     }
-    
+
+    override fun onAttach(context: Context) {
+        callbacks = context as? Callbacks ?: parentFragment as? Callbacks
+        super.onAttach(context)
+    }
+
+    override fun onDetach() {
+        callbacks = null
+        super.onDetach()
+    }
+
     /***********************************************************************************************
      * Setup
      **********************************************************************************************/
@@ -71,11 +93,13 @@ class TractCollectionListFragment : Fragment(), TractCollectionCallback {
                 viewModel.getCollectionsWithPicture(fakeCollections + list)
             adapter.submitList(collectionsWithPicture)
             adapter.notifyDataSetChanged()
+            callbacks?.onItemCountChanged(collectionsWithPicture.size)
         }
     }
 
     override fun onCollectionSelected(collectionId: UUID) {
         println("collection selected : $collectionId")
+        callbacks?.onCollectionSelected(collectionId)
     }
 
     /***********************************************************************************************

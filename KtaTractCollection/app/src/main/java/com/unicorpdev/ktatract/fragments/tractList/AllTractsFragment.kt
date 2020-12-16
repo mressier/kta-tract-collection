@@ -212,6 +212,7 @@ class AllTractsFragment :
     private fun setupView() {
         setupNoTractView()
         setupFragments()
+        setupHeaderFragment()
     }
 
     private fun setupFragments() {
@@ -221,6 +222,10 @@ class AllTractsFragment :
             childFragmentManager.findFragmentById(R.id.headerFragment) as TractListHeaderFragment
         tractsFragment =
             childFragmentManager.findFragmentById(R.id.tractRecyclerFragment) as TractListFragment
+    }
+
+    private fun setupHeaderFragment() {
+        headerFragment.setCounterFormatString(R.string.tract_count)
     }
 
     private fun setupNoTractView() {
@@ -327,7 +332,7 @@ class AllTractsFragment :
     }
 
     override fun onItemCountChanged(numberOfItems: Int) {
-        headerFragment.updateTractNumber(numberOfItems)
+        headerFragment.updateItemCount(numberOfItems)
 
         val hasContent = numberOfItems > 0
 
