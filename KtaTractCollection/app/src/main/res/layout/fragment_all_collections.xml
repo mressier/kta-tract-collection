@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.unicorpdev.ktatract.fragments.collections.TractCollectionListFragment"
+        android:name="com.unicorpdev.ktatract.fragments.collections.list.TractCollectionListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

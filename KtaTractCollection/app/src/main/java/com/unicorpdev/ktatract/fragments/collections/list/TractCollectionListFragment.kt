@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.collections
+package com.unicorpdev.ktatract.fragments.collections.list
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -33,7 +33,8 @@ class TractCollectionListFragment : Fragment(), TractCollectionCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_tract_collection_list, container, false)
+        val view =
+            inflater.inflate(R.layout.fragment_tract_collection_list, container, false)
         
         (view as? RecyclerView)?.let { setupRecyclerView(it) }
         
