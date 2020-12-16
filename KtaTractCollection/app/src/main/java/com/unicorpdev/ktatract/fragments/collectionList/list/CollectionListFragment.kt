@@ -17,7 +17,7 @@ import java.util.*
 /**
  * A fragment representing a list of Items.
  */
-class TractCollectionListFragment : Fragment(), TractCollectionCallback {
+class CollectionListFragment : Fragment(), TractCollectionCallback {
 
     interface Callbacks: TractCollectionCallback {
         fun onItemCountChanged(itemCount: Int)
@@ -76,7 +76,7 @@ class TractCollectionListFragment : Fragment(), TractCollectionCallback {
 
         view.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = this@TractCollectionListFragment.adapter
+            adapter = this@CollectionListFragment.adapter
         }
     }
 
@@ -108,7 +108,7 @@ class TractCollectionListFragment : Fragment(), TractCollectionCallback {
     companion object {
 
         @JvmStatic
-        fun newInstance() = TractCollectionListFragment()
+        fun newInstance() = CollectionListFragment()
     }
 
 }

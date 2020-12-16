@@ -14,23 +14,23 @@ interface TractCollectionCallback {
 
 class TractCollectionListAdapter(
     val callbacks: TractCollectionCallback
-): ListAdapter<CollectionWithPicture, TractCollectionViewHolder>(DiffUtilCallback()) {
+): ListAdapter<CollectionWithPicture, CollectionListItemViewHolder>(DiffUtilCallback()) {
 
     /***********************************************************************************************
      * View Life Cycle
      **********************************************************************************************/
     
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TractCollectionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionListItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_tract_collection_item, parent, false)
-        return TractCollectionViewHolder(view, callbacks)
+        return CollectionListItemViewHolder(view, callbacks)
     }
     
     /***********************************************************************************************
      * Bind
      **********************************************************************************************/
 
-    override fun onBindViewHolder(holder: TractCollectionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CollectionListItemViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
     }

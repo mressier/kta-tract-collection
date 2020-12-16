@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.unicorpdev.ktatract.R
 import java.io.File
 
-class TractCollectionViewHolder(
+class CollectionListItemViewHolder(
     view: View,
     val callbacks: TractCollectionCallback
 ) : RecyclerView.ViewHolder(view) {
