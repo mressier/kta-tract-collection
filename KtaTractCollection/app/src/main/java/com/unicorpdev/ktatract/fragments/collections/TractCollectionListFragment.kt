@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractCollection
 import kotlinx.android.synthetic.main.fragment_tract_collection_list.*
@@ -20,6 +19,9 @@ import java.util.*
 class TractCollectionListFragment : Fragment(), TractCollectionCallback {
 
     private val viewModel by viewModels<TractCollectionViewModel>()
+
+    private val defaultCollection =
+        TractCollection(title = "Unclassified", description = "Tracts with no collection")
 
     private lateinit var adapter: TractCollectionListAdapter
 
@@ -58,17 +60,18 @@ class TractCollectionListFragment : Fragment(), TractCollectionCallback {
 
     private fun setupObserver() {
         viewModel.collections.observe(viewLifecycleOwner) { list ->
-            val noIdCollection = TractCollection(title = "Unclassified", description = "Tracts with no collection")
             val fakeCollections = listOf(
+                defaultCollection,
                 TractCollection(title = "My Collection (Onion)", description = "My personnal collection that i have done by myself"),
                 TractCollection(title = "Bug's collection", description = "The super ultimate collection of Mr. Bug."),
                 TractCollection(title = "Secret collection", description = "A collection with really rare tracts...")
             )
-            adapter.submitList(listOf(noIdCollection) + fakeCollections + list)
+            val collectionsWithPicture =
+                viewModel.getCollectionsWithPicture(fakeCollections + list)
+            adapter.submitList(collectionsWithPicture)
             adapter.notifyDataSetChanged()
         }
     }
-
 
     override fun onCollectionSelected(collectionId: UUID) {
         println("collection selected : $collectionId")

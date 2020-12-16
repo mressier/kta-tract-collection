@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.bumptech.glide.Glide
 import com.unicorpdev.ktatract.R
 
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractWithPicture
+import kotlinx.android.synthetic.main.fragment_tract_collection_item.view.*
+import java.io.File
 import java.util.*
 
 interface TractCollectionCallback {
@@ -19,7 +22,7 @@ interface TractCollectionCallback {
 
 class TractCollectionListAdapter(
     val callbacks: TractCollectionCallback
-): ListAdapter<TractCollection, TractCollectionListAdapter.ViewHolder>(DiffUtilCallback()) {
+): ListAdapter<CollectionWithPicture, TractCollectionListAdapter.ViewHolder>(DiffUtilCallback()) {
 
     /***********************************************************************************************
      * View Life Cycle
@@ -37,9 +40,23 @@ class TractCollectionListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.idView.text = item.title
-        holder.contentView.text = item.description
-        holder.itemView.setOnClickListener { callbacks.onCollectionSelected(item.id) }
+        holder.idView.text = item.collection.title
+        holder.contentView.text = item.collection.description
+
+        setupImageView(holder, item.picture)
+        setupCallbacks(holder, item)
+    }
+
+    private fun setupImageView(holder: ViewHolder, file: File?) {
+        Glide.with(holder.itemView.context)
+            .load(file)
+            .centerCrop()
+            .placeholder(R.drawable.ic_launcher_foreground)
+            .into(holder.itemView.collectionImageView)
+    }
+
+    private fun setupCallbacks(holder: ViewHolder, item: CollectionWithPicture) {
+        holder.itemView.setOnClickListener { callbacks.onCollectionSelected(item.collection.id) }
     }
     
     /***********************************************************************************************
@@ -58,13 +75,14 @@ class TractCollectionListAdapter(
     /**
      * Diff
      */
-    class DiffUtilCallback: DiffUtil.ItemCallback<TractCollection>() {
-        override fun areItemsTheSame(oldItem: TractCollection, newItem: TractCollection): Boolean {
-            return oldItem.id == newItem.id
+    class DiffUtilCallback: DiffUtil.ItemCallback<CollectionWithPicture>() {
+        override fun areItemsTheSame(oldItem: CollectionWithPicture, newItem: CollectionWithPicture): Boolean {
+            return oldItem.collection.id == newItem.collection.id
         }
 
-        override fun areContentsTheSame(oldItem: TractCollection, newItem: TractCollection): Boolean {
-            return oldItem == newItem
+        override fun areContentsTheSame(oldItem: CollectionWithPicture, newItem: CollectionWithPicture): Boolean {
+            return oldItem.collection.id == newItem.collection.id
+                    && oldItem.picture == newItem.picture
         }
     }
 }
