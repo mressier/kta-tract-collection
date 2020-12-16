@@ -27,10 +27,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
+                android:adjustViewBounds="true"
                 android:background="@drawable/circle"
                 android:contentDescription="@string/collection_image"
                 android:elevation="16dp"
-                android:padding="32dp"
                 app:srcCompat="@drawable/ic_no_tract_photo"
                 tools:src="@drawable/ic_no_tract_photo"
                 tools:srcCompat="@drawable/ic_no_tract_photo" />
