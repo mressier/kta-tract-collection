@@ -17,4 +17,11 @@
         <item name="boxBackgroundColor">@color/transparent</item>
     </style>
 
+    <style name="ActionItem">
+        <item name="android:drawablePadding">@dimen/drawable_padding</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/default_padding</item>
+    </style>
+
 </resources>

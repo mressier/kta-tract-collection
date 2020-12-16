@@ -40,7 +40,7 @@ fun Fragment.showLoadingDialog(): AlertDialog {
 fun Fragment.showErrorDialog(title: String, text: String): AlertDialog {
     val builder = AlertDialog.Builder(requireContext())
     val textView = layoutInflater.inflate(R.layout.dialog_text_view, null).apply {
-        textView.text = text
+        pictureTextView.text = text
     }
 
     builder.setTitle(title)
