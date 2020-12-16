@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_launcher_foreground"
-            app:tint="@color/white" />
+            app:tint="@android:color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -37,26 +37,26 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/item_number"
+            android:id="@+id/collectionTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="My collection"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintEnd_toStartOf="@+id/content"
+            app:layout_constraintEnd_toStartOf="@+id/collectionDescriptionText"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/content"
+            android:id="@+id/collectionDescriptionText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Bla bla bli bla bla bluh"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_number" />
+            app:layout_constraintTop_toBottomOf="@+id/collectionTitleText" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -67,7 +67,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/content" />
+            app:layout_constraintTop_toBottomOf="@+id/collectionDescriptionText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
