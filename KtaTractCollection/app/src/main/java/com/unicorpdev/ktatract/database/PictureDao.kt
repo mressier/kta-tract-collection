@@ -19,6 +19,9 @@ interface PictureDao {
     @Query("SELECT * FROM tractpicture WHERE tractId=(:tractId)")
     fun getPicturesForTractLiveData(tractId: UUID): LiveData<List<TractPicture>>
 
+    @Query("SELECT * FROM tractpicture WHERE tractId IN ( SELECT id FROM tract WHERE collectionId=(:collectionId) )")
+    fun getPicturesForCollectionLiveData(collectionId: UUID): LiveData<List<TractPicture>>
+
     /***********************************************************************************************
      * Query
      **********************************************************************************************/

@@ -94,6 +94,8 @@ class TractRepository private constructor(context: Context) {
     fun getPicturesLiveData(): LiveData<List<TractPicture>> =
         pictureDao.getPicturesLiveData()
 
+    fun getPicturesForCollectionLiveData(collectionId: UUID): LiveData<List<TractPicture>> =
+        pictureDao.getPicturesForCollectionLiveData(collectionId)
 
     /***********************************************************************************************
      * Pictures - Get Raw Data
@@ -104,6 +106,9 @@ class TractRepository private constructor(context: Context) {
 
     fun getPictures(): List<TractPicture> =
         pictureDao.getPictures()
+
+    fun getPicturesForCollection(collectionId: UUID): List<TractPicture> =
+        pictureDao.getPicturesForCollection(collectionId)
 
     fun getPictureFile(filename: String): File = File(filesDir, filename)
 
