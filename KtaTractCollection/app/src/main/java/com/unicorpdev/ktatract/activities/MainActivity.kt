@@ -71,7 +71,12 @@ class MainActivity : AppCompatActivity(),
      * Callbacks | CollectionListFragment
      **********************************************************************************************/
 
-    override fun onCollectionSelected(collectionId: UUID) {
+    override fun onSelectCollection(collectionId: UUID) {
+        val action = HomeFragmentDirections.showCollectionEdit(collectionId.toString()) // To change
+        navController.navigate(action)
+    }
+
+    override fun onCollectionCreated(collectionId: UUID) {
         val action = HomeFragmentDirections.showCollectionEdit(collectionId.toString())
         navController.navigate(action)
     }

@@ -26,7 +26,14 @@ class CollectionListItemViewHolder(
      **********************************************************************************************/
 
     fun bind(item: CollectionWithPicture) {
-        idView.text = item.collection.title
+        idView.text = if (item.collection.title.isEmpty()) {
+            itemView.context.getString(R.string.collection_unnamed)
+        } else {
+            item.collection.title
+        }
+
+        contentView.visibility =
+            if (item.collection.description.isEmpty()) { View.GONE } else { View.VISIBLE }
         contentView.text = item.collection.description
 
         setupImageView(item.picture)
@@ -46,7 +53,7 @@ class CollectionListItemViewHolder(
     }
 
     private fun setupCallbacks(item: CollectionWithPicture) {
-        itemView.setOnClickListener { callbacks.onCollectionSelected(item.collection.id) }
+        itemView.setOnClickListener { callbacks.onSelectCollection(item.collection.id) }
     }
 
     /***********************************************************************************************

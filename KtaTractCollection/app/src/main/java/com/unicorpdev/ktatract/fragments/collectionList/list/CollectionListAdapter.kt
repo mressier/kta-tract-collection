@@ -9,7 +9,8 @@ import com.unicorpdev.ktatract.R
 import java.util.*
 
 interface TractCollectionCallback {
-    fun onCollectionSelected(collectionId: UUID)
+    fun onSelectCollection(collectionId: UUID)
+    fun onDeleteCollection(collectionId: UUID)
 }
 
 class TractCollectionListAdapter(

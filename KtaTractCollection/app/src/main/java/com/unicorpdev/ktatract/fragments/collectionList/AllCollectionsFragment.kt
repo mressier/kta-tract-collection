@@ -25,6 +25,7 @@ class AllCollectionsFragment : Fragment(),
 {
 
     interface Callbacks: TractCollectionCallback {
+        fun onCollectionCreated(collectionId: UUID)
     }
 
     /***********************************************************************************************
@@ -83,8 +84,8 @@ class AllCollectionsFragment : Fragment(),
      * Tract Collection Callback
      **********************************************************************************************/
 
-    override fun onCollectionSelected(collectionId: UUID) {
-        callbacks?.onCollectionSelected(collectionId)
+    override fun onSelectCollection(collectionId: UUID) {
+        callbacks?.onSelectCollection(collectionId)
     }
 
     override fun onItemCountChanged(itemCount: Int) {
@@ -93,7 +94,7 @@ class AllCollectionsFragment : Fragment(),
 
     override fun onAddButtonSelected() {
         val collectionId = viewModel.createCollection()
-        callbacks?.onCollectionSelected(collectionId)
+        callbacks?.onCollectionCreated(collectionId)
     }
 
     /***********************************************************************************************

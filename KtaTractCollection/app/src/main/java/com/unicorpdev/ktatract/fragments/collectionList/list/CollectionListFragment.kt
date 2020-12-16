@@ -82,23 +82,17 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
 
     private fun setupObserver() {
         viewModel.collections.observe(viewLifecycleOwner) { list ->
-            val fakeCollections = listOf(
-                defaultCollection,
-                TractCollection(title = "My Collection (Onion)", description = "My personnal collection that i have done by myself"),
-                TractCollection(title = "Bug's collection", description = "The super ultimate collection of Mr. Bug."),
-                TractCollection(title = "Secret collection", description = "A collection with really rare tracts...")
-            )
             val collectionsWithPicture =
-                viewModel.getCollectionsWithPicture(fakeCollections + list)
+                viewModel.getCollectionsWithPicture(listOf(defaultCollection) + list)
             adapter.submitList(collectionsWithPicture)
             adapter.notifyDataSetChanged()
             callbacks?.onItemCountChanged(collectionsWithPicture.size)
         }
     }
 
-    override fun onCollectionSelected(collectionId: UUID) {
+    override fun onSelectCollection(collectionId: UUID) {
         println("collection selected : $collectionId")
-        callbacks?.onCollectionSelected(collectionId)
+        callbacks?.onSelectCollection(collectionId)
     }
 
     /***********************************************************************************************

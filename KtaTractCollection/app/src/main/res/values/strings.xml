@@ -24,6 +24,7 @@
     <string name="add_collection_button">Create a collection</string>
 
     <!--  Collection  -->
+    <string name="collection_unnamed">Unnamed collection</string>
     <string name="collection_title">Collection title</string>
     <string name="collection_description">Collection description</string>
     <string name="collection_image">Image representing collection</string>

@@ -64,6 +64,10 @@ class AddButtonFragment : Fragment() {
         imageButtonAdd.setOnClickListener {
             callbacks?.onAddButtonSelected()
         }
+
+        view?.setOnClickListener {
+            callbacks?.onAddButtonSelected()
+        }
     }
 
     /***********************************************************************************************
