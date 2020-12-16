@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".fragments.collectionList.AllTractCollectionsFragment">
+    tools:context=".fragments.collectionList.AllCollectionsFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -36,7 +37,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/collectionFragment"
-                android:name="com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionListFragment"
+                android:name="com.unicorpdev.ktatract.fragments.collectionList.list.CollectionListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

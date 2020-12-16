@@ -7,8 +7,8 @@ import java.util.*
 @Entity
 data class TractCollection(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
-    val title: String = "",
-    val description: String = "",
+    var title: String = "",
+    var description: String = "",
     val imageFilename: String? = null
 ) {
     override fun equals(other: Any?): Boolean {

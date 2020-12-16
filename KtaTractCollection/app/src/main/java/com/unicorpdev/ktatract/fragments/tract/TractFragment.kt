@@ -71,7 +71,7 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
-            R.id.save_tract_item -> {
+            R.id.save_item -> {
                 requireActivity().hideKeyboard()
                 requireActivity().onBackPressed()
                 true

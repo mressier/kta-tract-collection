@@ -8,11 +8,16 @@ import com.unicorpdev.ktatract.fragments.picturesList.TractPicturesFragment
 import com.unicorpdev.ktatract.fragments.tract.TractFragmentDirections
 import com.unicorpdev.ktatract.fragments.tractList.AllTractsFragment
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.fragments.collectionList.AllCollectionsFragment
 import com.unicorpdev.ktatract.fragments.home.HomeFragmentDirections
 import java.io.File
 import java.util.*
 
-class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, TractPicturesFragment.Callbacks {
+class MainActivity : AppCompatActivity(),
+    AllTractsFragment.Callbacks,
+    AllCollectionsFragment.Callbacks,
+    TractPicturesFragment.Callbacks
+{
 
     /***********************************************************************************************
      * Properties
@@ -36,7 +41,7 @@ class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, TractPict
      **********************************************************************************************/
 
     override fun onTractSelected(tractId: UUID) {
-        val action = HomeFragmentDirections.showTract(tractId.toString())
+        val action = HomeFragmentDirections.showTractEdit(tractId.toString())
         navController.navigate(action)
     }
 
@@ -51,14 +56,23 @@ class MainActivity : AppCompatActivity(), AllTractsFragment.Callbacks, TractPict
         navController.navigate(action)
     }
 
-    /**
+    /***********************************************************************************************
      * Callbacks | PicturesListFragment
-     */
+     **********************************************************************************************/
 
     override fun onPictureSelected(pictureList: Array<File>,
                                    pictureIndex: Int) {
         val paths = pictureList.map { it.name }.toTypedArray()
         val action = TractFragmentDirections.showTractImages(paths, pictureIndex)
+        navController.navigate(action)
+    }
+
+    /***********************************************************************************************
+     * Callbacks | CollectionListFragment
+     **********************************************************************************************/
+
+    override fun onCollectionSelected(collectionId: UUID) {
+        val action = HomeFragmentDirections.showCollectionEdit(collectionId.toString())
         navController.navigate(action)
     }
 }

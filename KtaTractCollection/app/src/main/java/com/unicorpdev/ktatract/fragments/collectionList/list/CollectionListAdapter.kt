@@ -40,12 +40,14 @@ class TractCollectionListAdapter(
      * Diff
      */
     class DiffUtilCallback: DiffUtil.ItemCallback<CollectionWithPicture>() {
-        override fun areItemsTheSame(oldItem: CollectionWithPicture, newItem: CollectionWithPicture): Boolean {
+        override fun areItemsTheSame(oldItem: CollectionWithPicture,
+                                     newItem: CollectionWithPicture): Boolean {
             return oldItem.collection.id == newItem.collection.id
         }
 
-        override fun areContentsTheSame(oldItem: CollectionWithPicture, newItem: CollectionWithPicture): Boolean {
-            return oldItem.collection.id == newItem.collection.id
+        override fun areContentsTheSame(oldItem: CollectionWithPicture,
+                                        newItem: CollectionWithPicture): Boolean {
+            return oldItem.collection == newItem.collection
                     && oldItem.picture == newItem.picture
         }
     }

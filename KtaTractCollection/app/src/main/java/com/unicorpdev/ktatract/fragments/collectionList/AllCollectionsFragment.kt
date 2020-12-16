@@ -6,18 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionCallback
-import com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionListFragment
+import com.unicorpdev.ktatract.fragments.collectionList.list.CollectionListFragment
+import com.unicorpdev.ktatract.shared.fragments.AddButtonFragment
 import com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment
 import java.util.*
 
 /**
  * A simple [Fragment] subclass.
- * Use the [AllTractCollectionsFragment.newInstance] factory method to
+ * Use the [AllCollectionsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AllTractCollectionsFragment : Fragment(), TractCollectionListFragment.Callbacks {
+class AllCollectionsFragment : Fragment(),
+    CollectionListFragment.Callbacks,
+    AddButtonFragment.Callbacks
+{
 
     interface Callbacks: TractCollectionCallback {
     }
@@ -30,6 +35,7 @@ class AllTractCollectionsFragment : Fragment(), TractCollectionListFragment.Call
 
     private var callbacks: Callbacks? = null
 
+    private val viewModel by viewModels<AllCollectionsViewModel>()
 
     /***********************************************************************************************
      * View Life Cycle
@@ -84,13 +90,19 @@ class AllTractCollectionsFragment : Fragment(), TractCollectionListFragment.Call
     override fun onItemCountChanged(itemCount: Int) {
         headerFragment.updateItemCount(itemCount)
     }
+
+    override fun onAddButtonSelected() {
+        val collectionId = viewModel.createCollection()
+        callbacks?.onCollectionSelected(collectionId)
+    }
+
     /***********************************************************************************************
      * Companion
      **********************************************************************************************/
 
     companion object {
         @JvmStatic
-        fun newInstance() = AllTractCollectionsFragment()
+        fun newInstance() = AllCollectionsFragment()
     }
 
 }

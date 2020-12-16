@@ -46,7 +46,7 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/show_tract"
+            android:id="@+id/showTractEdit"
             app:destination="@id/tractFragment"
             app:enterAnim="@anim/slide_left"
             app:exitAnim="@anim/wait"
@@ -66,5 +66,17 @@
             app:exitAnim="@anim/wait"
             app:popEnterAnim="@anim/wait"
             app:popExitAnim="@anim/slide_right" />
+        <action
+            android:id="@+id/showCollectionEdit"
+            app:destination="@id/collectionEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectionEditFragment"
+        android:name="com.unicorpdev.ktatract.fragments.collection.CollectionEditFragment"
+        android:label="fragment_collection_edit"
+        tools:layout="@layout/fragment_collection_edit" >
+        <argument
+            android:name="collectionId"
+            app:argType="string" />
     </fragment>
 </navigation>

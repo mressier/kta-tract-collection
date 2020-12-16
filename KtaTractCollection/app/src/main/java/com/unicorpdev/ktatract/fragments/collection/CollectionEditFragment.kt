@@ -1,32 +1,52 @@
 package com.unicorpdev.ktatract.fragments.collection
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.fragments.collectionList.list.CollectionWithPicture
+import com.unicorpdev.ktatract.fragments.tract.TractFragmentArgs
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractCollection
+import com.unicorpdev.ktatract.shared.extensions.hideKeyboard
+import com.unicorpdev.ktatract.shared.tools.TextChangedWatcher
+import kotlinx.android.synthetic.main.fragment_collection_edit.*
+import kotlinx.android.synthetic.main.fragment_tract_details.*
+import java.io.File
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CollectionEditFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CollectionEditFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    /***********************************************************************************************
+     * Properties
+     **********************************************************************************************/
+
+
+    private val viewModel by viewModels<CollectionEditViewModel>()
+
+    private lateinit var collection: TractCollection
+
+    /***********************************************************************************************
+     * View Life Cycle
+     **********************************************************************************************/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
+        collection = TractCollection()
+
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            println("CET ARGUMENTS")
+            val args = CollectionEditFragmentArgs.fromBundle(it)
+            args.collectionId.let { collectionId ->
+                println("ARGUMENT ID $collectionId")
+                val id = UUID.fromString(collectionId)
+                collection = TractCollection(id = id)
+                viewModel.loadCollection(id)
+            }
         }
     }
 
@@ -38,23 +58,101 @@ class CollectionEditFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_collection_edit, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CollectionEditFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CollectionEditFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupObservers()
+        setupListeners()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        println(collection)
+        viewModel.saveCollection(collection)
+    }
+
+    /***********************************************************************************************
+     * Menu
+     **********************************************************************************************/
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.tract_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.save_item -> {
+                requireActivity().hideKeyboard()
+                requireActivity().onBackPressed()
+                true
             }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    /***********************************************************************************************
+     * Update View
+     **********************************************************************************************/
+
+    private fun updateView(collectionWithPicture: CollectionWithPicture) {
+        updateTitle(collectionWithPicture.collection.title)
+        updateDescription(collectionWithPicture.collection.description)
+        updateImageView(collectionWithPicture.picture)
+    }
+
+    private fun updateTitle(string: String) {
+        titleTextInputLayout.editText?.setText(string)
+    }
+
+    private fun updateDescription(string: String) {
+        descriptionTextInputLayout.editText?.setText(string)
+    }
+
+    private fun updateImageView(image: File?) {
+        Glide.with(collectionImageView)
+            .load(image)
+            .centerCrop()
+            .placeholder(R.drawable.ic_no_tract_photo)
+            .into(collectionImageView)
+    }
+
+    /***********************************************************************************************
+     * Setup
+     **********************************************************************************************/
+
+    private fun setupObservers() {
+        viewModel.collection.observe(viewLifecycleOwner) { collection ->
+            collection?.let {
+                this.collection = collection
+                val collectionWithPicture = viewModel.getCollectionWithPicture(it)
+                println("Get collection $collection")
+                updateView(collectionWithPicture)
+            }
+        }
+    }
+
+    private fun setupListeners() {
+        setupTitleListener()
+        setupDescriptionListener()
+    }
+
+    private fun setupTitleListener() {
+        val titleWatcher = TextChangedWatcher() { collection.title = it }
+        titleTextInputLayout.editText?.addTextChangedListener(titleWatcher)
+    }
+
+    private fun setupDescriptionListener() {
+        val descriptionWatcher = TextChangedWatcher() { collection.description = it }
+        descriptionTextInputLayout.editText?.addTextChangedListener(descriptionWatcher)
+    }
+
+    /***********************************************************************************************
+     * Companion
+     **********************************************************************************************/
+
+    companion object {
+
+        @JvmStatic
+        fun newInstance() = CollectionEditFragment()
     }
 }

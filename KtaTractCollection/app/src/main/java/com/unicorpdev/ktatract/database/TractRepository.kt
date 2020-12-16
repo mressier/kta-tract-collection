@@ -163,17 +163,35 @@ class TractRepository private constructor(context: Context) {
     }
     
     /***********************************************************************************************
-     * Collections
+     * Collections - Get Live Data
      **********************************************************************************************/
 
     fun getCollectionsLiveData(): LiveData<List<TractCollection>> =
         collectionDao.getCollectionsLiveData()
 
+    fun getCollectionLiveData(collectionId: UUID): LiveData<TractCollection?> =
+        collectionDao.getCollectionLiveData(collectionId)
+
+    /***********************************************************************************************
+     * Collections - Get Raw Data
+     **********************************************************************************************/
+
     fun getCollections(): List<TractCollection> = collectionDao.getCollections()
+
+    fun getCollection(collectionId: UUID): TractCollection? =
+        collectionDao.getCollection(collectionId)
+
+    /***********************************************************************************************
+     * Collections - Update
+     **********************************************************************************************/
 
     fun updateCollection(collection: TractCollection) {
         executor.execute { collectionDao.updateCollection(collection) }
     }
+
+    /***********************************************************************************************
+     * Collections - Delete
+     **********************************************************************************************/
 
     fun deleteCollection(collection: TractCollection) {
         executor.execute {
@@ -182,6 +200,11 @@ class TractRepository private constructor(context: Context) {
             collectionDao.deleteCollection(collection)
         }
     }
+
+    /***********************************************************************************************
+     * Collections - Add
+     **********************************************************************************************/
+
 
     fun addCollection(collection: TractCollection) {
         executor.execute { collectionDao.addCollection(collection) }
