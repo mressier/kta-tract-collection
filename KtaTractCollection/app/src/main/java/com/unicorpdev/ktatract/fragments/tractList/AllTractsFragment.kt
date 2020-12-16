@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.unicorpdev.ktatract.fragments.fab.FabImageMenuFragment
 import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
-import com.unicorpdev.ktatract.fragments.tractList.header.TractListHeaderFragment
+import com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment
 import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.fragments.tractList.list.TractListCallbacks
 import com.unicorpdev.ktatract.fragments.tractList.list.TractListFragment
@@ -38,7 +38,7 @@ class AllTractsFragment :
     Fragment(),
     TractListCallbacks,
     FabImageMenuFragment.Callbacks,
-    TractListHeaderFragment.Callbacks
+    ListHeaderFragment.Callbacks
 {
     /**  Required interface for hosting activities **/
 
@@ -70,7 +70,7 @@ class AllTractsFragment :
 
     private lateinit var fabFragment: FabImageMenuFragment
     private lateinit var tractsFragment: TractListFragment
-    private lateinit var headerFragment: TractListHeaderFragment
+    private lateinit var headerFragment: ListHeaderFragment
 
     /***********************************************************************************************
      * View Life Cycle
@@ -219,7 +219,7 @@ class AllTractsFragment :
         fabFragment =
             childFragmentManager.findFragmentById(R.id.fabFragment) as FabImageMenuFragment
         headerFragment =
-            childFragmentManager.findFragmentById(R.id.headerFragment) as TractListHeaderFragment
+            childFragmentManager.findFragmentById(R.id.headerFragment) as ListHeaderFragment
         tractsFragment =
             childFragmentManager.findFragmentById(R.id.tractRecyclerFragment) as TractListFragment
     }

@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.collections.list
+package com.unicorpdev.ktatract.fragments.collectionList.list
 
 import android.view.View
 import android.widget.ImageView
@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.unicorpdev.ktatract.R
-import kotlinx.android.synthetic.main.fragment_about_page.view.*
 import java.io.File
 
 class TractCollectionViewHolder(

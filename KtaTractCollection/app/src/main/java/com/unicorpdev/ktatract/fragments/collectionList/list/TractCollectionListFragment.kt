@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.collections.list
+package com.unicorpdev.ktatract.fragments.collectionList.list
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.fragments.collections.AllTractCollectionsFragment
 import com.unicorpdev.ktatract.models.TractCollection
 import kotlinx.android.synthetic.main.fragment_tract_collection_list.*
 import java.util.*

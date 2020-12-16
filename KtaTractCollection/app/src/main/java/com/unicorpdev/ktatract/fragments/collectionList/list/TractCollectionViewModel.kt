@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.collections.list
+package com.unicorpdev.ktatract.fragments.collectionList.list
 
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel

@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".fragments.collections.AllTractCollectionsFragment">
+    tools:context=".fragments.collectionList.AllTractCollectionsFragment">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/headerFragment"
-        android:name="com.unicorpdev.ktatract.fragments.tractList.header.TractListHeaderFragment"
+        android:name="com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -19,7 +19,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/collectionFragment"
-        android:name="com.unicorpdev.ktatract.fragments.collections.list.TractCollectionListFragment"
+        android:name="com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionListFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

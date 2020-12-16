@@ -20,7 +20,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/headerFragment"
-                android:name="com.unicorpdev.ktatract.fragments.tractList.header.TractListHeaderFragment"
+                android:name="com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"

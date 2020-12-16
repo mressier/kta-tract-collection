@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.tractList.header
+package com.unicorpdev.ktatract.shared.fragments.listHeader
 
 import android.content.Context
 import android.os.Bundle
@@ -14,7 +14,7 @@ import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import kotlinx.android.synthetic.main.fragment_tract_list_header.*
 
-class TractListHeaderFragment : Fragment() {
+class ListHeaderFragment : Fragment() {
 
     interface Callbacks {
         fun onDisplayModeChanged(displayMode: DisplayMode)
@@ -24,8 +24,8 @@ class TractListHeaderFragment : Fragment() {
      * Properties
      **********************************************************************************************/
 
-    private val viewModel: TractListHeaderViewModel by lazy {
-        ViewModelProvider(this).get(TractListHeaderViewModel::class.java)
+    private val viewModel: ListHeaderViewModel by lazy {
+        ViewModelProvider(this).get(ListHeaderViewModel::class.java)
     }
 
     private var callbacks: Callbacks? = null
@@ -135,6 +135,6 @@ class TractListHeaderFragment : Fragment() {
      */
     companion object {
         @JvmStatic
-        fun newInstance() = TractListHeaderFragment()
+        fun newInstance() = ListHeaderFragment()
     }
 }

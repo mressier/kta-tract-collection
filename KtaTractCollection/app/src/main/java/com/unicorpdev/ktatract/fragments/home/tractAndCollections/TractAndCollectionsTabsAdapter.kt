@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.fragments.collections.AllTractCollectionsFragment
+import com.unicorpdev.ktatract.fragments.collectionList.AllTractCollectionsFragment
 import com.unicorpdev.ktatract.fragments.tractList.AllTractsFragment
 
 class TractAndCollectionsTabsAdapter(

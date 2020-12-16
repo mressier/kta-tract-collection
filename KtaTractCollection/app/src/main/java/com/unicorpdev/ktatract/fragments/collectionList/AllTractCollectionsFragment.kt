@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.fragments.collections
+package com.unicorpdev.ktatract.fragments.collectionList
 
 import android.content.Context
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.fragments.collections.list.TractCollectionCallback
-import com.unicorpdev.ktatract.fragments.collections.list.TractCollectionListFragment
-import com.unicorpdev.ktatract.fragments.tractList.header.TractListHeaderFragment
+import com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionCallback
+import com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionListFragment
+import com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment
 import java.util.*
 
 /**
@@ -26,7 +26,7 @@ class AllTractCollectionsFragment : Fragment(), TractCollectionListFragment.Call
      * Properties
      **********************************************************************************************/
 
-    private lateinit var headerFragment: TractListHeaderFragment
+    private lateinit var headerFragment: ListHeaderFragment
 
     private var callbacks: Callbacks? = null
 
@@ -65,7 +65,7 @@ class AllTractCollectionsFragment : Fragment(), TractCollectionListFragment.Call
 
     private fun setupChildFragments() {
         headerFragment =
-            childFragmentManager.findFragmentById(R.id.headerFragment) as TractListHeaderFragment
+            childFragmentManager.findFragmentById(R.id.headerFragment) as ListHeaderFragment
     }
 
     private fun setupHeaderFragment() {

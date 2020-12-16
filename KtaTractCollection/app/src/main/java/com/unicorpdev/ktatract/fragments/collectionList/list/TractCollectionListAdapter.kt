@@ -1,17 +1,11 @@
-package com.unicorpdev.ktatract.fragments.collections.list
+package com.unicorpdev.ktatract.fragments.collectionList.list
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.bumptech.glide.Glide
 import com.unicorpdev.ktatract.R
 
-import kotlinx.android.synthetic.main.fragment_tract_collection_item.view.*
-import java.io.File
 import java.util.*
 
 interface TractCollectionCallback {
@@ -38,7 +32,7 @@ class TractCollectionListAdapter(
 
     override fun onBindViewHolder(holder: TractCollectionViewHolder, position: Int) {
         val item = getItem(position)
-
+        holder.bind(item)
     }
 
 
