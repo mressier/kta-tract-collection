@@ -40,7 +40,7 @@ class CollectionListItemViewHolder(
     private fun setupImageView(file: File?) {
         Glide.with(itemView.context)
             .load(file)
-            .centerCrop()
+            .circleCrop()
             .placeholder(R.drawable.ic_launcher_foreground)
             .into(imageView)
     }

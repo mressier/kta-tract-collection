@@ -1,32 +1,38 @@
 package com.unicorpdev.ktatract.fragments.collection
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.fragments.collectionList.list.CollectionWithPicture
-import com.unicorpdev.ktatract.fragments.tract.TractFragmentArgs
-import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.shared.extensions.hideKeyboard
+import com.unicorpdev.ktatract.shared.fragments.PicturesAddBottomDialogFragment
+import com.unicorpdev.ktatract.shared.fragments.picturesSelection.PicturesSelectionFragment
 import com.unicorpdev.ktatract.shared.tools.TextChangedWatcher
 import kotlinx.android.synthetic.main.fragment_collection_edit.*
-import kotlinx.android.synthetic.main.fragment_tract_details.*
 import java.io.File
 import java.util.*
 
-class CollectionEditFragment : Fragment() {
+class CollectionEditFragment : Fragment(), PicturesAddBottomDialogFragment.Callbacks {
 
     /***********************************************************************************************
      * Properties
      **********************************************************************************************/
 
-
     private val viewModel by viewModels<CollectionEditViewModel>()
 
     private lateinit var collection: TractCollection
+
+    private val bottomSheetDialogFragment: PicturesAddBottomDialogFragment by lazy {
+        val bottomSheetDialog = PicturesAddBottomDialogFragment.newInstance()
+        bottomSheetDialog.callbacks = this
+        bottomSheetDialog
+    }
 
     /***********************************************************************************************
      * View Life Cycle
@@ -39,10 +45,8 @@ class CollectionEditFragment : Fragment() {
         collection = TractCollection()
 
         arguments?.let {
-            println("CET ARGUMENTS")
             val args = CollectionEditFragmentArgs.fromBundle(it)
             args.collectionId.let { collectionId ->
-                println("ARGUMENT ID $collectionId")
                 val id = UUID.fromString(collectionId)
                 collection = TractCollection(id = id)
                 viewModel.loadCollection(id)
@@ -111,7 +115,7 @@ class CollectionEditFragment : Fragment() {
     private fun updateImageView(image: File?) {
         Glide.with(collectionImageView)
             .load(image)
-            .centerCrop()
+            .circleCrop()
             .placeholder(R.drawable.ic_no_tract_photo)
             .into(collectionImageView)
     }
@@ -134,6 +138,7 @@ class CollectionEditFragment : Fragment() {
     private fun setupListeners() {
         setupTitleListener()
         setupDescriptionListener()
+        setupImageViewListener()
     }
 
     private fun setupTitleListener() {
@@ -146,13 +151,36 @@ class CollectionEditFragment : Fragment() {
         descriptionTextInputLayout.editText?.addTextChangedListener(descriptionWatcher)
     }
 
+    private fun setupImageViewListener() {
+        collectionImageView.setOnClickListener {
+            bottomSheetDialogFragment.show(
+                requireFragmentManager(),
+                PicturesAddBottomDialogFragment.TAG
+            )
+        }
+    }
+
+    override fun onPicturesSelected(pictures: List<Uri>) {
+        val picture = pictures.firstOrNull() ?: return
+
+        Log.d(TAG, "Get picture for collection: ${picture.lastPathSegment}")
+
+        collection.imageFilename = picture.lastPathSegment
+        viewModel.saveCollection(collection)
+
+        bottomSheetDialogFragment.dismiss()
+    }
+
     /***********************************************************************************************
      * Companion
      **********************************************************************************************/
 
     companion object {
 
+        private val TAG = CollectionEditFragment::class.simpleName ?: "Default"
+
         @JvmStatic
         fun newInstance() = CollectionEditFragment()
     }
+
 }

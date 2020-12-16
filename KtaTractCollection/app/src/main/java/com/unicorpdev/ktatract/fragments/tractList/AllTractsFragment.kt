@@ -21,7 +21,7 @@ import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
-import com.unicorpdev.ktatract.shared.dialogs.*
+import com.unicorpdev.ktatract.shared.extensions.dialogs.*
 import com.unicorpdev.ktatract.shared.extensions.hideKeyboard
 import com.unicorpdev.ktatract.shared.extensions.setIsVisible
 import kotlinx.android.synthetic.main.fragment_all_tracts.*

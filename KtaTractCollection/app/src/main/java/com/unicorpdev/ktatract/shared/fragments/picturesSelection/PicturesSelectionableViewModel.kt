@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.shared.fragments
+package com.unicorpdev.ktatract.shared.fragments.picturesSelection
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

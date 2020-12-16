@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.shared.fragments
+package com.unicorpdev.ktatract.shared.fragments.picturesSelection
 
 import android.app.Activity
 import android.content.Context
@@ -133,48 +133,4 @@ abstract class PicturesSelectionable: Fragment() {
         private const val REQUEST_CAMERA_INTENT = 152
         private const val REQUEST_GALLERY_INTENT = 153
     }
-}
-
-class PicturesSelectionFragment: PicturesSelectionable() {
-
-    interface Callbacks {
-        fun onPicturesSelected(pictures: List<Uri>)
-    }
-
-    /***********************************************************************************************
-     * Properties
-     **********************************************************************************************/
-
-    private var callbacks: Callbacks? = null
-
-    /***********************************************************************************************
-     * View Life Cycle
-     **********************************************************************************************/
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_pictures_selection, container, false)
-    }
-
-    override fun onAttach(context: Context) {
-        callbacks = context as? Callbacks ?: parentFragment as? Callbacks
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        callbacks = null
-        super.onDetach()
-    }
-
-    /***********************************************************************************************
-     * Callbacks
-     **********************************************************************************************/
-
-    override fun onPictureSelected(pictures: List<Uri>) {
-        callbacks?.onPicturesSelected(pictures)
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.unicorpdev.ktatract.shared.dialogs
+package com.unicorpdev.ktatract.shared.extensions.dialogs
 
 import android.app.AlertDialog
 import androidx.fragment.app.Fragment

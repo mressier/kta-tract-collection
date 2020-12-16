@@ -1,5 +1,6 @@
 package com.unicorpdev.ktatract.fragments.fab
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.unicorpdev.ktatract.database.TractRepository
@@ -9,29 +10,28 @@ import java.util.*
 
 class FabImageMenuViewModel: ViewModel() {
 
-    /**
+    enum class PictureSelectionOption {
+        CREATE_ONE_TRACT,
+        CREATE_MULTIPLE_TRACTS
+    }
+
+    /***********************************************************************************************
      * Properties
-     */
+     **********************************************************************************************/
 
-    var shouldShowMultipleImport = true
-
-    var isMenuVisible = false
-
-    var pictureFile: File? = null
-
-    var tractId: UUID? = null
-
+    /** Database **/
     private val repository: TractRepository by lazy { TractRepository.get() }
 
-    /**
-     * Methods
-     */
+    /** Parameters **/
+    var shouldShowMultipleImport = true
+    var isMenuVisible = false
+    var tractId: UUID? = null
 
-    fun generatePictureFile(): File {
-        val file = repository.getPictureFile(TractPicture.randomFilename())
-        pictureFile = file
-        return file
-    }
+    lateinit var pictureSelectionOption: PictureSelectionOption
+
+    /***********************************************************************************************
+     * Methods
+     **********************************************************************************************/
 
     fun generateTract(): UUID {
         val tract = repository.addEmptyTract()
@@ -39,21 +39,37 @@ class FabImageMenuViewModel: ViewModel() {
         return tract
     }
 
-    fun savePictureFile(): TractPicture? {
-        return pictureFile?.let { file ->
+    fun savePicturesFile(files: List<Uri>) {
+        val tractId = this.tractId ?: repository.addEmptyTract()
+        this.tractId = tractId
 
-            val tractId = this.tractId ?: repository.addEmptyTract()
-            this.tractId = tractId
+        files.forEach { file ->
+            file.lastPathSegment?.let { filename ->
+                Log.d("Pouet", "Filename: $filename")
 
-            Log.d("Pouet", "Filename: ${file.name}")
+                val tractPicture = TractPicture(
+                    tractId = tractId,
+                    photoFilename = filename
+                )
 
-            val tractPicture = TractPicture(
-                tractId = tractId,
-                photoFilename = file.name
-            )
-
-            repository.addPicture(tractPicture)
-            tractPicture
+                repository.addPicture(tractPicture)
+            }
         }
     }
+
+//    fun savePictureFile(): TractPicture? {
+//        return pictureFile?.let { file ->
+//
+//            val tractId = this.tractId ?: repository.addEmptyTract()
+//            this.tractId = tractId
+//
+//            val tractPicture = TractPicture(
+//                tractId = tractId,
+//                photoFilename = file.name
+//            )
+//
+//            repository.addPicture(tractPicture)
+//            tractPicture
+//        }
+//    }
 }

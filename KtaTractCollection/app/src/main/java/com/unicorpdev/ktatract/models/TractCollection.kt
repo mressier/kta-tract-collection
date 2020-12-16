@@ -9,7 +9,7 @@ data class TractCollection(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     var title: String = "",
     var description: String = "",
-    val imageFilename: String? = null
+    var imageFilename: String? = null
 ) {
     override fun equals(other: Any?): Boolean {
         val collection = other as? TractCollection ?: return super.equals(other)

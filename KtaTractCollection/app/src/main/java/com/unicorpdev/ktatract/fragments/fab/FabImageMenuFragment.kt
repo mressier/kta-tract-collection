@@ -1,8 +1,7 @@
 package com.unicorpdev.ktatract.fragments.fab
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,14 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.fragments.fab.FabImageMenuViewModel.PictureSelectionOption
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
-import com.unicorpdev.ktatract.shared.extensions.*
+import com.unicorpdev.ktatract.shared.fragments.picturesSelection.PictureSelectionMethod
+import com.unicorpdev.ktatract.shared.fragments.picturesSelection.PicturesSelectionable
 import kotlinx.android.synthetic.main.fragment_fab_image_menu.*
 import java.util.*
 
@@ -24,30 +24,27 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-class FabImageMenuFragment : Fragment() {
+class FabImageMenuFragment: PicturesSelectionable() {
 
     interface Callbacks {
         fun onTractSaved(tractId: UUID)
         fun onTractsSaved(tractIds: Array<UUID>)
     }
 
-    /**
+    /***********************************************************************************************
      * Properties
-     */
+     **********************************************************************************************/
 
     private lateinit var fabClock: Animation
     private lateinit var fabAntiClock: Animation
 
-    /* View Models */
-    private val imageMenuViewModel: FabImageMenuViewModel by lazy {
-        ViewModelProvider(this).get(FabImageMenuViewModel::class.java)
-    }
+    private val imageMenuViewModel by viewModels<FabImageMenuViewModel>()
 
     var callbacks: Callbacks? = null
 
-    /**
+    /***********************************************************************************************
      * Callbacks
-     */
+     **********************************************************************************************/
 
     private val interceptBackPressed: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
@@ -57,9 +54,9 @@ class FabImageMenuFragment : Fragment() {
         }
     }
 
-    /**
+    /***********************************************************************************************
      * View Life Cycle
-     */
+     **********************************************************************************************/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,17 +85,6 @@ class FabImageMenuFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                REQUEST_MULTIPLE_IMPORT_INTENT -> data?.let { saveTracts(it) }
-                REQUEST_GALLERY_INTENT -> data?.let { savePictures(it) }
-                REQUEST_CAMERA_INTENT -> savePicture()
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as? Callbacks
@@ -109,7 +95,17 @@ class FabImageMenuFragment : Fragment() {
         revokeCameraPermission()
         super.onDetach()
     }
+    
+    /***********************************************************************************************
+     * PicturesSelectionable
+     **********************************************************************************************/
 
+    override fun onPictureSelected(pictures: List<Uri>) {
+        when (imageMenuViewModel.pictureSelectionOption) {
+            PictureSelectionOption.CREATE_ONE_TRACT -> savePicturesForTract(pictures)
+            PictureSelectionOption.CREATE_MULTIPLE_TRACTS -> savePicturesAsTracts(pictures)
+        }
+    }
     /**
      * Methods
      */
@@ -126,46 +122,22 @@ class FabImageMenuFragment : Fragment() {
      * Tools
      **********************************************************************************************/
 
-    private fun savePicture() {
-        imageMenuViewModel.savePictureFile()
-
-        hideMenu()
-        revokeCameraPermission()
-
-        imageMenuViewModel.tractId?.let { callbacks?.onTractSaved(it) }
-    }
-
-    private fun savePictures(intent: Intent) {
-        val picturesUri = intent.dataAsUriArray()
-
-        picturesUri.forEach { uri ->
-            val dest = imageMenuViewModel.generatePictureFile().toUri()
-            if (requireContext().contentResolver.copy(uri, dest)) {
-                imageMenuViewModel.savePictureFile()
-            }
+    private fun savePicturesForTract(pictures: List<Uri>) {
+        imageMenuViewModel.savePicturesFile(pictures)
+        imageMenuViewModel.tractId?.let {
+            callbacks?.onTractSaved(it)
         }
-
-        imageMenuViewModel.tractId?.let { callbacks?.onTractSaved(it) }
-
         hideMenu()
     }
 
-    private fun saveTracts(intent: Intent) {
-        val picturesUri = intent.dataAsUriArray()
-
-        val tracts = picturesUri.map { uri ->
+    private fun savePicturesAsTracts(pictures: List<Uri>) {
+        val tracts = pictures.map { uri ->
             val tract = imageMenuViewModel.generateTract()
-            val dest = imageMenuViewModel.generatePictureFile().toUri()
-
-            if (requireContext().contentResolver.copy(uri, dest)) {
-                imageMenuViewModel.savePictureFile()
-            }
-
+            imageMenuViewModel.savePicturesFile(listOf(uri))
             tract
         }
 
         callbacks?.onTractsSaved(tracts.toTypedArray())
-
         hideMenu()
     }
 
@@ -225,47 +197,6 @@ class FabImageMenuFragment : Fragment() {
     }
 
     /***********************************************************************************************
-     * Take Picture
-     **********************************************************************************************/
-    
-    private fun takePicture() {
-        checkCameraPermission(onPermissionGranted = { startCameraIntent() })
-        hideMenu(animated = false)
-    }
-
-    private fun startCameraIntent() {
-        val pictureFile = imageMenuViewModel.generatePictureFile()
-
-        val cameraIntent = requireActivity().buildCameraIntentForFile(pictureFile)
-        startActivityForResult(cameraIntent, REQUEST_CAMERA_INTENT)
-        hideMenu(animated = false)
-    }
-
-    /***********************************************************************************************
-     * Gallery
-     **********************************************************************************************/
-    
-    private fun importFromGallery() {
-        val galleryIntent = buildGalleryIntent(retainDocument = true, allowMultipleFiles = true)
-        startActivityForResult(galleryIntent, REQUEST_GALLERY_INTENT)
-    }
-
-    private fun revokeCameraPermission() {
-        imageMenuViewModel.pictureFile?.toUri()?.let { uri ->
-            requireActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-        }
-    }
-
-    /***********************************************************************************************
-     * Multiple Gallery
-     **********************************************************************************************/
-
-    private fun multipleImportFromGallery() {
-        val galleryIntent = buildGalleryIntent(retainDocument = true, allowMultipleFiles = true)
-        startActivityForResult(galleryIntent, REQUEST_MULTIPLE_IMPORT_INTENT)
-    }
-
-    /***********************************************************************************************
      * Setup
      **********************************************************************************************/
 
@@ -287,17 +218,22 @@ class FabImageMenuFragment : Fragment() {
 
         cameraButton.setOnClickListener {
             KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_ONE_PICTURE)
-            takePicture()
+            imageMenuViewModel.pictureSelectionOption =
+                PictureSelectionOption.CREATE_ONE_TRACT
+            startPictureSelection(PictureSelectionMethod.CAMERA)
         }
 
         galleryButton.setOnClickListener {
             KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_ONE_GALLERY)
-            importFromGallery()
+            imageMenuViewModel.pictureSelectionOption = PictureSelectionOption.CREATE_ONE_TRACT
+            startPictureSelection(PictureSelectionMethod.GALLERY)
         }
 
         multipleImportButton.setOnClickListener {
             KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_MULTIPLE)
-            multipleImportFromGallery()
+            imageMenuViewModel.pictureSelectionOption =
+                PictureSelectionOption.CREATE_MULTIPLE_TRACTS
+            startPictureSelection(PictureSelectionMethod.GALLERY)
         }
     }
 
@@ -319,10 +255,6 @@ class FabImageMenuFragment : Fragment() {
      * Companion
      */
     companion object {
-        private const val REQUEST_CAMERA_INTENT = 0
-        private const val REQUEST_GALLERY_INTENT = 1
-        private const val REQUEST_MULTIPLE_IMPORT_INTENT = 2
-
         private val TAG = FabImageMenuFragment::class.simpleName ?: "Default"
     }
 }
