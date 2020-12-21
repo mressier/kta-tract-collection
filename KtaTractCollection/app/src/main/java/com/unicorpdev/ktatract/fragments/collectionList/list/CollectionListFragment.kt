@@ -29,9 +29,6 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
 
     private val viewModel by viewModels<TractCollectionViewModel>()
 
-    private val defaultCollection =
-        TractCollection(title = "Unclassified", description = "Tracts with no collection")
-
     private lateinit var adapter: TractCollectionListAdapter
 
     private var callbacks: Callbacks? = null
@@ -83,7 +80,7 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
     private fun setupObserver() {
         viewModel.collections.observe(viewLifecycleOwner) { list ->
             val collectionsWithPicture =
-                viewModel.getCollectionsWithPicture(listOf(defaultCollection) + list)
+                viewModel.getCollectionsWithPicture(list)
             adapter.submitList(collectionsWithPicture)
             adapter.notifyDataSetChanged()
             callbacks?.onItemCountChanged(collectionsWithPicture.size)
@@ -91,8 +88,11 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
     }
 
     override fun onSelectCollection(collectionId: UUID) {
-        println("collection selected : $collectionId")
         callbacks?.onSelectCollection(collectionId)
+    }
+
+    override fun onSelectMoreActions(collectionId: UUID) {
+        callbacks?.onSelectMoreActions(collectionId)
     }
 
     /***********************************************************************************************

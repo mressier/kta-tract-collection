@@ -10,6 +10,10 @@ import androidx.fragment.app.viewModels
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.fragments.collectionList.list.TractCollectionCallback
 import com.unicorpdev.ktatract.fragments.collectionList.list.CollectionListFragment
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.*
+import com.unicorpdev.ktatract.shared.extensions.dialogs.DialogAction
+import com.unicorpdev.ktatract.shared.extensions.dialogs.showActionDialog
 import com.unicorpdev.ktatract.shared.fragments.AddButtonFragment
 import com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment
 import java.util.*
@@ -24,8 +28,10 @@ class AllCollectionsFragment : Fragment(),
     AddButtonFragment.Callbacks
 {
 
-    interface Callbacks: TractCollectionCallback {
-        fun onCollectionCreated(collectionId: UUID)
+    interface Callbacks {
+        fun onSelectCollection(collectionId: UUID)
+        fun onCreateCollection(collectionId: UUID)
+        fun onUpdateCollection(collectionId: UUID)
     }
 
     /***********************************************************************************************
@@ -67,6 +73,56 @@ class AllCollectionsFragment : Fragment(),
     }
 
     /***********************************************************************************************
+     * Tract Collection Callback
+     **********************************************************************************************/
+
+    override fun onSelectCollection(collectionId: UUID) {
+        callbacks?.onSelectCollection(collectionId)
+    }
+
+    override fun onSelectMoreActions(collectionId: UUID) {
+        showMoreActions(collectionId)
+    }
+
+    override fun onItemCountChanged(itemCount: Int) {
+        headerFragment.updateItemCount(itemCount)
+    }
+
+    override fun onAddButtonSelected() {
+        val collectionId = viewModel.createCollection()
+        callbacks?.onCreateCollection(collectionId)
+    }
+
+    /***********************************************************************************************
+     * Dialogs
+     **********************************************************************************************/
+
+    private fun showMoreActions(collectionId: UUID) {
+        val actions = arrayOf(
+            DialogAction(
+                R.string.modify_collection,
+                callback = { updateCollection(collectionId) }
+            ),
+            DialogAction(
+                R.string.delete_collection,
+                android.R.color.holo_red_light,
+                callback = { deleteCollection(collectionId) }
+            )
+        )
+        showActionDialog(actions)
+    }
+
+    private fun updateCollection(collectionId: UUID) {
+        KtaTractAnalytics.logSelectItem(SelectEvent.MODIFY_COLLECTION)
+        callbacks?.onUpdateCollection(collectionId)
+    }
+
+    private fun deleteCollection(collectionId: UUID) {
+        KtaTractAnalytics.logSelectItem(SelectEvent.DELETE_COLLECTION)
+        viewModel.deleteCollection(collectionId)
+    }
+
+    /***********************************************************************************************
      * Setup
      **********************************************************************************************/
 
@@ -78,23 +134,6 @@ class AllCollectionsFragment : Fragment(),
     private fun setupHeaderFragment() {
         headerFragment.setCounterFormatString(R.string.collection_count)
         headerFragment.shouldShowDisplayModeButton(false)
-    }
-    
-    /***********************************************************************************************
-     * Tract Collection Callback
-     **********************************************************************************************/
-
-    override fun onSelectCollection(collectionId: UUID) {
-        callbacks?.onSelectCollection(collectionId)
-    }
-
-    override fun onItemCountChanged(itemCount: Int) {
-        headerFragment.updateItemCount(itemCount)
-    }
-
-    override fun onAddButtonSelected() {
-        val collectionId = viewModel.createCollection()
-        callbacks?.onCollectionCreated(collectionId)
     }
 
     /***********************************************************************************************

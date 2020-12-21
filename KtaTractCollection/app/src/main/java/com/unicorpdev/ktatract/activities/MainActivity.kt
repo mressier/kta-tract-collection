@@ -72,11 +72,15 @@ class MainActivity : AppCompatActivity(),
      **********************************************************************************************/
 
     override fun onSelectCollection(collectionId: UUID) {
-        val action = HomeFragmentDirections.showCollectionEdit(collectionId.toString()) // To change
+        // TODO
+    }
+
+    override fun onCreateCollection(collectionId: UUID) {
+        val action = HomeFragmentDirections.showCollectionEdit(collectionId.toString())
         navController.navigate(action)
     }
 
-    override fun onCollectionCreated(collectionId: UUID) {
+    override fun onUpdateCollection(collectionId: UUID) {
         val action = HomeFragmentDirections.showCollectionEdit(collectionId.toString())
         navController.navigate(action)
     }

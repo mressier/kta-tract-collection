@@ -6,7 +6,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.models.TractCollection
+import kotlinx.android.synthetic.main.fragment_tract_collection_item.view.*
 import java.io.File
+import java.util.*
 
 class CollectionListItemViewHolder(
     view: View,
@@ -20,29 +23,37 @@ class CollectionListItemViewHolder(
     private val idView: TextView = view.findViewById(R.id.collectionTitleText)
     private val contentView: TextView = view.findViewById(R.id.collectionDescriptionText)
     private val imageView: ImageView = view.findViewById(R.id.collectionImageView)
+    private val moreImageButton: ImageView = view.findViewById(R.id.moreImageButton)
 
     /***********************************************************************************************
      * Methods
      **********************************************************************************************/
 
     fun bind(item: CollectionWithPicture) {
-        idView.text = if (item.collection.title.isEmpty()) {
-            itemView.context.getString(R.string.collection_unnamed)
-        } else {
-            item.collection.title
-        }
-
-        contentView.visibility =
-            if (item.collection.description.isEmpty()) { View.GONE } else { View.VISIBLE }
-        contentView.text = item.collection.description
-
+        setupTitle(item.collection)
+        setupDescription(item.collection)
         setupImageView(item.picture)
-        setupCallbacks(item)
+        setupButtons(item)
+        setupListeners(item.collection.id)
     }
 
     /***********************************************************************************************
      * Setup
      **********************************************************************************************/
+
+    private fun setupTitle(collection: TractCollection) {
+        idView.text = if (collection.title.isEmpty()) {
+            itemView.context.getString(R.string.collection_unnamed)
+        } else {
+            collection.title
+        }
+    }
+
+    private fun setupDescription(collection: TractCollection) {
+        contentView.visibility =
+            if (collection.description.isEmpty()) { View.GONE } else { View.VISIBLE }
+        contentView.text = collection.description
+    }
 
     private fun setupImageView(file: File?) {
         Glide.with(itemView.context)
@@ -52,8 +63,14 @@ class CollectionListItemViewHolder(
             .into(imageView)
     }
 
-    private fun setupCallbacks(item: CollectionWithPicture) {
-        itemView.setOnClickListener { callbacks.onSelectCollection(item.collection.id) }
+    private fun setupButtons(collectionWithPicture: CollectionWithPicture) {
+        moreImageButton.visibility =
+            if (collectionWithPicture.isModifiable) { View.VISIBLE } else { View.INVISIBLE }
+    }
+
+    private fun setupListeners(collectionId: UUID) {
+        itemView.setOnClickListener { callbacks.onSelectCollection(collectionId) }
+        moreImageButton.setOnClickListener { callbacks.onSelectMoreActions(collectionId) }
     }
 
     /***********************************************************************************************

@@ -10,7 +10,7 @@ import java.util.*
 
 interface TractCollectionCallback {
     fun onSelectCollection(collectionId: UUID)
-    fun onDeleteCollection(collectionId: UUID)
+    fun onSelectMoreActions(collectionId: UUID)
 }
 
 class TractCollectionListAdapter(

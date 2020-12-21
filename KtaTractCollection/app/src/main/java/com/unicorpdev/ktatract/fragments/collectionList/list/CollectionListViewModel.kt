@@ -6,7 +6,8 @@ import java.io.File
 
 data class CollectionWithPicture(
     val collection: TractCollection,
-    val picture: File?
+    val picture: File?,
+    val isModifiable: Boolean = true
 ) {}
 
 class TractCollectionViewModel: RepositoryViewModel() {
@@ -15,8 +16,21 @@ class TractCollectionViewModel: RepositoryViewModel() {
      * Methods
      **********************************************************************************************/
 
+    private val defaultCollection =
+        TractCollection(title = "Unclassified", description = "Tracts with no collection")
+
+
     fun getCollectionsWithPicture(collections: List<TractCollection>): List<CollectionWithPicture> {
-        return collections.map { CollectionWithPicture(it, getCollectionPictureFile(it)) }
+        val defaultCollectionWithPicture = CollectionWithPicture(
+            defaultCollection,
+            null, // get default picture
+        false
+        )
+
+        val newCollection =
+            collections.map { CollectionWithPicture(it, getCollectionPictureFile(it)) }
+
+        return listOf(defaultCollectionWithPicture) + newCollection
     }
 
     /***********************************************************************************************

@@ -19,7 +19,12 @@ class KtaTractAnalytics {
         LIKE,
         DELETE_TRACT,
         DELETE_PICTURE,
-        MODIFY_TRACT
+        MODIFY_TRACT,
+        CREATE_TRACT,
+        CREATE_COLLECTION,
+        DELETE_COLLECTION,
+        MODIFY_COLLECTION,
+
     }
 
     companion object {
