@@ -8,6 +8,8 @@ import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.shared.tools.collection.CollectionExporter
 import com.unicorpdev.ktatract.shared.tools.collection.CollectionImporter
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import java.io.FileNotFoundException
 import java.util.*
 
@@ -18,8 +20,10 @@ class AllTractsViewModel: RepositoryViewModel() {
      **********************************************************************************************/
 
     fun deleteTract(tractId: UUID) {
-        val tract = tractRepository.getTract(tractId)
-        tract?.let { tractRepository.deleteTract(it) }
+        GlobalScope.async {
+            val tract = tractRepository.getTract(tractId)
+            tract?.let { tractRepository.deleteTract(it) }
+        }
     }
 
     /**
@@ -27,11 +31,13 @@ class AllTractsViewModel: RepositoryViewModel() {
      */
 
     fun updateTractIsFavorite(tractId: UUID, isFavorite: Boolean) {
-        val tract = tractRepository.getTract(tractId)
+        GlobalScope.async {
+            val tract = tractRepository.getTract(tractId)
 
-        tract?.let {
-            it.isFavorite = isFavorite
-            tractRepository.updateTract(it)
+            tract?.let {
+                it.isFavorite = isFavorite
+                tractRepository.updateTract(it)
+            }
         }
     }
 
