@@ -47,8 +47,6 @@ class FabImageMenuViewModel: ViewModel() {
 
         files.forEach { file ->
             file.lastPathSegment?.let { filename ->
-                Log.d("Pouet", "Filename: $filename")
-
                 val tractPicture = TractPicture(
                     tractId = tractId,
                     photoFilename = filename
