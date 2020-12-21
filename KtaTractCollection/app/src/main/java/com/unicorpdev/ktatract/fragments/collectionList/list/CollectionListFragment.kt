@@ -44,6 +44,7 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
         val view =
             inflater.inflate(R.layout.fragment_tract_collection_list, container, false)
 
+        setupViewModel()
         (view as? RecyclerView)?.let { setupRecyclerView(it) }
 
         return view
@@ -77,10 +78,13 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
         }
     }
 
+    private fun setupViewModel() {
+        viewModel.context = requireContext()
+    }
+
     private fun setupObserver() {
         viewModel.collections.observe(viewLifecycleOwner) { list ->
-            val collectionsWithPicture =
-                viewModel.getCollectionsWithPicture(list)
+            val collectionsWithPicture = viewModel.getCollectionsWithPicture(list)
             adapter.submitList(collectionsWithPicture)
             adapter.notifyDataSetChanged()
             callbacks?.onItemCountChanged(collectionsWithPicture.size)

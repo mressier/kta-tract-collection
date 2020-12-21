@@ -1,5 +1,7 @@
 package com.unicorpdev.ktatract.fragments.collectionList.list
 
+import android.content.Context
+import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel
 import java.io.File
@@ -12,12 +14,18 @@ data class CollectionWithPicture(
 
 class TractCollectionViewModel: RepositoryViewModel() {
 
+    lateinit var context: Context
+
     /***********************************************************************************************
      * Methods
      **********************************************************************************************/
 
-    private val defaultCollection =
-        TractCollection(title = "My tracts", description = "Tracts from my collection")
+    private val defaultCollection: TractCollection by lazy {
+        TractCollection(
+            title = context.getString(R.string.my_collection_title),
+            description = context.getString(R.string.my_collection_description)
+        )
+    }
 
 
     fun getCollectionsWithPicture(collections: List<TractCollection>): List<CollectionWithPicture> {
