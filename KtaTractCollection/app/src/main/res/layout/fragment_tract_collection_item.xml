@@ -8,8 +8,9 @@
     android:orientation="horizontal">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="20">
 
         <ImageView
             android:id="@+id/collectionImageView"
@@ -33,15 +34,16 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/text_margin"
         android:layout_marginEnd="@dimen/text_margin"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="10">
 
         <TextView
             android:id="@+id/collectionTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="My collection"
             android:maxLines="2"
+            android:text="My collection"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintEnd_toStartOf="@+id/collectionDescriptionText"
             app:layout_constraintHorizontal_bias="0.0"
@@ -52,8 +54,8 @@
             android:id="@+id/collectionDescriptionText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Bla bla bli bla bla bluh"
             android:maxLines="3"
+            android:text="Bla bla bli bla bla bluh"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,5 +72,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/collectionDescriptionText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/moreImageButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="25"
+        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
 </LinearLayout>

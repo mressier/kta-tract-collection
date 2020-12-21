@@ -1,21 +1,15 @@
 package com.unicorpdev.ktatract.shared.extensions.dialogs
 
 import android.app.AlertDialog
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.shared.views.MaterialTextButton
 import kotlinx.android.synthetic.main.dialog_loading_view.view.*
 import kotlinx.android.synthetic.main.dialog_text_view.view.*
-import kotlinx.android.synthetic.main.dialog_tract_action.view.*
 import java.util.*
-
-/**
- * Tract Action Dialog
- */
-
-interface TractActionCallback {
-    fun onDelete(tractId: UUID)
-    fun onModify(tractId: UUID)
-}
 
 /**
  * Show a dialog with a circle loading bar
@@ -55,29 +49,36 @@ fun Fragment.showErrorDialog(title: String, text: String): AlertDialog {
 }
 
 /**
- * Show different actions that can be performed on a given tract
- *
- * @property tractId The tract on which perform the action
- * @property callbacks callbacks for each action
- * @return .
+ * Action Dialog
  */
-fun Fragment.showTractActionDialog(tractId: UUID, callbacks: TractActionCallback): AlertDialog {
-    val builder = AlertDialog.Builder(requireContext())
 
-    val customView = layoutInflater.inflate(R.layout.dialog_tract_action, null)
+data class DialogAction(
+    @StringRes val title: Int,
+    @ColorRes val color: Int? = null,
+    val callback: (() -> Unit)? = null
+) {}
+
+fun Fragment.showActionDialog(actions: Array<DialogAction>): AlertDialog {
+    val builder = AlertDialog.Builder(requireContext())
+    val customView = layoutInflater.inflate(R.layout.dialog_action_list, null)
+
     builder.setView(customView)
     builder.setNegativeButton(getString(android.R.string.cancel)) { dialog, _ -> dialog.dismiss() }
 
     val alertDialog = builder.create()
 
-    customView.deleteButton.setOnClickListener {
-        callbacks.onDelete(tractId)
-        alertDialog.dismiss()
-    }
+    val linearLayout = customView as? LinearLayoutCompat
+    for (action in actions) {
+        val button = MaterialTextButton(requireContext()).apply {
+            text = getString(action.title)
+            action.color?.let { setTextColor(resources.getColor(it)) }
+            setOnClickListener {
+                action.callback?.invoke()
+                alertDialog.dismiss()
+            }
+        }
 
-    customView.modifyButton.setOnClickListener {
-        callbacks.onModify(tractId)
-        alertDialog.dismiss()
+        linearLayout?.addView(button)
     }
 
     alertDialog.show()

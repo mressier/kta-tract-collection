@@ -48,30 +48,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pictureView" />
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/likeImageButton"
-                style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/btn_desc_like_action"
-                android:tint="@color/primaryColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/moreImageButton"
                 app:layout_constraintTop_toBottomOf="@+id/pictureView"
                 app:srcCompat="@drawable/ic_baseline_star_border_24" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/moreImageButton"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/more_actions"
                 app:layout_constraintBottom_toBottomOf="@+id/likeImageButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/likeImageButton"
-                app:srcCompat="@drawable/ic_baseline_more_vert_24"
-                app:tint="@color/primaryColor" />
+                app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

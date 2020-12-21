@@ -11,6 +11,8 @@
 
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorOnSecondary">@color/design_default_color_on_primary</item>
+
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
     </style>
 
     <style name="TextInputEditText" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
