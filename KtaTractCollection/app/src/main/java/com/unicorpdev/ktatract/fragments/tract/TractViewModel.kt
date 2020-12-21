@@ -16,6 +16,8 @@ class TractViewModel : ViewModel() {
 
     private val tractRepository = TractRepository.get()
 
+    var savedTract = Tract()
+
     /** One tract **/
     private var tractId = MutableLiveData<UUID>()
 
@@ -29,8 +31,8 @@ class TractViewModel : ViewModel() {
         tractId.value = id
     }
 
-    fun saveTract(tract: Tract) {
-        tractRepository.updateTract(tract)
+    fun saveTract() {
+        tractRepository.updateTract(savedTract)
     }
 
 }

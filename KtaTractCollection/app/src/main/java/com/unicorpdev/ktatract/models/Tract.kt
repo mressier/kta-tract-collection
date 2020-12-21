@@ -13,7 +13,7 @@ import java.util.*
 data class Tract(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     /* The collection containing the tract */
-    val collectionId: UUID? = null,
+    var collectionId: UUID? = null,
     /* Date of the creation of the tract in the database */
     val databaseAddingDate: Date = Date(),
     /* Author of the tract */

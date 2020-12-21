@@ -8,13 +8,18 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.fragments.collectionList.spinner.CollectionSpinnerFragment
 import com.unicorpdev.ktatract.shared.fragments.DatePickerFragment
 import com.unicorpdev.ktatract.shared.tools.TextChangedWatcher
 import com.unicorpdev.ktatract.shared.extensions.longString
+import kotlinx.android.synthetic.main.fragment_collection_spinner.*
 import kotlinx.android.synthetic.main.fragment_tract_details.*
 import java.util.*
 
-class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
+class TractDetailsFragment : Fragment(),
+    DatePickerFragment.Callbacks,
+    CollectionSpinnerFragment.Callbacks
+{
 
     /**
      * Properties
@@ -25,17 +30,11 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
         ViewModelProvider(this).get(TractViewModel::class.java)
     }
 
-    private lateinit var tract: Tract
+    private lateinit var spinnerFragment: CollectionSpinnerFragment
 
     /**
      * View Life cycle
      */
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        tract = Tract()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +45,14 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupCollectionSpinner()
         setupViewModelObserver()
         setupListeners()
     }
 
     override fun onStop() {
         super.onStop()
-        tractViewModel.saveTract(tract)
+        tractViewModel.saveTract()
     }
 
     /**
@@ -63,25 +63,31 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
         tractViewModel.loadTract(tractId)
     }
 
-    private fun updateUI(tract: Tract) {
-        this.tract = tract
+    private fun updateUI() {
+        val tract = tractViewModel.savedTract
         authorTextField.setText(tract.author)
         commentsTextField.setText(tract.comment)
 
         discoveryDateButton.text = tract.discoveryDate.longString
         datingButton.text = tract.dating?.longString ?: getString(R.string.unknown)
+        spinnerFragment.selectedCollectionId = tract.collectionId
     }
 
     /**
      * Setup
      */
 
+    private fun setupCollectionSpinner() {
+        spinnerFragment =
+            childFragmentManager.findFragmentById(R.id.spinnerFragment) as CollectionSpinnerFragment
+    }
+
     private fun setupViewModelObserver() {
         tractViewModel.tract.observe(
             viewLifecycleOwner,
             {
-                val tract = it ?: Tract()
-                updateUI(tract)
+                tractViewModel.savedTract = it ?: Tract()
+                updateUI()
             }
         )
     }
@@ -95,7 +101,7 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
 
     private fun setupDiscoveryDateListener() {
         discoveryDateButton.setOnClickListener {
-            showDatePickerDialog(tract.discoveryDate, Date(),
+            showDatePickerDialog(tractViewModel.savedTract.discoveryDate, Date(),
                 REQUEST_DISCOVERY_DATE,
                 DIALOG_DISCOVERY_DATE
             )
@@ -104,7 +110,7 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
 
     private fun setupDatingButtonListener() {
         datingButton.setOnClickListener {
-            showDatePickerDialog(tract.dating ?: Date(), null,
+            showDatePickerDialog(tractViewModel.savedTract.dating ?: Date(), null,
                 REQUEST_DATING,
                 DIALOG_DATING
             )
@@ -112,12 +118,12 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
     }
 
     private fun setupAuthorListener() {
-        val authorWatcher = TextChangedWatcher() { tract.author = it }
+        val authorWatcher = TextChangedWatcher() { tractViewModel.savedTract.author = it }
         authorTextField.addTextChangedListener(authorWatcher)
     }
 
     private fun setupCommentsListener() {
-        val commentsWatcher = TextChangedWatcher() { tract.comment = it }
+        val commentsWatcher = TextChangedWatcher() { tractViewModel.savedTract.comment = it }
         commentsTextField.addTextChangedListener(commentsWatcher)
     }
 
@@ -138,10 +144,14 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
 
     override fun onDateSelected(date: Date, requestId: Int) {
         when (requestId) {
-            REQUEST_DISCOVERY_DATE -> tract.discoveryDate = date
-            REQUEST_DATING -> tract.dating = date
+            REQUEST_DISCOVERY_DATE -> tractViewModel.savedTract.discoveryDate = date
+            REQUEST_DATING -> tractViewModel.savedTract.dating = date
         }
-        updateUI(tract)
+        updateUI()
+    }
+
+    override fun onCollectionSelected(collectionId: UUID?) {
+        tractViewModel.savedTract.collectionId = collectionId
     }
 
     /**
@@ -155,4 +165,5 @@ class TractDetailsFragment : Fragment(), DatePickerFragment.Callbacks {
         private const val DIALOG_DISCOVERY_DATE = "dialog_discovery_date"
         private const val DIALOG_DATING = "dialog_dating"
     }
+
 }
