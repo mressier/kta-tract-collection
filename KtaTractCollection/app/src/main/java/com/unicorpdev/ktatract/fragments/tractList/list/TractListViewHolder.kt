@@ -98,7 +98,7 @@ class TractListViewHolder(
         itemView.setOnClickListener { callbacks?.onTractSelected(tractId) }
 
         itemView.moreImageButton.setOnClickListener {
-            callbacks?.onTractLongSelected(tractId)
+            callbacks?.onTractMoreActionsSelected(tractId)
         }
 
         listView.likeImageButton.setOnClickListener {

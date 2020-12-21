@@ -14,7 +14,7 @@ import java.util.*
 
 interface TractListCallbacks {
     fun onTractSelected(tractId: UUID)
-    fun onTractLongSelected(tractId: UUID)
+    fun onTractMoreActionsSelected(tractId: UUID)
     fun onTractToggleFavorite(tractId: UUID, isFavorite: Boolean)
     fun onTractImageSelected(imageIndex: Int, tract: TractWithPicture)
     fun onItemCountChanged(numberOfItems: Int)

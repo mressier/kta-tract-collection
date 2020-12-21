@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
@@ -279,19 +280,31 @@ class AllTractsFragment :
      **********************************************************************************************/
 
     private fun showTractDialog(tractId: UUID) {
-        showTractActionDialog(tractId, object: TractActionCallback {
-            override fun onDelete(tractId: UUID) {
-                KtaTractAnalytics.logSelectItem(SelectEvent.DELETE_TRACT)
-                allTractsViewModel.deleteTract(tractId)
-                Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT)
-                    .show()
-            }
+        val actions = arrayOf(
+            DialogAction(
+                R.string.modify_tract,
+                callback = { updateTract(tractId) }
+            ),
+            DialogAction(
+                R.string.delete_tract,
+                android.R.color.holo_red_light,
+                callback = { deleteTract(tractId) }
+            )
+        )
 
-            override fun onModify(tractId: UUID) {
-                KtaTractAnalytics.logSelectItem(SelectEvent.MODIFY_TRACT)
-                callbacks?.onTractSelected(tractId)
-            }
-        })
+        showActionDialog(actions)
+    }
+
+    private fun updateTract(tractId: UUID) {
+        KtaTractAnalytics.logSelectItem(SelectEvent.MODIFY_TRACT)
+        callbacks?.onTractSelected(tractId)
+    }
+
+    private fun deleteTract(tractId: UUID) {
+        KtaTractAnalytics.logSelectItem(SelectEvent.DELETE_TRACT)
+        allTractsViewModel.deleteTract(tractId)
+        Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun showSortTractListDialog() {
@@ -308,10 +321,10 @@ class AllTractsFragment :
 
     override fun onTractSelected(tractId: UUID) {
         requireActivity().hideKeyboard()
-        callbacks?.onTractSelected(tractId)
+        updateTract(tractId)
     }
 
-    override fun onTractLongSelected(tractId: UUID) {
+    override fun onTractMoreActionsSelected(tractId: UUID) {
         showTractDialog(tractId)
     }
 
