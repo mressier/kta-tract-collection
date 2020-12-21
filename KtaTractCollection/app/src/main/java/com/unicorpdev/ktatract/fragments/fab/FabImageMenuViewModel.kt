@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.unicorpdev.ktatract.database.TractRepository
 import com.unicorpdev.ktatract.models.TractPicture
+import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 import java.io.File
 import java.util.*
 
@@ -34,14 +35,15 @@ class FabImageMenuViewModel: ViewModel() {
      **********************************************************************************************/
 
     fun generateTract(): UUID {
+        KtaTractAnalytics.logSelectItem(KtaTractAnalytics.SelectEvent.CREATE_TRACT)
+
         val tract = repository.addEmptyTract()
         this.tractId = tract
         return tract
     }
 
     fun savePicturesFile(files: List<Uri>) {
-        val tractId = this.tractId ?: repository.addEmptyTract()
-        this.tractId = tractId
+        val tractId = this.tractId ?: generateTract()
 
         files.forEach { file ->
             file.lastPathSegment?.let { filename ->
@@ -56,20 +58,4 @@ class FabImageMenuViewModel: ViewModel() {
             }
         }
     }
-
-//    fun savePictureFile(): TractPicture? {
-//        return pictureFile?.let { file ->
-//
-//            val tractId = this.tractId ?: repository.addEmptyTract()
-//            this.tractId = tractId
-//
-//            val tractPicture = TractPicture(
-//                tractId = tractId,
-//                photoFilename = file.name
-//            )
-//
-//            repository.addPicture(tractPicture)
-//            tractPicture
-//        }
-//    }
 }

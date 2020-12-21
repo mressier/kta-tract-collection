@@ -89,6 +89,7 @@ class AllCollectionsFragment : Fragment(),
     }
 
     override fun onAddButtonSelected() {
+        KtaTractAnalytics.logSelectItem(SelectEvent.CREATE_COLLECTION)
         val collectionId = viewModel.createCollection()
         callbacks?.onCreateCollection(collectionId)
     }
