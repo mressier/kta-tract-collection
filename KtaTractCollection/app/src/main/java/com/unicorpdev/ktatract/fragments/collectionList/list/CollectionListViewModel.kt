@@ -17,7 +17,7 @@ class TractCollectionViewModel: RepositoryViewModel() {
      **********************************************************************************************/
 
     private val defaultCollection =
-        TractCollection(title = "Unclassified", description = "Tracts with no collection")
+        TractCollection(title = "My tracts", description = "Tracts from my collection")
 
 
     fun getCollectionsWithPicture(collections: List<TractCollection>): List<CollectionWithPicture> {

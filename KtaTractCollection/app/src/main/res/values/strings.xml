@@ -71,7 +71,7 @@
     <string name="delete_collection">Delete the collection</string>
     <string name="modify_collection">Modify the collection</string>
     <string name="delete_collection_success">Your collection has been successfully deleted</string>
-    <string name="no_collection_selection">&lt;No collection&gt;</string>
+    <string name="no_collection_selection">My collection</string>
 
     <string name="loading_in_progress">Loading in progress</string>
     <string name="import_failed">Import failed</string>
