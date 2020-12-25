@@ -69,12 +69,27 @@
         <action
             android:id="@+id/showCollectionEdit"
             app:destination="@id/collectionEditFragment" />
+        <action
+            android:id="@+id/showCollectionContent"
+            app:destination="@id/collectionContentFragment" />
     </fragment>
     <fragment
         android:id="@+id/collectionEditFragment"
         android:name="com.unicorpdev.ktatract.fragments.collection.CollectionEditFragment"
         android:label="fragment_collection_edit"
         tools:layout="@layout/fragment_collection_edit" >
+        <argument
+            android:name="collectionId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectionContentFragment"
+        android:name="com.unicorpdev.ktatract.fragments.collection.CollectionContentFragment"
+        android:label="fragment_collection_content"
+        tools:layout="@layout/fragment_collection_content" >
+        <action
+            android:id="@+id/action_collectionContentFragment_to_collectionEditFragment"
+            app:destination="@id/collectionEditFragment" />
         <argument
             android:name="collectionId"
             app:argType="string" />

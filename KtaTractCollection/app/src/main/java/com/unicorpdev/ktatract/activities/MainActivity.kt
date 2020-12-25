@@ -72,7 +72,8 @@ class MainActivity : AppCompatActivity(),
      **********************************************************************************************/
 
     override fun onSelectCollection(collectionId: UUID) {
-        // TODO
+        val action = HomeFragmentDirections.showCollectionContent(collectionId.toString())
+        navController.navigate(action)
     }
 
     override fun onCreateCollection(collectionId: UUID) {
