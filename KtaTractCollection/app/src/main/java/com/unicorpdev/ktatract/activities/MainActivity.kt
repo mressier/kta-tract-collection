@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.database.TractRepository.Companion.DATABASE_NAME
+import com.unicorpdev.ktatract.fragments.collection.CollectionHeaderFragment
 import com.unicorpdev.ktatract.fragments.collectionList.AllCollectionsFragment
+import com.unicorpdev.ktatract.fragments.home.HomeFragment
 import com.unicorpdev.ktatract.fragments.home.HomeFragmentDirections
 import com.unicorpdev.ktatract.fragments.picturesList.TractPicturesFragment
 import com.unicorpdev.ktatract.fragments.tract.TractFragmentDirections
@@ -17,7 +18,8 @@ import java.util.*
 class MainActivity : AppCompatActivity(),
     AllTractsFragment.Callbacks,
     AllCollectionsFragment.Callbacks,
-    TractPicturesFragment.Callbacks
+    TractPicturesFragment.Callbacks,
+    CollectionHeaderFragment.Callbacks
 {
 
     /***********************************************************************************************
@@ -35,6 +37,12 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     /***********************************************************************************************

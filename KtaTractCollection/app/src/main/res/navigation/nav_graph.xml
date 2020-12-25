@@ -68,10 +68,18 @@
             app:popExitAnim="@anim/slide_right" />
         <action
             android:id="@+id/showCollectionEdit"
-            app:destination="@id/collectionEditFragment" />
+            app:destination="@id/collectionEditFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right" />
         <action
             android:id="@+id/showCollectionContent"
-            app:destination="@id/collectionContentFragment" />
+            app:destination="@id/collectionContentFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right" />
     </fragment>
     <fragment
         android:id="@+id/collectionEditFragment"
@@ -88,16 +96,28 @@
         android:label="fragment_collection_content"
         tools:layout="@layout/fragment_collection_content" >
         <action
-            android:id="@+id/action_collectionContentFragment_to_collectionEditFragment"
-            app:destination="@id/collectionEditFragment" />
+            android:id="@+id/showCollectionEdit"
+            app:destination="@id/collectionEditFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right" />
         <argument
             android:name="collectionId"
             app:argType="string" />
         <action
             android:id="@+id/showTractEdit"
-            app:destination="@id/tractFragment" />
+            app:destination="@id/tractFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right" />
         <action
             android:id="@+id/showTractImages"
-            app:destination="@id/imagePagerFragment" />
+            app:destination="@id/imagePagerFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_right" />
     </fragment>
 </navigation>

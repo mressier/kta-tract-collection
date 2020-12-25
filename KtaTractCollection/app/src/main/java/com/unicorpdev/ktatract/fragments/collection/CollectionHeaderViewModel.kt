@@ -28,6 +28,8 @@ class CollectionHeaderViewModel: ViewModel() {
         id?.let { repository.getCollectionLiveData(it) }
     }
 
+    var savedCollection: TractCollection? = null
+
     /***********************************************************************************************
      * Methods
      **********************************************************************************************/
