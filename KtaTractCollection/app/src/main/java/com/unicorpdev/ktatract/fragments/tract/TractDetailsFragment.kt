@@ -150,7 +150,7 @@ class TractDetailsFragment : Fragment(),
         updateUI()
     }
 
-    override fun onCollectionSelected(collectionId: UUID?) {
+    override fun onCollectionSelected(collectionId: UUID) {
         tractViewModel.savedTract.collectionId = collectionId
     }
 

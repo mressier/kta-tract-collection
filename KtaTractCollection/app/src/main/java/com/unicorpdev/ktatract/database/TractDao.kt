@@ -21,10 +21,6 @@ interface TractDao {
     @Query("SELECT * FROM tract WHERE collectionId=(:collectionId)")
     fun getTractsForCollectionLiveData(collectionId: UUID): LiveData<List<Tract>>
 
-
-    @Query("SELECT * FROM tract WHERE collectionId IS NULL")
-    fun getTractsWithoutCollectionLiveData(): LiveData<List<Tract>>
-
     /***********************************************************************************************
      * Query - Raw Data
      **********************************************************************************************/
@@ -37,9 +33,6 @@ interface TractDao {
 
     @Query("SELECT * FROM tract WHERE collectionId=(:collectionId)")
     fun getTractsForCollection(collectionId: UUID): List<Tract>
-
-    @Query("SELECT * FROM tract WHERE collectionId IS NULL")
-    fun getTractsWithoutCollection(): List<Tract>
 
     /***********************************************************************************************
      * Update

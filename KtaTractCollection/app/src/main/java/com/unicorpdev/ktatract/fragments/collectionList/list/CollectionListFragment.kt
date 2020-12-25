@@ -21,7 +21,7 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
 
     interface Callbacks {
         fun onItemCountChanged(itemCount: Int)
-        fun onSelectCollection(collectionId: UUID?)
+        fun onSelectCollection(collectionId: UUID)
         fun onSelectMoreActions(collectionId: UUID)
     }
 
@@ -94,11 +94,7 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
     }
 
     override fun onSelectCollection(collectionId: UUID) {
-        if (viewModel.isDefaultCollection(collectionId)) {
-            callbacks?.onSelectCollection(null)
-        } else {
-            callbacks?.onSelectCollection(collectionId)
-        }
+        callbacks?.onSelectCollection(collectionId)
     }
 
     override fun onSelectMoreActions(collectionId: UUID) {

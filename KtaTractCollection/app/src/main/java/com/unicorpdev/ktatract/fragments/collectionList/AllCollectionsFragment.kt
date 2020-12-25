@@ -2,6 +2,7 @@ package com.unicorpdev.ktatract.fragments.collectionList
 
 import android.content.Context
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,8 @@ import com.unicorpdev.ktatract.shared.extensions.dialogs.DialogAction
 import com.unicorpdev.ktatract.shared.extensions.dialogs.showActionDialog
 import com.unicorpdev.ktatract.shared.fragments.AddButtonFragment
 import com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import java.util.*
 
 /**
@@ -29,7 +32,7 @@ class AllCollectionsFragment : Fragment(),
 {
 
     interface Callbacks {
-        fun onSelectCollection(collectionId: UUID?)
+        fun onSelectCollection(collectionId: UUID)
         fun onCreateCollection(collectionId: UUID)
         fun onUpdateCollection(collectionId: UUID)
     }
@@ -76,7 +79,7 @@ class AllCollectionsFragment : Fragment(),
      * Tract Collection Callback
      **********************************************************************************************/
 
-    override fun onSelectCollection(collectionId: UUID?) {
+    override fun onSelectCollection(collectionId: UUID) {
         callbacks?.onSelectCollection(collectionId)
     }
 
@@ -99,18 +102,34 @@ class AllCollectionsFragment : Fragment(),
      **********************************************************************************************/
 
     private fun showMoreActions(collectionId: UUID) {
-        val actions = arrayOf(
-            DialogAction(
-                R.string.modify_collection,
-                callback = { updateCollection(collectionId) }
-            ),
-            DialogAction(
-                R.string.delete_collection,
-                android.R.color.holo_red_light,
-                callback = { deleteCollection(collectionId) }
-            )
-        )
-        showActionDialog(actions)
+        GlobalScope.async {
+            val isEditable = viewModel.isEditable(collectionId)
+            val isDeletable = viewModel.isDeletable(collectionId)
+
+            val actions = mutableListOf<DialogAction>()
+
+            if (isEditable) {
+                actions.add(
+                    DialogAction(
+                        R.string.modify_collection,
+                        callback = { updateCollection(collectionId) }
+                    )
+                )
+            }
+            if (isDeletable) {
+                actions.add(
+                    DialogAction(
+                        R.string.delete_collection,
+                        android.R.color.holo_red_light,
+                        callback = { deleteCollection(collectionId) }
+                    )
+                )
+            }
+
+            requireActivity().runOnUiThread {
+                showActionDialog(actions.toTypedArray())
+            }
+        }
     }
 
     private fun updateCollection(collectionId: UUID) {

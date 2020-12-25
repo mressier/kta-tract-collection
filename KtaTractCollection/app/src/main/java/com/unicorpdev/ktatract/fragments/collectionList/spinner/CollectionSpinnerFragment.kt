@@ -22,14 +22,14 @@ import java.util.*
 class CollectionSpinnerFragment: Fragment(), AdapterView.OnItemSelectedListener {
 
     interface Callbacks {
-        fun onCollectionSelected(collectionId: UUID?)
+        fun onCollectionSelected(collectionId: UUID)
     }
 
     /***********************************************************************************************
      * Properties
      **********************************************************************************************/
 
-    var selectedCollectionId: UUID?
+    var selectedCollectionId: UUID
         get() = viewModel.selectedCollectionId
         set(value) {
             if (view != null) {
@@ -50,7 +50,7 @@ class CollectionSpinnerFragment: Fragment(), AdapterView.OnItemSelectedListener 
         ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            viewModel.getCollectionsList()
+            viewModel.collectionsNames
         )
     }
 
@@ -102,8 +102,8 @@ class CollectionSpinnerFragment: Fragment(), AdapterView.OnItemSelectedListener 
     private fun setupObservers() {
         viewModel.collections.observe(viewLifecycleOwner) { collections ->
             spinnerAdapter.clear()
-            viewModel.saveCollectionList(collections)
-            viewModel.getCollectionsList().map {
+            viewModel.savedCollections = collections
+            viewModel.collectionsNames.map {
                 spinnerAdapter.add(it)
             }
             updateUI()
@@ -121,7 +121,6 @@ class CollectionSpinnerFragment: Fragment(), AdapterView.OnItemSelectedListener 
 
     private fun setupViewModel() {
         viewModel.context = requireContext()
-        viewModel.selectedCollectionId = selectedCollectionId
     }
 
     /***********************************************************************************************

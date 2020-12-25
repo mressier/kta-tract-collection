@@ -2,6 +2,7 @@ package com.unicorpdev.ktatract.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.unicorpdev.ktatract.database.TractRepository.Companion.DEFAULT_COLLECTION_ID
 import com.unicorpdev.ktatract.shared.extensions.shortString
 import java.util.*
 
@@ -13,7 +14,7 @@ import java.util.*
 data class Tract(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     /* The collection containing the tract */
-    var collectionId: UUID? = null,
+    var collectionId: UUID = DEFAULT_COLLECTION_ID,
     /* Date of the creation of the tract in the database */
     val databaseAddingDate: Date = Date(),
     /* Author of the tract */

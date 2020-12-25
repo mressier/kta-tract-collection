@@ -38,7 +38,7 @@ class TractListViewModel: RepositoryViewModel() {
         if (id != null) {
             tractRepository.getTractsForCollectionLiveData(id)
         } else {
-            tractRepository.getTractsWithoutCollectionLiveData()
+            tractRepository.getTractsLiveData()
         }
     }
 
@@ -46,7 +46,7 @@ class TractListViewModel: RepositoryViewModel() {
         if (id != null) {
             tractRepository.getPicturesForCollectionLiveData(id)
         } else {
-            tractRepository.getPicturesForTractWithoutCollectionLiveData()
+            tractRepository.getPicturesLiveData()
         }
     }
 

@@ -64,8 +64,9 @@ class CollectionListItemViewHolder(
     }
 
     private fun setupButtons(collectionWithPicture: CollectionWithPicture) {
-        moreImageButton.visibility =
-            if (collectionWithPicture.isModifiable) { View.VISIBLE } else { View.INVISIBLE }
+        val isVisible = collectionWithPicture.collection.isEditable
+                || collectionWithPicture.collection.isDeletable
+        moreImageButton.visibility = if (isVisible) { View.VISIBLE } else { View.INVISIBLE }
     }
 
     private fun setupListeners(collectionId: UUID) {

@@ -14,16 +14,13 @@ import java.util.concurrent.Executors
 
 class TractRepository private constructor(context: Context) {
 
-    private val DATABASE_NAME = "tract-repository"
-
     /**
      * Properties
      */
-    private val database: TractDatabase = Room.databaseBuilder(
-        context.applicationContext,
-        TractDatabase::class.java,
-        DATABASE_NAME
-    ).build()
+    private val database: TractDatabase = Room
+        .databaseBuilder(context.applicationContext, TractDatabase::class.java, DATABASE_NAME)
+        .createFromAsset("tract-default-repository.db")
+        .build()
 
     private val tractDao = database.tractDao()
 
@@ -45,9 +42,6 @@ class TractRepository private constructor(context: Context) {
 
     fun getTractsForCollectionLiveData(collectionId: UUID): LiveData<List<Tract>> =
         tractDao.getTractsForCollectionLiveData(collectionId)
-
-    fun getTractsWithoutCollectionLiveData(): LiveData<List<Tract>> =
-        tractDao.getTractsWithoutCollectionLiveData()
 
     /***********************************************************************************************
      * Tracts - Get Raw Data
@@ -99,9 +93,6 @@ class TractRepository private constructor(context: Context) {
 
     fun getPicturesForCollectionLiveData(collectionId: UUID): LiveData<List<TractPicture>> =
         pictureDao.getPicturesForCollectionLiveData(collectionId)
-
-    fun getPicturesForTractWithoutCollectionLiveData(): LiveData<List<TractPicture>> =
-        pictureDao.getPicturesForTractWithoutCollectionLiveData()
 
     /***********************************************************************************************
      * Pictures - Get Raw Data
@@ -225,6 +216,10 @@ class TractRepository private constructor(context: Context) {
      **********************************************************************************************/
     
     companion object {
+
+        const val DATABASE_NAME = "tract-default-repository.db"
+        val DEFAULT_COLLECTION_ID: UUID =
+            UUID.fromString("e894b13a-4cd5-4a78-91db-8e4f04c64201")
 
         private var INSTANCE: TractRepository? = null
 
