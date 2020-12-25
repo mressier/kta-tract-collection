@@ -93,5 +93,11 @@
         <argument
             android:name="collectionId"
             app:argType="string" />
+        <action
+            android:id="@+id/showTractEdit"
+            app:destination="@id/tractFragment" />
+        <action
+            android:id="@+id/showTractImages"
+            app:destination="@id/imagePagerFragment" />
     </fragment>
 </navigation>
