@@ -254,7 +254,10 @@ class AllTractsFragment :
 
     private fun setupTractsFragment() {
         Log.d(TAG, "Tract fragment with collection id ${allTractsViewModel.collectionId}")
-        allTractsViewModel.collectionId?.let { tractsFragment.loadCollection(it) }
+        allTractsViewModel.collectionId?.let {
+            tractsFragment.loadCollection(it)
+            fabFragment.setCollection(it)
+        }
     }
 
     /***********************************************************************************************

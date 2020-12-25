@@ -114,6 +114,10 @@ class FabImageMenuFragment: PicturesSelectionable() {
         imageMenuViewModel.tractId = tractId
     }
 
+    fun setCollection(collectionId: UUID?) {
+        imageMenuViewModel.collectionId = collectionId
+    }
+
     fun setShouldShowMultipleImportButton(shouldShowMultipleImportButton: Boolean) {
         imageMenuViewModel.shouldShowMultipleImport = shouldShowMultipleImportButton
     }

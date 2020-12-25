@@ -27,6 +27,7 @@ class FabImageMenuViewModel: ViewModel() {
     var shouldShowMultipleImport = true
     var isMenuVisible = false
     var tractId: UUID? = null
+    var collectionId: UUID? = null
 
     lateinit var pictureSelectionOption: PictureSelectionOption
 
@@ -37,7 +38,7 @@ class FabImageMenuViewModel: ViewModel() {
     fun generateTract(): UUID {
         KtaTractAnalytics.logSelectItem(KtaTractAnalytics.SelectEvent.CREATE_TRACT)
 
-        val tract = repository.addEmptyTract()
+        val tract = repository.addEmptyTract(collectionId)
         this.tractId = tract
         return tract
     }
