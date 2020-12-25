@@ -92,6 +92,7 @@
             app:destination="@id/collectionEditFragment" />
         <argument
             android:name="collectionId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

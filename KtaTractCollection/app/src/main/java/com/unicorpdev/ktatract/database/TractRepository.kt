@@ -43,8 +43,11 @@ class TractRepository private constructor(context: Context) {
 
     fun getTractLiveData(id: UUID): LiveData<Tract?> = tractDao.getTractLiveData(id)
 
-    fun getTractsLiveData(collectionId: UUID): LiveData<List<Tract>> =
+    fun getTractsForCollectionLiveData(collectionId: UUID): LiveData<List<Tract>> =
         tractDao.getTractsForCollectionLiveData(collectionId)
+
+    fun getTractsWithoutCollectionLiveData(): LiveData<List<Tract>> =
+        tractDao.getTractsWithoutCollectionLiveData()
 
     /***********************************************************************************************
      * Tracts - Get Raw Data
@@ -96,6 +99,9 @@ class TractRepository private constructor(context: Context) {
 
     fun getPicturesForCollectionLiveData(collectionId: UUID): LiveData<List<TractPicture>> =
         pictureDao.getPicturesForCollectionLiveData(collectionId)
+
+    fun getPicturesForTractWithoutCollectionLiveData(): LiveData<List<TractPicture>> =
+        pictureDao.getPicturesForTractWithoutCollectionLiveData()
 
     /***********************************************************************************************
      * Pictures - Get Raw Data

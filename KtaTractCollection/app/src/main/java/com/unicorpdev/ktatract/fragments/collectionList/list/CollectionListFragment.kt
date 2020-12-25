@@ -19,8 +19,10 @@ import java.util.*
  */
 class CollectionListFragment : Fragment(), TractCollectionCallback {
 
-    interface Callbacks: TractCollectionCallback {
+    interface Callbacks {
         fun onItemCountChanged(itemCount: Int)
+        fun onSelectCollection(collectionId: UUID?)
+        fun onSelectMoreActions(collectionId: UUID)
     }
 
     /***********************************************************************************************
@@ -92,7 +94,11 @@ class CollectionListFragment : Fragment(), TractCollectionCallback {
     }
 
     override fun onSelectCollection(collectionId: UUID) {
-        callbacks?.onSelectCollection(collectionId)
+        if (viewModel.isDefaultCollection(collectionId)) {
+            callbacks?.onSelectCollection(null)
+        } else {
+            callbacks?.onSelectCollection(collectionId)
+        }
     }
 
     override fun onSelectMoreActions(collectionId: UUID) {

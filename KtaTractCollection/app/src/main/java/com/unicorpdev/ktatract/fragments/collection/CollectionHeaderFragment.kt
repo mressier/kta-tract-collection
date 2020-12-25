@@ -47,7 +47,7 @@ class CollectionHeaderFragment : Fragment() {
      * Methods
      **********************************************************************************************/
 
-    fun loadCollection(collectionId: UUID) {
+    fun loadCollection(collectionId: UUID?) {
         viewModel.loadCollection(collectionId)
     }
 

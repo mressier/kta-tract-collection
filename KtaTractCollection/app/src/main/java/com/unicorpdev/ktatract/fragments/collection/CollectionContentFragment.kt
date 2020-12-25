@@ -33,7 +33,7 @@ class CollectionContentFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             val args = CollectionContentFragmentArgs.fromBundle(it)
-            args.collectionId.let { collectionId ->
+            args.collectionId?.let { collectionId ->
                 val id = UUID.fromString(collectionId)
                 viewModel.collectionId = id
             }
@@ -58,9 +58,9 @@ class CollectionContentFragment : Fragment() {
      * Setup
      **********************************************************************************************/
 
-    private fun loadCollection(collectionId: UUID) {
+    private fun loadCollection(collectionId: UUID?) {
         headerFragment.loadCollection(collectionId)
-        // list fragment
+        listFragment.loadCollection(collectionId)
     }
 
     private fun setupFragments() {

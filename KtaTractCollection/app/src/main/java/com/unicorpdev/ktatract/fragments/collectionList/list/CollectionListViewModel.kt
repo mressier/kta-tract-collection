@@ -5,6 +5,7 @@ import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel
 import java.io.File
+import java.util.*
 
 data class CollectionWithPicture(
     val collection: TractCollection,
@@ -39,6 +40,10 @@ class TractCollectionViewModel: RepositoryViewModel() {
             collections.map { CollectionWithPicture(it, getCollectionPictureFile(it)) }
 
         return listOf(defaultCollectionWithPicture) + newCollection
+    }
+
+    fun isDefaultCollection(collectionId: UUID): Boolean {
+        return defaultCollection.id == collectionId
     }
 
     /***********************************************************************************************

@@ -21,19 +21,19 @@ class CollectionHeaderViewModel: ViewModel() {
     }
 
     /** One Collection **/
-    private var collectionId = MutableLiveData<UUID>()
+    private var collectionId = MutableLiveData<UUID?>()
+
+    // Item to observe
+    var collection: LiveData<TractCollection?> = Transformations.switchMap(collectionId) { id ->
+        id?.let { repository.getCollectionLiveData(it) }
+    }
 
     /***********************************************************************************************
      * Methods
      **********************************************************************************************/
 
-    // Item to observe
-    var collection: LiveData<TractCollection?> = Transformations.switchMap(collectionId) { id ->
-        repository.getCollectionLiveData(id)
-    }
-
     // fun to call to update collection information
-    fun loadCollection(id: UUID) {
+    fun loadCollection(id: UUID?) {
         collectionId.value = id
     }
 

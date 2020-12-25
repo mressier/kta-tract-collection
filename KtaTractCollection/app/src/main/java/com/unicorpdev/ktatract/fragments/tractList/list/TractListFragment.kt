@@ -14,6 +14,7 @@ import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
 import com.unicorpdev.ktatract.R
 import kotlinx.android.synthetic.main.fragment_tract_recycler.*
+import java.util.*
 
 /**
  * A [Fragment] subclass to display a list of tracts
@@ -101,6 +102,14 @@ class TractListFragment : Fragment() {
     }
 
     /***********************************************************************************************
+     * Methods
+     **********************************************************************************************/
+
+    fun loadCollection(collectionId: UUID?) {
+        viewModel.loadCollection(collectionId)
+    }
+
+    /***********************************************************************************************
      * Update
      **********************************************************************************************/
 
@@ -122,7 +131,7 @@ class TractListFragment : Fragment() {
      **********************************************************************************************/
 
     private fun setupObservers() {
-        viewModel.tracts.observe(
+        viewModel.tractList.observe(
             owner = viewLifecycleOwner,
             onChanged = { items ->
                 items.let {
@@ -132,7 +141,7 @@ class TractListFragment : Fragment() {
                 }
             })
 
-        viewModel.pictures.observe(
+        viewModel.picturesList.observe(
             owner = viewLifecycleOwner,
             onChanged = { items ->
                 Log.i(TAG, "Got pictures items ${items.size}")

@@ -29,7 +29,7 @@ class AllCollectionsFragment : Fragment(),
 {
 
     interface Callbacks {
-        fun onSelectCollection(collectionId: UUID)
+        fun onSelectCollection(collectionId: UUID?)
         fun onCreateCollection(collectionId: UUID)
         fun onUpdateCollection(collectionId: UUID)
     }
@@ -76,7 +76,7 @@ class AllCollectionsFragment : Fragment(),
      * Tract Collection Callback
      **********************************************************************************************/
 
-    override fun onSelectCollection(collectionId: UUID) {
+    override fun onSelectCollection(collectionId: UUID?) {
         callbacks?.onSelectCollection(collectionId)
     }
 

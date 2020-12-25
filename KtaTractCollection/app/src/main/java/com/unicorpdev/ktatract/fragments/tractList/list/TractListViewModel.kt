@@ -1,5 +1,8 @@
 package com.unicorpdev.ktatract.fragments.tractList.list
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
 import com.unicorpdev.ktatract.models.Tract
@@ -8,6 +11,7 @@ import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.extensions.mergeWithPictures
 import com.unicorpdev.ktatract.shared.extensions.sortAndFilter
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel
+import java.util.*
 
 class TractListViewModel: RepositoryViewModel() {
 
@@ -24,6 +28,36 @@ class TractListViewModel: RepositoryViewModel() {
 
     var listParameters: TractListParameters = TractListParameters()
     var displayMode: DisplayMode = DisplayMode.LIST
+
+    /** Collection **/
+
+    private var collectionId = MutableLiveData<UUID?>().apply { value = null }
+
+    // Item to observe
+    var tractList: LiveData<List<Tract>> = Transformations.switchMap(collectionId) { id ->
+        if (id != null) {
+            tractRepository.getTractsForCollectionLiveData(id)
+        } else {
+            tractRepository.getTractsWithoutCollectionLiveData()
+        }
+    }
+
+    var picturesList: LiveData<List<TractPicture>> = Transformations.switchMap(collectionId) { id ->
+        if (id != null) {
+            tractRepository.getPicturesForCollectionLiveData(id)
+        } else {
+            tractRepository.getPicturesForTractWithoutCollectionLiveData()
+        }
+    }
+
+    /***********************************************************************************************
+     * Methods
+     **********************************************************************************************/
+
+    // fun to call to update collection information
+    fun loadCollection(id: UUID?) {
+        collectionId.value = id
+    }
 
     /** Computed **/
 

@@ -5,6 +5,6 @@ import java.util.*
 
 class CollectionContentViewModel: ViewModel() {
 
-    lateinit var collectionId: UUID
+    var collectionId: UUID? = null
 
 }

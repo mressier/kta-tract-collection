@@ -162,6 +162,17 @@ class AllTractsFragment :
     }
 
     /***********************************************************************************************
+     * Methods
+     **********************************************************************************************/
+
+    fun loadCollection(collectionId: UUID?) {
+        allTractsViewModel.collectionId = collectionId
+        if (view != null) {
+            tractsFragment.loadCollection(collectionId)
+        }
+    }
+
+    /***********************************************************************************************
      * Intents
      **********************************************************************************************/
 
@@ -214,6 +225,7 @@ class AllTractsFragment :
         setupNoTractView()
         setupFragments()
         setupHeaderFragment()
+        setupTractsFragment()
     }
 
     private fun setupFragments() {
@@ -238,6 +250,11 @@ class AllTractsFragment :
     private fun setNoTractViewIsVisible(isVisible: Boolean, animated: Boolean = true) {
         noTractImageView.setIsVisible(isVisible, animated)
         noTractText.setIsVisible(isVisible, animated)
+    }
+
+    private fun setupTractsFragment() {
+        Log.d(TAG, "Tract fragment with collection id ${allTractsViewModel.collectionId}")
+        allTractsViewModel.collectionId?.let { tractsFragment.loadCollection(it) }
     }
 
     /***********************************************************************************************
