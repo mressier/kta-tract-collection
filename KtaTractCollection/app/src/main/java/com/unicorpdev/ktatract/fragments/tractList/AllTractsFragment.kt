@@ -1,23 +1,19 @@
 package com.unicorpdev.ktatract.fragments.tractList
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.unicorpdev.ktatract.fragments.fab.FabImageMenuFragment
 import com.unicorpdev.ktatract.fragments.tractList.parameters.TractListParameters
 import com.unicorpdev.ktatract.shared.fragments.listHeader.ListHeaderFragment
 import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.fragments.tractList.list.TractListCallbacks
 import com.unicorpdev.ktatract.fragments.tractList.list.TractListFragment
-import com.unicorpdev.ktatract.models.MimeType
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
@@ -25,11 +21,9 @@ import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
 import com.unicorpdev.ktatract.shared.extensions.dialogs.*
 import com.unicorpdev.ktatract.shared.extensions.hideKeyboard
 import com.unicorpdev.ktatract.shared.extensions.setIsVisible
+import com.unicorpdev.ktatract.shared.fragments.collectionExporter.CollectionExporterFragment
 import kotlinx.android.synthetic.main.fragment_all_tracts.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import java.io.File
-import java.io.FileNotFoundException
 import java.util.*
 
 /**
@@ -57,10 +51,8 @@ class AllTractsFragment :
 
     /** View Models **/
 
-    private val allTractsViewModel: AllTractsViewModel by lazy {
-        ViewModelProvider(this).get(AllTractsViewModel::class.java)
-    }
-
+    private val viewModel by viewModels<AllTractsViewModel>()
+    
     /** Parameters **/
 
     var parameters: TractListParameters
@@ -72,6 +64,7 @@ class AllTractsFragment :
     private lateinit var fabFragment: FabImageMenuFragment
     private lateinit var tractsFragment: TractListFragment
     private lateinit var headerFragment: ListHeaderFragment
+    private lateinit var exporterFragment: CollectionExporterFragment
 
     /***********************************************************************************************
      * View Life Cycle
@@ -106,22 +99,6 @@ class AllTractsFragment :
         super.onDetach()
         callbacks = null
     }
-    
-    /***********************************************************************************************
-     * Intents Results
-     **********************************************************************************************/
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                GET_ZIP_DIRECTORY_REQUEST ->
-                    data?.data?.let { uri -> exportCollection(uri) }
-                GET_ZIP_FILE_REQUEST ->
-                    data?.data?.let { uri -> importCollection(uri) }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 
     /***********************************************************************************************
      * Menu
@@ -144,12 +121,12 @@ class AllTractsFragment :
             }
             R.id.export_collection -> {
                 KtaTractAnalytics.logSelectItem(SelectEvent.EXPORT_COLLECTION)
-                selectZipDirectory()
+                exporterFragment.exportCollection(viewModel.collectionId)
                 true
             }
             R.id.import_collection -> {
                 KtaTractAnalytics.logSelectItem(SelectEvent.IMPORT_COLLECTION)
-                selectZipFile()
+                exporterFragment.importCollection()
                 true
             }
             R.id.about -> {
@@ -166,54 +143,9 @@ class AllTractsFragment :
      **********************************************************************************************/
 
     fun loadCollection(collectionId: UUID?) {
-        allTractsViewModel.collectionId = collectionId
+        viewModel.collectionId = collectionId
         if (view != null) {
             tractsFragment.loadCollection(collectionId)
-        }
-    }
-
-    /***********************************************************************************************
-     * Intents
-     **********************************************************************************************/
-
-    private fun selectZipDirectory() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        startActivityForResult(intent, GET_ZIP_DIRECTORY_REQUEST)
-    }
-
-    private fun selectZipFile() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = MimeType.ZIP.string
-        startActivityForResult(intent, GET_ZIP_FILE_REQUEST)
-    }
-
-    /***********************************************************************************************
-     * Import / Export
-     **********************************************************************************************/
-
-    private fun exportCollection(uri: Uri) {
-        val dialog = showLoadingDialog()
-        GlobalScope.async {
-            allTractsViewModel.exportCollection(requireContext(), uri)
-            requireActivity().runOnUiThread { dialog.dismiss() }
-        }
-    }
-
-    private fun importCollection(uri: Uri) {
-        val dialog = showLoadingDialog()
-        GlobalScope.async {
-            try {
-                allTractsViewModel.importCollection(requireContext(), uri)
-                requireActivity().runOnUiThread { dialog.dismiss() }
-            } catch (e: FileNotFoundException) {
-                requireActivity().runOnUiThread {
-                    dialog.dismiss()
-
-                    val title = getString(R.string.import_failed)
-                    val text = getString(R.string.import_missing_files).format(e.message)
-                    showErrorDialog(title, text)
-                }
-            }
         }
     }
 
@@ -235,6 +167,9 @@ class AllTractsFragment :
             childFragmentManager.findFragmentById(R.id.headerFragment) as ListHeaderFragment
         tractsFragment =
             childFragmentManager.findFragmentById(R.id.tractRecyclerFragment) as TractListFragment
+        exporterFragment =
+            childFragmentManager
+                .findFragmentById(R.id.exportCollectionFragment) as CollectionExporterFragment
     }
 
     private fun setupHeaderFragment() {
@@ -253,8 +188,8 @@ class AllTractsFragment :
     }
 
     private fun setupTractsFragment() {
-        Log.d(TAG, "Tract fragment with collection id ${allTractsViewModel.collectionId}")
-        allTractsViewModel.collectionId?.let {
+        Log.d(TAG, "Tract fragment with collection id ${viewModel.collectionId}")
+        viewModel.collectionId?.let {
             tractsFragment.loadCollection(it)
             fabFragment.setCollection(it)
         }
@@ -322,7 +257,7 @@ class AllTractsFragment :
 
     private fun deleteTract(tractId: UUID) {
         KtaTractAnalytics.logSelectItem(SelectEvent.DELETE_TRACT)
-        allTractsViewModel.deleteTract(tractId)
+        viewModel.deleteTract(tractId)
         Toast.makeText(context, R.string.delete_tract_success, Toast.LENGTH_SHORT)
             .show()
     }
@@ -349,7 +284,7 @@ class AllTractsFragment :
     }
 
     override fun onTractToggleFavorite(tractId: UUID, isFavorite: Boolean) {
-        allTractsViewModel.updateTractIsFavorite(tractId, isFavorite)
+        viewModel.updateTractIsFavorite(tractId, isFavorite)
     }
 
     override fun onTractImageSelected(imageIndex: Int, tract: TractWithPicture) {
@@ -402,9 +337,6 @@ class AllTractsFragment :
     
     companion object {
         private val TAG = AllTractsFragment::class.simpleName
-
-        private const val GET_ZIP_DIRECTORY_REQUEST = 0
-        private const val GET_ZIP_FILE_REQUEST = 1
 
         @JvmStatic
         fun newInstance() = AllTractsFragment()

@@ -22,10 +22,14 @@ class TractListExtensionKtTest : TestCase() {
         // Then
         Truth.assertThat(result.size).isEqualTo(tracts.size)
 
-        Truth.assertThat(result.find { it.tract == tract1 }).isNotNull()
-        Truth.assertThat(result.find { it.tract == tract1 }?.pictures?.size).isEqualTo(3)
+        val tractWithPicture1 = result.find { it.tract == tract1 }
 
-        Truth.assertThat(result.find { it.tract == tract2 }).isNotNull()
-        Truth.assertThat(result.find { it.tract == tract2 }?.pictures?.size).isEqualTo(1)
+        Truth.assertThat(tractWithPicture1).isNotNull()
+        Truth.assertThat(tractWithPicture1?.pictures?.size).isEqualTo(3)
+
+        val tractWithPicture2 = result.find { it.tract == tract2 }
+
+        Truth.assertThat(tractWithPicture2).isNotNull()
+        Truth.assertThat(tractWithPicture2?.pictures?.size).isEqualTo(1)
     }
 }

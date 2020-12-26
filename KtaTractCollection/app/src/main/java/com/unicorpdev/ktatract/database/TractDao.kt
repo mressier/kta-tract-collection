@@ -61,7 +61,4 @@ interface TractDao {
 
     @Query("DELETE FROM tract WHERE collectionId=(:collectionId)")
     fun deleteTractForCollection(collectionId: UUID)
-
-    @Query("DELETE FROM tract WHERE collectionId IS NULL")
-    fun deleteTractWithoutCollection()
 }

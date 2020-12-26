@@ -42,7 +42,8 @@ data class Tract(
     override fun equals(other: Any?): Boolean {
         val tract = other as? Tract ?: return super.equals(other)
 
-        return tract.databaseAddingDate == databaseAddingDate
+        return tract.id == id
+                && tract.databaseAddingDate == databaseAddingDate
                 && tract.author == author
                 && tract.discoveryDate == discoveryDate
                 && tract.dating == dating

@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
+import com.unicorpdev.ktatract.database.TractRepository.Companion.DEFAULT_COLLECTION_ID
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.utils.DatabaseMock
@@ -134,11 +135,11 @@ class TractDaoTest {
         assertThat(tractList.size).isEqualTo(tracts.size)
 
         val tractOnCollection = tractDao.getTractsForCollection(collection.id)
-        val tractWithoutCollection = tractDao.getTractsWithoutCollection()
+        val tractWithDefaultCollection = tractDao.getTractsForCollection(DEFAULT_COLLECTION_ID)
 
         // Then
         assertThat(tractOnCollection.size).isEqualTo(3)
-        assertThat(tractWithoutCollection.size).isEqualTo(2)
+        assertThat(tractWithDefaultCollection.size).isEqualTo(2)
     }
 
     @Test
@@ -158,16 +159,16 @@ class TractDaoTest {
         tractDao.deleteTractForCollection(collection.id)
 
         val tractOnCollection = tractDao.getTractsForCollection(collection.id)
-        val tractWithoutCollection = tractDao.getTractsWithoutCollection()
+        val tractWithDefaultCollection = tractDao.getTractsForCollection(DEFAULT_COLLECTION_ID)
 
         // Then
         assertThat(tractOnCollection.size).isEqualTo(0)
-        assertThat(tractWithoutCollection.size).isEqualTo(2)
+        assertThat(tractWithDefaultCollection.size).isEqualTo(2)
 
         // When
-        tractDao.deleteTractWithoutCollection()
+        tractDao.deleteTractForCollection(DEFAULT_COLLECTION_ID)
 
         // Then
-        assertThat(tractDao.getTractsWithoutCollection().size).isEqualTo(0)
+        assertThat(tractDao.getTractsForCollection(DEFAULT_COLLECTION_ID).size).isEqualTo(0)
     }
 }
