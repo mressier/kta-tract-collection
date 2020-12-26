@@ -247,7 +247,7 @@ class AllTractsFragment :
             )
         )
 
-        showActionDialog(actions)
+        showActionDialog(actions = actions)
     }
 
     private fun updateTract(tractId: UUID) {

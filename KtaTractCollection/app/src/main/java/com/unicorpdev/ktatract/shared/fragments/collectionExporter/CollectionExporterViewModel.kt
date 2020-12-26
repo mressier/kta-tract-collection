@@ -52,13 +52,18 @@ class CollectionExporterViewModel: ViewModel() {
      * Import
      **********************************************************************************************/
 
+    enum class ImportMethod {
+        REPLACE,
+        IGNORE
+    }
+
     interface ImportCallback {
         fun onSuccess()
         fun onFailed(error: Error)
     }
 
     @Throws(FileNotFoundException::class)
-    fun importCollection(activity: Activity, source: Uri, callback: ImportCallback?) {
+    fun importCollection(activity: Activity, source: Uri, method: ImportMethod, callback: ImportCallback?) {
         GlobalScope.async {
             val importer = CollectionImporter(activity)
 
@@ -72,9 +77,18 @@ class CollectionExporterViewModel: ViewModel() {
             val tracts = importer.importTracts() ?: listOf()
             val pictures = importer.importPictures() ?: listOf()
 
-            tractRepository.addCollections(collections)
-            tractRepository.addTracts(tracts)
-            tractRepository.addPictures(pictures)
+            when (method) {
+                ImportMethod.REPLACE -> {
+                    tractRepository.addCollections(collections)
+                    tractRepository.addTracts(tracts)
+                    tractRepository.addPictures(pictures)
+                }
+                ImportMethod.IGNORE -> {
+                    tractRepository.addCollectionsIfNotExist(collections)
+                    tractRepository.addTractsIfNotExists(tracts)
+                    tractRepository.addPicturesIfNotExist(pictures)
+                }
+            }
 
             activity.runOnUiThread { callback?.onSuccess() }
         }

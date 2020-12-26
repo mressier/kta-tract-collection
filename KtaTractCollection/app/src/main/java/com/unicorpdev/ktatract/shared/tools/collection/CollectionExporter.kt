@@ -49,20 +49,21 @@ class CollectionExporter(private val context: Context) {
 
         val files = CollectionFiles.REQUIRED_FILES_IN_ZIP +
                 pictures.map { it.photoFilename.toUri().lastPathSegment ?: "" }
+        val exportName = getExportFilename(collections)
 
-        getDestinationFileUri(destination)?.let { uri ->
+        getDestinationFileUri(destination, exportName)?.let { uri ->
             Zipper(context).zip(uri, files.map { File(filesDir, it) }.toTypedArray())
         }
     }
-    
+
     /***********************************************************************************************
      * Tools
      **********************************************************************************************/
 
-    private fun getDestinationFileUri(directoryUri: Uri): Uri? {
+    private fun getDestinationFileUri(directoryUri: Uri, filename: String): Uri? {
         val documentFile = DocumentFile.fromTreeUri(context, directoryUri)
         val destinationFile =
-            documentFile?.createFile(MimeType.ZIP.string, CollectionFiles.ZIP_FILENAME)
+            documentFile?.createFile(MimeType.ZIP.string, filename)
 
         return destinationFile?.uri
     }
@@ -72,6 +73,12 @@ class CollectionExporter(private val context: Context) {
         val result = objectToExport.toJson()
 
         file.writeText(result)
+    }
+
+    private fun getExportFilename(collections: List<TractCollection>): String {
+        val filename =
+            if (collections.size == 1) collections.first().title else CollectionFiles.ZIP_FILENAME
+        return filename + CollectionFiles.ZIP_EXTENSION
     }
 
     /***********************************************************************************************

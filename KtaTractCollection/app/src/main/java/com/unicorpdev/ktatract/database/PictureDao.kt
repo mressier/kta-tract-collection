@@ -46,6 +46,10 @@ interface PictureDao {
     @JvmSuppressWildcards
     fun addPictures(pictures: List<TractPicture>)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @JvmSuppressWildcards
+    fun addPicturesIfNotExist(pictures: List<TractPicture>)
+
     /***********************************************************************************************
      * Delete
      **********************************************************************************************/

@@ -10,14 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.fragments.tractList.AllTractsFragment
 import com.unicorpdev.ktatract.models.MimeType
+import com.unicorpdev.ktatract.shared.extensions.dialogs.DialogAction
+import com.unicorpdev.ktatract.shared.extensions.dialogs.showActionDialog
 import com.unicorpdev.ktatract.shared.extensions.dialogs.showErrorDialog
 import com.unicorpdev.ktatract.shared.extensions.dialogs.showLoadingDialog
+import com.unicorpdev.ktatract.shared.fragments.collectionExporter.CollectionExporterViewModel.ImportMethod
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import java.io.FileNotFoundException
 import java.util.*
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * A simple [Fragment] subclass.
@@ -54,7 +56,11 @@ class CollectionExporterFragment : Fragment() {
                 GET_ZIP_DIRECTORY_REQUEST ->
                     data?.data?.let { uri -> exportCollection(uri) }
                 GET_ZIP_FILE_REQUEST ->
-                    data?.data?.let { uri -> importCollection(uri) }
+                    data?.data?.let { uri ->
+                        showSelectSynchronizationMethod { method ->
+                            importCollection(uri, method)
+                        }
+                    }
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -85,11 +91,12 @@ class CollectionExporterFragment : Fragment() {
         }
     }
 
-    private fun importCollection(uri: Uri) {
+    private fun importCollection(uri: Uri, method: ImportMethod) {
         val dialog = showLoadingDialog()
         viewModel.importCollection(
             requireActivity(),
             uri,
+            method,
             object : CollectionExporterViewModel.ImportCallback {
                 override fun onSuccess() {
                     dialog.dismiss()
@@ -104,6 +111,26 @@ class CollectionExporterFragment : Fragment() {
                 }
             }
         )
+    }
+
+    /***********************************************************************************************
+     * Dialog
+     **********************************************************************************************/
+
+    private fun showSelectSynchronizationMethod(onSelect: (ImportMethod) -> Unit) {
+            showActionDialog(
+                R.string.import_choose_conflict_strategy_title,
+                arrayOf(
+                    DialogAction(
+                        title = R.string.import_ignore_conflicts,
+                        callback = { onSelect.invoke(ImportMethod.IGNORE) }
+                    ),
+                    DialogAction(
+                        title = R.string.import_replace_conflicts,
+                        callback = { onSelect.invoke(ImportMethod.REPLACE) }
+                    )
+                )
+            )
     }
 
     /***********************************************************************************************

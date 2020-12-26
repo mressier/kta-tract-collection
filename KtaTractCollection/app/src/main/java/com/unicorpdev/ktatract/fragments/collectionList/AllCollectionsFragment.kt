@@ -127,7 +127,7 @@ class AllCollectionsFragment : Fragment(),
             }
 
             requireActivity().runOnUiThread {
-                showActionDialog(actions.toTypedArray())
+                showActionDialog(actions = actions.toTypedArray())
             }
         }
     }

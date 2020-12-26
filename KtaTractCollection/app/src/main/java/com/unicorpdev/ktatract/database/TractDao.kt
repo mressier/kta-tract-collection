@@ -55,6 +55,10 @@ interface TractDao {
     @JvmSuppressWildcards
     fun addTracts(tracts: List<Tract>)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @JvmSuppressWildcards
+    fun addTractsIfNotExist(tracts: List<Tract>)
+
     /***********************************************************************************************
      * Delete
      **********************************************************************************************/

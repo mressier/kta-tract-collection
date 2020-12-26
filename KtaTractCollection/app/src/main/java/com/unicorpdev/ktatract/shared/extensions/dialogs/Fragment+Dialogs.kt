@@ -58,10 +58,12 @@ data class DialogAction(
     val callback: (() -> Unit)? = null
 ) {}
 
-fun Fragment.showActionDialog(actions: Array<DialogAction>): AlertDialog {
+fun Fragment.showActionDialog(@StringRes title: Int? = null,
+                              actions: Array<DialogAction>): AlertDialog {
     val builder = AlertDialog.Builder(requireContext())
     val customView = layoutInflater.inflate(R.layout.dialog_action_list, null)
 
+    title?.let { builder.setTitle(it) }
     builder.setView(customView)
     builder.setNegativeButton(getString(android.R.string.cancel)) { dialog, _ -> dialog.dismiss() }
 

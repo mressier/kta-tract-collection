@@ -75,6 +75,9 @@
     <string name="delete_collection_success">Your collection has been successfully deleted</string>
     <string name="no_collection_selection">My collection</string>
 
+    <string name="import_choose_conflict_strategy_title">What do you want to do on conflicts?</string>
+    <string name="import_ignore_conflicts">Keep the current version</string>
+    <string name="import_replace_conflicts">Replace with the new one</string>
     <string name="loading_in_progress">Loading in progress</string>
     <string name="import_failed">Import failed</string>
     <string name="import_missing_files">Some of these files seems to be missing in the zip: %1$s.</string>

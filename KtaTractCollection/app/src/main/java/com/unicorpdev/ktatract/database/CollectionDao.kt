@@ -41,6 +41,9 @@ interface CollectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCollections(collections: List<TractCollection>)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun addCollectionsIfNotExist(collections: List<TractCollection>)
+
     /***********************************************************************************************
      * Update
      **********************************************************************************************/

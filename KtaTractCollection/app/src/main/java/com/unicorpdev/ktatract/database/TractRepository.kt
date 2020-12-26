@@ -113,6 +113,10 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
         executor.execute { tractDao.addTracts(tracts) }
     }
 
+    fun addTractsIfNotExists(tracts: List<Tract>) {
+        executor.execute { tractDao.addTractsIfNotExist(tracts) }
+    }
+
     fun addEmptyTract(collectionId: UUID? = null): UUID {
         val tract = getEmptyTract(collectionId)
 
@@ -167,6 +171,10 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
 
     fun addPictures(pictures: List<TractPicture>) {
         executor.execute() { pictureDao.addPictures(pictures) }
+    }
+
+    fun addPicturesIfNotExist(pictures: List<TractPicture>) {
+        executor.execute() { pictureDao.addPicturesIfNotExist(pictures) }
     }
 
     /***********************************************************************************************
@@ -259,6 +267,10 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
 
     fun addCollections(collections: List<TractCollection>) {
         executor.execute { collectionDao.addCollections(collections) }
+    }
+
+    fun addCollectionsIfNotExist(collections: List<TractCollection>) {
+        executor.execute { collectionDao.addCollectionsIfNotExist(collections) }
     }
 
     /***********************************************************************************************
