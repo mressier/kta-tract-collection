@@ -66,7 +66,35 @@ class CollectionDaoTest {
         assertThat(collectionDao.getCollections().size).isEqualTo(2)
         assertThat(collectionDao.getCollection(collections[0].id)).isEqualTo(collections[0])
     }
-    
+
+    /***********************************************************************************************
+     * Get
+     **********************************************************************************************/
+
+    @Test
+    fun testGetCollections() {
+        val collections = listOf(TractCollection(),  TractCollection())
+
+        collectionDao.addCollections(collections)
+
+        // Then
+        assertThat(collectionDao.getCollections().size).isEqualTo(collections.size)
+    }
+
+    @Test
+    fun testGetCollectionsWithId() {
+        val collections = listOf(TractCollection(),  TractCollection())
+
+        collectionDao.addCollections(collections)
+
+        // Then
+        val allCollectionsId = collections.map { it.id }
+        assertThat(collectionDao.getCollections(allCollectionsId).size).isEqualTo(collections.size)
+
+        val lastCollectionId = listOf(collections.last().id)
+        assertThat(collectionDao.getCollections(lastCollectionId).size).isEqualTo(1)
+    }
+
     /***********************************************************************************************
      * Remove
      **********************************************************************************************/

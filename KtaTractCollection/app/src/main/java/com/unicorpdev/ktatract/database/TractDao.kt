@@ -31,6 +31,9 @@ interface TractDao {
     @Query("SELECT * FROM tract WHERE id=(:id)")
     fun getTract(id: UUID): Tract?
 
+    @Query("SELECT * FROM tract WHERE id IN (:ids)")
+    fun getTracts(ids: List<UUID>): List<Tract>
+
     @Query("SELECT * FROM tract WHERE collectionId=(:collectionId)")
     fun getTractsForCollection(collectionId: UUID): List<Tract>
 

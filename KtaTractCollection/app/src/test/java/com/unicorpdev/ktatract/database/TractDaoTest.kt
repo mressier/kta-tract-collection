@@ -73,6 +73,22 @@ class TractDaoTest {
     }
 
     @Test
+    fun testGetTractsWithIds() {
+        val authors = listOf("George", "Fred", "Lily")
+        val tracts = authors.map { Tract(author = it) }.toList()
+
+        // when
+        tractDao.addTracts(tracts)
+
+        // Then
+        val findTractsList = tractDao.getTracts(tracts.map { it.id })
+        assertThat(findTractsList.size).isEqualTo(authors.size)
+
+        val findTractsList2 = tractDao.getTracts(listOf(tracts.first().id))
+        assertThat(findTractsList2.size).isEqualTo(1)
+    }
+
+    @Test
     fun testUpdateTracts() {
         val authors = listOf("George", "Fred", "Lily")
         val tracts = authors.map { Tract(author = it) }.toList()

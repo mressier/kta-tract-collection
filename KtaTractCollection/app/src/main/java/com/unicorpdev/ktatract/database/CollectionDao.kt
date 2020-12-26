@@ -28,6 +28,9 @@ interface CollectionDao {
     @Query("SELECT * FROM tractcollection WHERE id=(:collectionId)")
     fun getCollection(collectionId: UUID): TractCollection?
 
+    @Query("SELECT * FROM tractcollection WHERE id IN (:collectionIds)")
+    fun getCollections(collectionIds: List<UUID>): List<TractCollection>
+
     /***********************************************************************************************
      * Insert
      **********************************************************************************************/
