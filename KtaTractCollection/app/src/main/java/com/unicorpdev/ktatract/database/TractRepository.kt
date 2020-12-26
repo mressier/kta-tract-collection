@@ -45,8 +45,6 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
      * Database Life Cycle
      **********************************************************************************************/
 
-    private var createdCollectionId: UUID? = null
-
     override fun onCreate(db: SupportSQLiteDatabase) {
         super.onCreate(db)
 
@@ -60,11 +58,12 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
         )
 
         db.execSQL("INSERT INTO tractcollection " +
-                "(id, title, description, isEditable, isDeletable) " +
+                "(id, title, description, imageFilename, isEditable, isDeletable) " +
                 "VALUES (" +
                 "\"${defaultCollection.id}\", " +
                 "\"${defaultCollection.title}\", " +
                 "\"${defaultCollection.description}\", " +
+                "NULL, " +
                 "${defaultCollection.isEditable.toInt()}, " +
                 "${defaultCollection.isDeletable.toInt()}" +
                 ");")
@@ -270,7 +269,7 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
 
         private val TAG = TractRepository::class.simpleName ?: "Default"
 
-        const val DATABASE_NAME = "tract-repository"
+        const val DATABASE_NAME = "tract-repository.db"
 
         /** Instance **/
 

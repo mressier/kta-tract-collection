@@ -33,9 +33,18 @@ class CollectionExporterViewModel: ViewModel() {
      **********************************************************************************************/
 
     fun exportCollection(context: Context, destination: Uri) {
-        val collections = tractRepository.getCollections()
-        val tracts = tractRepository.getTracts()
-        val pictures = tractRepository.getPictures()
+        val collections = collectionId?.let { id ->
+            tractRepository.getCollection(id)?.let { listOf(it) } ?: listOf()
+        } ?: tractRepository.getCollections()
+
+        val tracts = collectionId?.let {
+            tractRepository.getTractsForCollection(it)
+        } ?: tractRepository.getTracts()
+
+        val pictures = collectionId?.let {
+            tractRepository.getPicturesForCollection(it)
+        } ?: tractRepository.getPictures()
+
         CollectionExporter(context).export(destination, collections, tracts, pictures)
     }
 
