@@ -51,6 +51,8 @@ class TractRepository private constructor(context: Context) {
 
     fun getTract(id: UUID): Tract? = tractDao.getTract(id)
 
+    fun getTracts(ids: List<UUID>): List<Tract> = tractDao.getTracts(ids)
+
     fun getTractsForCollection(collectionId: UUID): List<Tract> =
         tractDao.getTractsForCollection(collectionId)
 
@@ -180,6 +182,9 @@ class TractRepository private constructor(context: Context) {
     fun getCollection(collectionId: UUID): TractCollection? =
         collectionDao.getCollection(collectionId)
 
+    fun getCollections(collectionIds: List<UUID>): List<TractCollection> =
+        collectionDao.getCollections(collectionIds)
+
     /***********************************************************************************************
      * Collections - Update
      **********************************************************************************************/
@@ -203,7 +208,6 @@ class TractRepository private constructor(context: Context) {
     /***********************************************************************************************
      * Collections - Add
      **********************************************************************************************/
-
 
     fun addCollection(collection: TractCollection) {
         executor.execute { collectionDao.addCollection(collection) }

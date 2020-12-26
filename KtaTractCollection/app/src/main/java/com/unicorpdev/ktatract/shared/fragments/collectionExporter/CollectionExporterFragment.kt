@@ -87,22 +87,23 @@ class CollectionExporterFragment : Fragment() {
 
     private fun importCollection(uri: Uri) {
         val dialog = showLoadingDialog()
-        GlobalScope.async {
-            try {
-                viewModel.importCollection(requireContext(), uri)
-                requireActivity().runOnUiThread {
+        viewModel.importCollection(
+            requireActivity(),
+            uri,
+            object : CollectionExporterViewModel.ImportCallback {
+                override fun onSuccess() {
                     dialog.dismiss()
                 }
-            } catch (e: FileNotFoundException) {
-                requireActivity().runOnUiThread {
+
+                override fun onFailed(error: Error) {
                     dialog.dismiss()
 
                     val title = getString(R.string.import_failed)
-                    val text = getString(R.string.import_missing_files).format(e.message)
+                    val text = getString(R.string.import_missing_files).format(error.message)
                     showErrorDialog(title, text)
                 }
             }
-        }
+        )
     }
 
     /***********************************************************************************************
