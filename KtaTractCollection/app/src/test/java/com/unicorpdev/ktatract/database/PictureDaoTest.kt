@@ -9,6 +9,7 @@ import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.utils.DatabaseMock
+import com.unicorpdev.ktatract.utils.newTract
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -50,7 +51,7 @@ class PictureDaoTest {
 
     @Test
     fun testAddPicture() {
-        val tract = Tract()
+        val tract = newTract()
         val picture = TractPicture(tractId = tract.id)
 
         // When
@@ -63,7 +64,7 @@ class PictureDaoTest {
 
     @Test
     fun testAddPictureWithConflict() {
-        val tract = Tract()
+        val tract = newTract()
         val picture = TractPicture(tractId = tract.id, photoFilename = "first")
         val picture2 = TractPicture(id = picture.id, tractId = tract.id, photoFilename = "second")
 
@@ -88,7 +89,7 @@ class PictureDaoTest {
 
     @Test
     fun testDeletePicture() {
-        val tract = Tract()
+        val tract = newTract()
         val pictures = listOf(TractPicture(tractId = tract.id), TractPicture(tractId = tract.id))
 
         pictureDao.addPictures(pictures)
@@ -108,7 +109,7 @@ class PictureDaoTest {
 
     @Test
     fun testGetPictureForTract() {
-        val tracts = listOf(Tract(), Tract())
+        val tracts = listOf(newTract(), newTract())
         val pictures = listOf(
             TractPicture(tractId = tracts[0].id),
             TractPicture(tractId = tracts[0].id),
@@ -130,7 +131,7 @@ class PictureDaoTest {
 
     @Test
     fun testDeletePictureForTract() {
-        val tracts = listOf(Tract(), Tract())
+        val tracts = listOf(newTract(), newTract())
         val pictures = listOf(
             TractPicture(tractId = tracts[0].id),
             TractPicture(tractId = tracts[0].id),
@@ -159,7 +160,7 @@ class PictureDaoTest {
     fun testGetPicturesForCollection() {
         val collection = TractCollection()
         val tracts = listOf(
-            Tract(),
+            newTract(),
             Tract(collectionId = collection.id),
             Tract(collectionId = collection.id)
         )
@@ -186,7 +187,7 @@ class PictureDaoTest {
     fun testDeletePicturesForCollection() {
         val collection = TractCollection()
         val tracts = listOf(
-            Tract(),
+            newTract(),
             Tract(collectionId = collection.id),
             Tract(collectionId = collection.id)
         )

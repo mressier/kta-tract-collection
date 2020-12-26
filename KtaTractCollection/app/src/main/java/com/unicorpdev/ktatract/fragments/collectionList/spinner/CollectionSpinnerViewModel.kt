@@ -1,11 +1,9 @@
 package com.unicorpdev.ktatract.fragments.collectionList.spinner
 
 import android.content.Context
-import com.unicorpdev.ktatract.R
-import com.unicorpdev.ktatract.database.TractRepository.Companion.DEFAULT_COLLECTION_ID
+import com.unicorpdev.ktatract.database.KtaTractLocalStorage
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.shared.viewmodel.RepositoryViewModel
-import java.lang.Integer.max
 import java.util.*
 
 class CollectionSpinnerViewModel: RepositoryViewModel() {
@@ -18,7 +16,7 @@ class CollectionSpinnerViewModel: RepositoryViewModel() {
 
     /** Collection **/
 
-    var selectedCollectionId: UUID = DEFAULT_COLLECTION_ID
+    var selectedCollectionId: UUID = KtaTractLocalStorage.getInstance().defaultCollectionId
 
     var savedCollections: List<TractCollection> = listOf()
 

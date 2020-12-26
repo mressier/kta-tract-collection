@@ -59,7 +59,7 @@ class TractDetailsFragment : Fragment(),
      * Methods
      */
 
-    fun setTract(tractId: UUID) {
+    fun setTractId(tractId: UUID) {
         tractViewModel.loadTract(tractId)
     }
 
@@ -85,8 +85,8 @@ class TractDetailsFragment : Fragment(),
     private fun setupViewModelObserver() {
         tractViewModel.tract.observe(
             viewLifecycleOwner,
-            {
-                tractViewModel.savedTract = it ?: Tract()
+            { tract ->
+                tract?.let { tractViewModel.savedTract = it }
                 updateUI()
             }
         )

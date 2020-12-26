@@ -52,7 +52,7 @@ class TractFragment : Fragment(), FabImageMenuFragment.Callbacks {
 
         Log.d(TAG, "Set tract id on sub fragments $tractId")
         tabsFragment.setTract(tractId)
-        detailsFragment.setTract(tractId)
+        detailsFragment.setTractId(tractId)
         fabFragment.setTract(tractId)
         fabFragment.setShouldShowMultipleImportButton(false)
         setupListeners()

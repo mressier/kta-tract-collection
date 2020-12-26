@@ -1,14 +1,11 @@
 package com.unicorpdev.ktatract.database
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
-import com.unicorpdev.ktatract.database.TractRepository.Companion.DEFAULT_COLLECTION_ID
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.utils.DatabaseMock
+import com.unicorpdev.ktatract.utils.newTract
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -48,7 +45,7 @@ class TractDaoTest {
     @Test
     fun testAddTract() {
         val author = "George"
-        val tract = Tract(author = author)
+        val tract = newTract().apply { this.author = author }
 
         // When
         tractDao.addTract(tract)
@@ -62,7 +59,7 @@ class TractDaoTest {
     @Test
     fun testGetTracts() {
         val authors = listOf("George", "Fred", "Lily")
-        val tracts = authors.map { Tract(author = it) }.toList()
+        val tracts = authors.map { newTract().apply { this.author = it } }.toList()
 
         // when
         tractDao.addTracts(tracts)
@@ -75,7 +72,7 @@ class TractDaoTest {
     @Test
     fun testGetTractsWithIds() {
         val authors = listOf("George", "Fred", "Lily")
-        val tracts = authors.map { Tract(author = it) }.toList()
+        val tracts = authors.map { newTract().apply { this.author = it } }.toList()
 
         // when
         tractDao.addTracts(tracts)
@@ -91,7 +88,7 @@ class TractDaoTest {
     @Test
     fun testUpdateTracts() {
         val authors = listOf("George", "Fred", "Lily")
-        val tracts = authors.map { Tract(author = it) }.toList()
+        val tracts = authors.map { newTract().apply { this.author = it } }.toList()
 
         tractDao.addTracts(tracts)
 
@@ -114,7 +111,7 @@ class TractDaoTest {
     @Test
     fun testRemoveTract() {
         val authors = listOf("George", "Fred", "Lily")
-        val tracts = authors.map { Tract(author = it) }.toList()
+        val tracts = authors.map { newTract().apply { this.author = it } }.toList()
 
         tractDao.addTracts(tracts)
 
@@ -136,11 +133,12 @@ class TractDaoTest {
     @Test
     fun testGetTractForCollection() {
         val collection = TractCollection()
+        val collection2 = TractCollection()
         val tracts = listOf(
             Tract(author = "George 1", collectionId = collection.id),
             Tract(author = "George 2", collectionId = collection.id),
-            Tract(author = "Fred"),
-            Tract(author = "Fred 2"),
+            Tract(author = "Fred", collectionId = collection2.id),
+            Tract(author = "Fred 2", collectionId = collection2.id),
             Tract(author = "George 3", collectionId = collection.id),
         )
 
@@ -151,7 +149,7 @@ class TractDaoTest {
         assertThat(tractList.size).isEqualTo(tracts.size)
 
         val tractOnCollection = tractDao.getTractsForCollection(collection.id)
-        val tractWithDefaultCollection = tractDao.getTractsForCollection(DEFAULT_COLLECTION_ID)
+        val tractWithDefaultCollection = tractDao.getTractsForCollection(collection2.id)
 
         // Then
         assertThat(tractOnCollection.size).isEqualTo(3)
@@ -161,11 +159,12 @@ class TractDaoTest {
     @Test
     fun removeTractForCollection() {
         val collection = TractCollection()
+        val collection2 = TractCollection()
         val tracts = listOf(
             Tract(author = "George 1", collectionId = collection.id),
             Tract(author = "George 2", collectionId = collection.id),
-            Tract(author = "Fred"),
-            Tract(author = "Fred 2"),
+            Tract(author = "Fred", collectionId = collection2.id),
+            Tract(author = "Fred 2", collectionId = collection2.id),
             Tract(author = "George 3", collectionId = collection.id),
         )
 
@@ -175,16 +174,16 @@ class TractDaoTest {
         tractDao.deleteTractForCollection(collection.id)
 
         val tractOnCollection = tractDao.getTractsForCollection(collection.id)
-        val tractWithDefaultCollection = tractDao.getTractsForCollection(DEFAULT_COLLECTION_ID)
+        val tractWithDefaultCollection = tractDao.getTractsForCollection(collection2.id)
 
         // Then
         assertThat(tractOnCollection.size).isEqualTo(0)
         assertThat(tractWithDefaultCollection.size).isEqualTo(2)
 
         // When
-        tractDao.deleteTractForCollection(DEFAULT_COLLECTION_ID)
+        tractDao.deleteTractForCollection(collection2.id)
 
         // Then
-        assertThat(tractDao.getTractsForCollection(DEFAULT_COLLECTION_ID).size).isEqualTo(0)
+        assertThat(tractDao.getTractsForCollection(collection2.id).size).isEqualTo(0)
     }
 }

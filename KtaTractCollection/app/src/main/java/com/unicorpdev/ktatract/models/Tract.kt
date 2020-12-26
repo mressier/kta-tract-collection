@@ -2,7 +2,6 @@ package com.unicorpdev.ktatract.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.unicorpdev.ktatract.database.TractRepository.Companion.DEFAULT_COLLECTION_ID
 import com.unicorpdev.ktatract.shared.extensions.shortString
 import java.util.*
 
@@ -14,7 +13,7 @@ import java.util.*
 data class Tract(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     /* The collection containing the tract */
-    var collectionId: UUID = DEFAULT_COLLECTION_ID,
+    var collectionId: UUID,
     /* Date of the creation of the tract in the database */
     val databaseAddingDate: Date = Date(),
     /* Author of the tract */
@@ -43,11 +42,24 @@ data class Tract(
         val tract = other as? Tract ?: return super.equals(other)
 
         return tract.id == id
+                && tract.collectionId == tract.collectionId
                 && tract.databaseAddingDate == databaseAddingDate
                 && tract.author == author
                 && tract.discoveryDate == discoveryDate
                 && tract.dating == dating
                 && tract.comment == comment
                 && tract.isFavorite == isFavorite
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + collectionId.hashCode()
+        result = 31 * result + databaseAddingDate.hashCode()
+        result = 31 * result + author.hashCode()
+        result = 31 * result + discoveryDate.hashCode()
+        result = 31 * result + (dating?.hashCode() ?: 0)
+        result = 31 * result + comment.hashCode()
+        result = 31 * result + isFavorite.hashCode()
+        return result
     }
 }

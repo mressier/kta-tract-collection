@@ -2,25 +2,30 @@ package com.unicorpdev.ktatract.database
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractPicture
+import com.unicorpdev.ktatract.shared.extensions.toInt
 import java.io.File
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Executors
 
-class TractRepository private constructor(context: Context) {
+class TractRepository private constructor(var context: Context): RoomDatabase.Callback() {
 
     /**
      * Properties
      */
-    private val database: TractDatabase = Room
-        .databaseBuilder(context.applicationContext, TractDatabase::class.java, DATABASE_NAME)
-        .createFromAsset("tract-default-repository.db")
-        .build()
+    private var database: TractDatabase =
+        Room.databaseBuilder(context.applicationContext, TractDatabase::class.java, DATABASE_NAME)
+            .addCallback(this)
+            .build()
 
     private val tractDao = database.tractDao()
 
@@ -31,6 +36,41 @@ class TractRepository private constructor(context: Context) {
     private val executor = Executors.newSingleThreadExecutor()
 
     private val filesDir = context.applicationContext.filesDir
+
+    private val localStorage: KtaTractLocalStorage by lazy {
+        KtaTractLocalStorage.getInstance()
+    }
+
+    /***********************************************************************************************
+     * Database Life Cycle
+     **********************************************************************************************/
+
+    private var createdCollectionId: UUID? = null
+
+    override fun onCreate(db: SupportSQLiteDatabase) {
+        super.onCreate(db)
+
+        Log.d(TAG, "On create database")
+
+        val defaultCollection = TractCollection(
+            title = context.getString(R.string.my_collection_title),
+            description = context.getString(R.string.my_collection_description),
+            isEditable = true,
+            isDeletable = false
+        )
+
+        db.execSQL("INSERT INTO tractcollection " +
+                "(id, title, description, isEditable, isDeletable) " +
+                "VALUES (" +
+                "\"${defaultCollection.id}\", " +
+                "\"${defaultCollection.title}\", " +
+                "\"${defaultCollection.description}\", " +
+                "${defaultCollection.isEditable.toInt()}, " +
+                "${defaultCollection.isDeletable.toInt()}" +
+                ");")
+
+        localStorage.defaultCollectionId = defaultCollection.id
+    }
 
     /***********************************************************************************************
      * Tracts - Get Live Data
@@ -56,6 +96,12 @@ class TractRepository private constructor(context: Context) {
     fun getTractsForCollection(collectionId: UUID): List<Tract> =
         tractDao.getTractsForCollection(collectionId)
 
+    fun getEmptyTract(collectionId: UUID? = null): Tract {
+        val tractCollectionId =
+            collectionId ?: KtaTractLocalStorage.getInstance().defaultCollectionId
+        return Tract(collectionId = tractCollectionId)
+    }
+
     /***********************************************************************************************
      * Tracts - Add / Update / Delete
      **********************************************************************************************/
@@ -69,8 +115,7 @@ class TractRepository private constructor(context: Context) {
     }
 
     fun addEmptyTract(collectionId: UUID? = null): UUID {
-        val tract = Tract()
-        collectionId?.let { tract.collectionId = it }
+        val tract = getEmptyTract(collectionId)
 
         addTract(tract)
         return tract.id
@@ -88,7 +133,7 @@ class TractRepository private constructor(context: Context) {
     /***********************************************************************************************
      * Pictures - Get Live Data
      **********************************************************************************************/
-    
+
     fun getPicturesLiveData(tractId: UUID): LiveData<List<TractPicture>> =
         pictureDao.getPicturesForTractLiveData(tractId)
 
@@ -116,7 +161,7 @@ class TractRepository private constructor(context: Context) {
     /***********************************************************************************************
      * Pictures - Add
      **********************************************************************************************/
-    
+
     fun addPicture(picture: TractPicture) {
         executor.execute() { pictureDao.addPicture(picture) }
     }
@@ -162,7 +207,7 @@ class TractRepository private constructor(context: Context) {
         }
         file?.delete()
     }
-    
+
     /***********************************************************************************************
      * Collections - Get Live Data
      **********************************************************************************************/
@@ -220,12 +265,14 @@ class TractRepository private constructor(context: Context) {
     /***********************************************************************************************
      * Companion
      **********************************************************************************************/
-    
+
     companion object {
 
-        const val DATABASE_NAME = "tract-default-repository.db"
-        val DEFAULT_COLLECTION_ID: UUID =
-            UUID.fromString("e894b13a-4cd5-4a78-91db-8e4f04c64201")
+        private val TAG = TractRepository::class.simpleName ?: "Default"
+
+        const val DATABASE_NAME = "tract-repository"
+
+        /** Instance **/
 
         private var INSTANCE: TractRepository? = null
 

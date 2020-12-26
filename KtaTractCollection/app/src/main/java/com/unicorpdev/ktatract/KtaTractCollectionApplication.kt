@@ -1,6 +1,7 @@
 package com.unicorpdev.ktatract
 
 import android.app.Application
+import com.unicorpdev.ktatract.database.KtaTractLocalStorage
 import com.unicorpdev.ktatract.database.TractRepository
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 
@@ -20,6 +21,7 @@ class KtaTractCollectionApplication: Application() {
 
         setupRepository()
         setupFirebase()
+        setupSharedPreferences()
     }
 
     /***********************************************************************************************
@@ -32,5 +34,9 @@ class KtaTractCollectionApplication: Application() {
 
     private fun setupFirebase() {
         KtaTractAnalytics.initialize(this)
+    }
+
+    private fun setupSharedPreferences() {
+        KtaTractLocalStorage.init(applicationContext)
     }
 }
