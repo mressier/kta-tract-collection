@@ -11,16 +11,21 @@ import java.io.FileInputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-class Zipper(val context: Context) {
+class Zipper(context: Context) {
 
     /**
      * Properties
      */
     private val contentResolver = context.contentResolver
+    private val filesDir = context.applicationContext.filesDir
 
     /**
      * Methods
      */
+
+    fun zip(outputUri: Uri, files: Array<String>): Boolean {
+        return zip(outputUri, files.map { File(filesDir, it) }.toTypedArray())
+    }
 
     fun zip(outputUri: Uri, files: Array<File>): Boolean {
         return try {

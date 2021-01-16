@@ -5,24 +5,17 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import com.unicorpdev.ktatract.database.ObjectExporter
 import com.unicorpdev.ktatract.models.MimeType
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractPicture
-import com.unicorpdev.ktatract.shared.extensions.toJson
-import com.unicorpdev.ktatract.shared.tools.zip.Zipper
-import java.io.*
+import com.unicorpdev.ktatract.shared.tools.export.ObjectToExport
 
 /**
  * Export a collection of tracts and pictures to a zip file
  */
 class CollectionExporter(private val context: Context) {
-
-    /***********************************************************************************************
-     * Properties
-     **********************************************************************************************/
-    
-    private val filesDir = context.applicationContext.filesDir
 
     /***********************************************************************************************
      * Methods
@@ -43,17 +36,31 @@ class CollectionExporter(private val context: Context) {
     ) {
         Log.i(TAG, "Export tract and pictures collections")
 
-        export(collections, CollectionFiles.COLLECTION_LIST_JSON_FILENAME)
-        export(tracts, CollectionFiles.TRACT_LIST_JSON_FILENAME)
-        export(pictures, CollectionFiles.PICTURE_LIST_JSON_FILENAME)
+        val tables = arrayOf(
+            ObjectToExport(
+                CollectionFiles.COLLECTION_LIST_JSON_FILENAME,
+                collections,
+                collections.mapNotNull { it.imageFilename?.toUri()?.lastPathSegment }
+            ),
+            ObjectToExport(
+                CollectionFiles.TRACT_LIST_JSON_FILENAME,
+                tracts,
+                listOf()
+            ),
+            ObjectToExport(
+                CollectionFiles.PICTURE_LIST_JSON_FILENAME,
+                pictures,
+                pictures.mapNotNull { it.photoFilename.toUri().lastPathSegment }
+            )
+        )
 
-        val files = CollectionFiles.REQUIRED_FILES_IN_ZIP +
-                pictures.map { it.photoFilename.toUri().lastPathSegment ?: "" }
-        val exportName = getExportFilename(collections)
+        val destinationFilename = getExportFilename(collections)
+        val destinationUri = getDestinationFileUri(destination, destinationFilename)
 
-        getDestinationFileUri(destination, exportName)?.let { uri ->
-            Zipper(context).zip(uri, files.map { File(filesDir, it) }.toTypedArray())
+        if (destinationUri != null) {
+            ObjectExporter(context).zip(destinationUri, tables)
         }
+
     }
 
     /***********************************************************************************************
@@ -66,13 +73,6 @@ class CollectionExporter(private val context: Context) {
             documentFile?.createFile(MimeType.ZIP.string, filename)
 
         return destinationFile?.uri
-    }
-
-    private fun export(objectToExport: Any, filename: String) {
-        val file = File(filesDir, filename)
-        val result = objectToExport.toJson()
-
-        file.writeText(result)
     }
 
     private fun getExportFilename(collections: List<TractCollection>): String {
