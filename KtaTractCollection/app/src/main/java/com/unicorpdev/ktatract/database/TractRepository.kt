@@ -57,12 +57,12 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
         )
 
         db.execSQL("INSERT INTO tractcollection " +
-                "(id, title, description, imageFilename, isEditable, isDeletable) " +
+                "(id, title, description, imageFilename) " +
                 "VALUES (" +
                 "\"${defaultCollection.id}\", " +
                 "\"${defaultCollection.title}\", " +
                 "\"${defaultCollection.description}\", " +
-                "NULL, " +
+                "NULL" +
                 ");")
 
         localStorage.defaultCollectionId = defaultCollection.id
