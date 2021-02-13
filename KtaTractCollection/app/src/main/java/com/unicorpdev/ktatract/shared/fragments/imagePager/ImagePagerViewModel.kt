@@ -6,5 +6,8 @@ class ImagePagerViewModel : ViewModel() {
 
     var imagePathArray: Array<String> = arrayOf()
     var currentIndex: Int = 0
+    var title: String = ""
+    var description: String = ""
+    var additionalDescription: String = ""
 
 }

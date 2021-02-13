@@ -1,6 +1,7 @@
 package com.unicorpdev.ktatract.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,6 +13,8 @@ import com.unicorpdev.ktatract.fragments.home.HomeFragmentDirections
 import com.unicorpdev.ktatract.fragments.picturesList.TractPicturesFragment
 import com.unicorpdev.ktatract.fragments.tract.TractFragmentDirections
 import com.unicorpdev.ktatract.fragments.tractList.AllTractsFragment
+import com.unicorpdev.ktatract.models.TractWithPicture
+import com.unicorpdev.ktatract.shared.extensions.shortString
 import java.io.File
 import java.util.*
 
@@ -69,9 +72,15 @@ class MainActivity : AppCompatActivity(),
         navController.navigate(action)
     }
 
-    override fun onTractPictureSelected(list: Array<File>, pictureIndex: Int) {
+    override fun onTractPictureSelected(tract: TractWithPicture, pictureIndex: Int) {
+        val list = tract.pictures.map { tract.picturesFile[it.id] ?: error("") }.toTypedArray()
         val paths = list.map { it.name }.toTypedArray()
-        val action = HomeFragmentDirections.showTractImages(paths, pictureIndex)
+        val action = HomeFragmentDirections.showTractImages(
+            paths, pictureIndex, tract.tract.author, tract.tract.comment,
+            tract.tract.dating?.let {
+                getString(R.string.tract_dating_from).format(tract.tract.dating?.shortString)
+            }
+        )
         navController.navigate(action)
     }
 
@@ -85,11 +94,21 @@ class MainActivity : AppCompatActivity(),
      **********************************************************************************************/
 
     override fun onPictureSelected(
-        pictureList: Array<File>,
+        tract: TractWithPicture,
         pictureIndex: Int
     ) {
-        val paths = pictureList.map { it.name }.toTypedArray()
-        val action = TractFragmentDirections.showTractImages(paths, pictureIndex)
+        Log.d("TAG", "tract pictures: ${tract.pictures.map { it.id }}")
+        Log.d("TAG", "tract pictures: ${tract.picturesFile}")
+        val list = tract.pictures.map {
+            tract.picturesFile[it.id] ?: error("Invalid id ${it.id}")
+        }.toTypedArray()
+        val paths = list.map { it.name }.toTypedArray()
+        val action = HomeFragmentDirections.showTractImages(
+            paths, pictureIndex, tract.tract.author, tract.tract.comment,
+            tract.tract.dating?.let {
+                getString(R.string.tract_dating_from).format(tract.tract.dating?.shortString)
+            }
+        )
         navController.navigate(action)
     }
 

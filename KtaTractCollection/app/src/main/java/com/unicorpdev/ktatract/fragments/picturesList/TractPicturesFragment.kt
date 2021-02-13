@@ -10,8 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.models.Tract
+import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
+import kotlinx.android.synthetic.main.fragment_tract_grid_item.*
 import java.io.File
 import java.util.*
 
@@ -21,7 +24,7 @@ import java.util.*
 class TractPicturesFragment : Fragment(), TractPictureViewHolder.Callback {
 
     interface Callbacks {
-        fun onPictureSelected(pictureList: Array<File>, pictureIndex: Int)
+        fun onPictureSelected(tract: TractWithPicture, pictureIndex: Int)
     }
 
     /**
@@ -103,6 +106,14 @@ class TractPicturesFragment : Fragment(), TractPictureViewHolder.Callback {
                 updateUI()
             }
         )
+
+        picturesViewModel.tract.observe(
+            viewLifecycleOwner,
+            {
+                Log.d(TAG, "Get tract ${it.author}")
+                picturesViewModel.savedTract = it
+            }
+        )
     }
 
     /**
@@ -112,7 +123,7 @@ class TractPicturesFragment : Fragment(), TractPictureViewHolder.Callback {
     override fun onPictureSelected(path: String) {
         val index = picturesViewModel.savedPictures.indexOfFirst { it.photoFilename == path }
         Log.d(TAG, "File $path - index $index")
-        callbacks?.onPictureSelected(picturesViewModel.savedPicturesFile.toTypedArray(), index)
+        callbacks?.onPictureSelected(picturesViewModel.savedTractWithPictures, index)
     }
 
     override fun onDeleteButtonSelected(path: String) {

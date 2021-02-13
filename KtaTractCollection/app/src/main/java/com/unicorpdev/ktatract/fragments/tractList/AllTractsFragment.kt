@@ -15,6 +15,7 @@ import com.unicorpdev.ktatract.fragments.tractList.parameters.DisplayMode
 import com.unicorpdev.ktatract.fragments.tractList.list.TractListCallbacks
 import com.unicorpdev.ktatract.fragments.tractList.list.TractListFragment
 import com.unicorpdev.ktatract.R
+import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractWithPicture
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics
 import com.unicorpdev.ktatract.shared.analytics.KtaTractAnalytics.SelectEvent
@@ -39,7 +40,7 @@ class AllTractsFragment :
 
     interface Callbacks {
         fun onTractSelected(tractId: UUID)
-        fun onTractPictureSelected(list: Array<File>, pictureIndex: Int)
+        fun onTractPictureSelected(tract: TractWithPicture, pictureIndex: Int)
         fun onAboutPageSelected()
     }
 
@@ -293,7 +294,7 @@ class AllTractsFragment :
             callbacks?.onTractSelected(tract.tract.id)
         } else {
             callbacks?.onTractPictureSelected(
-                tract.pictures.map { tract.picturesFile[it.id] ?: error("") }.toTypedArray(),
+                tract,
                 imageIndex
             )
         }

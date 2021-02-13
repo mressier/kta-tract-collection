@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.shared.fragments.imagePager.ImagePagerFragmentArgs
+import kotlinx.android.synthetic.main.fragment_collection_header.*
 import kotlinx.android.synthetic.main.fragment_image_pager.*
 
 /**
@@ -38,6 +39,9 @@ class ImagePagerFragment : Fragment() {
             val args = ImagePagerFragmentArgs.fromBundle(it)
             viewModel.imagePathArray = args.pathArray
             viewModel.currentIndex = args.currentIndex
+            viewModel.title = args.title ?: ""
+            viewModel.description = args.description ?: ""
+            viewModel.additionalDescription = args.additionnalDescription ?: ""
         }
     }
 
@@ -77,6 +81,11 @@ class ImagePagerFragment : Fragment() {
 
     private fun updateUI() {
         viewPager.currentItem = viewModel.currentIndex
+        requireActivity().title =
+            if (viewModel.title.isBlank()) getString(R.string.unknown) else viewModel.title
+        tractDatationTextView.text = viewModel.additionalDescription
+        tractDescriptionTextView.text = viewModel.description
+        Log.d(TAG, "get title: ${viewModel.title}")
     }
 
     /***********************************************************************************************
