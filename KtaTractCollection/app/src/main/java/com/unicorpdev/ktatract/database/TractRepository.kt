@@ -53,9 +53,7 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
 
         val defaultCollection = TractCollection(
             title = context.getString(R.string.my_collection_title),
-            description = context.getString(R.string.my_collection_description),
-            isEditable = true,
-            isDeletable = false
+            description = context.getString(R.string.my_collection_description)
         )
 
         db.execSQL("INSERT INTO tractcollection " +
@@ -65,8 +63,6 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
                 "\"${defaultCollection.title}\", " +
                 "\"${defaultCollection.description}\", " +
                 "NULL, " +
-                "${defaultCollection.isEditable.toInt()}, " +
-                "${defaultCollection.isDeletable.toInt()}" +
                 ");")
 
         localStorage.defaultCollectionId = defaultCollection.id
@@ -237,6 +233,9 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
 
     fun getCollections(collectionIds: List<UUID>): List<TractCollection> =
         collectionDao.getCollections(collectionIds)
+
+    val defaultCollectionId: UUID
+    get() = localStorage.defaultCollectionId
 
     /***********************************************************************************************
      * Collections - Update

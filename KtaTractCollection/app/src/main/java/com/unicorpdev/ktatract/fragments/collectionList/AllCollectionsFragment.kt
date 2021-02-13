@@ -103,9 +103,8 @@ class AllCollectionsFragment : Fragment(),
 
     private fun showMoreActions(collectionId: UUID) {
         GlobalScope.async {
-            val isEditable = viewModel.isEditable(collectionId)
             val isDeletable = viewModel.isDeletable(collectionId)
-
+            val isEditable = true
             val actions = mutableListOf<DialogAction>()
 
             if (isEditable) {

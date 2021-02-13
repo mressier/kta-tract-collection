@@ -9,9 +9,7 @@ data class TractCollection(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     var title: String = "",
     var description: String = "",
-    var imageFilename: String? = null,
-    val isEditable: Boolean = true,
-    val isDeletable: Boolean = true
+    var imageFilename: String? = null
 ) {
     override fun equals(other: Any?): Boolean {
         val collection = other as? TractCollection ?: return super.equals(other)
@@ -19,8 +17,6 @@ data class TractCollection(
                 && collection.title == title
                 && collection.description == description
                 && collection.imageFilename == imageFilename
-                && collection.isEditable == isEditable
-                && collection.isDeletable == isDeletable
     }
     
     /***********************************************************************************************
@@ -32,8 +28,6 @@ data class TractCollection(
         result = 31 * result + title.hashCode()
         result = 31 * result + description.hashCode()
         result = 31 * result + (imageFilename?.hashCode() ?: 0)
-        result = 31 * result + isEditable.hashCode()
-        result = 31 * result + isDeletable.hashCode()
         return result
     }
 }

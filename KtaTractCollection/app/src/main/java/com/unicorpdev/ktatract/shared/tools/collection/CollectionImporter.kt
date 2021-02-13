@@ -55,19 +55,19 @@ class CollectionImporter(val context: Context) {
     }
 
     fun getTractsFromJson(jsonFilename: String = CollectionFiles.TRACT_LIST_JSON_FILENAME): List<Tract>? {
-        return JsonFile(jsonFilename).getObject<List<Tract>>()
+        return JsonFile(filesDir, jsonFilename).getObject<List<Tract>>()
     }
 
     fun getPicturesFromJson(
         jsonFilename: String = CollectionFiles.PICTURE_LIST_JSON_FILENAME
     ): List<TractPicture>? {
-        return JsonFile(jsonFilename).getObject<List<TractPicture>>()
+        return JsonFile(filesDir, jsonFilename).getObject<List<TractPicture>>()
     }
 
     fun getCollectionsFromJson(
         jsonFilename: String = CollectionFiles.COLLECTION_LIST_JSON_FILENAME
     ): List<TractCollection>? {
-        return JsonFile(jsonFilename).getObject<List<TractCollection>>()
+        return JsonFile(filesDir, jsonFilename).getObject<List<TractCollection>>()
     }
 
     /**

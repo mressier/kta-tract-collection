@@ -33,7 +33,7 @@ class CollectionListItemViewHolder(
         setupTitle(item.collection)
         setupDescription(item.collection)
         setupImageView(item.picture)
-        setupButtons(item)
+        setupButtons()
         setupListeners(item.collection.id)
     }
 
@@ -63,9 +63,8 @@ class CollectionListItemViewHolder(
             .into(imageView)
     }
 
-    private fun setupButtons(collectionWithPicture: CollectionWithPicture) {
-        val isVisible = collectionWithPicture.collection.isEditable
-                || collectionWithPicture.collection.isDeletable
+    private fun setupButtons() {
+        val isVisible = true
         moreImageButton.visibility = if (isVisible) { View.VISIBLE } else { View.INVISIBLE }
     }
 

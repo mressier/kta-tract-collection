@@ -27,10 +27,6 @@ class AllCollectionsViewModel: RepositoryViewModel() {
     }
 
     fun isDeletable(collectionId: UUID): Boolean {
-        return tractRepository.getCollection(collectionId)?.isDeletable ?: false
-    }
-
-    fun isEditable(collectionId: UUID): Boolean {
-        return tractRepository.getCollection(collectionId)?.isEditable ?: false
+        return tractRepository.getCollection(collectionId)?.id != tractRepository.defaultCollectionId
     }
 }

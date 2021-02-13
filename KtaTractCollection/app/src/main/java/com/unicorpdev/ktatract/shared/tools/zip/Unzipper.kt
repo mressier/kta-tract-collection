@@ -30,14 +30,9 @@ class Unzipper(context: Context) {
             zipEntry?.let { unzipFileEntry(zipInput, it, outputDir) }
         }
 
+        Log.i(TAG, "Zip read complete")
+
         zipInput.close()
-    }
-
-    fun containsFiles(zipUri: Uri, files: Array<String>): Boolean {
-        val filenames = getFilesInZip(zipUri)
-        val missingFiles = files.filter { !filenames.contains(it) }
-
-        return missingFiles.isEmpty()
     }
 
     // Return the list of files from input file list that are not present inside the zip

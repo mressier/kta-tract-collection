@@ -57,9 +57,7 @@ class CollectionExporterFragment : Fragment() {
                     data?.data?.let { uri -> exportCollection(uri) }
                 GET_ZIP_FILE_REQUEST ->
                     data?.data?.let { uri ->
-                        showSelectSynchronizationMethod { method ->
-                            importCollection(uri, method)
-                        }
+                        importCollection(uri)
                     }
             }
         }
@@ -91,12 +89,11 @@ class CollectionExporterFragment : Fragment() {
         }
     }
 
-    private fun importCollection(uri: Uri, method: ImportMethod) {
+    private fun importCollection(uri: Uri) {
         val dialog = showLoadingDialog()
         viewModel.importCollection(
             requireActivity(),
             uri,
-            method,
             object : CollectionExporterViewModel.ImportCallback {
                 override fun onSuccess() {
                     dialog.dismiss()
