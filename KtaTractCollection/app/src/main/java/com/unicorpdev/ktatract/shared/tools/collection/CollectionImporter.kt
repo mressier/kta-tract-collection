@@ -3,13 +3,17 @@ package com.unicorpdev.ktatract.shared.tools.collection
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.unicorpdev.ktatract.database.TractRepository
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.models.TractPicture
 import com.unicorpdev.ktatract.shared.extensions.jsonToObject
+import com.unicorpdev.ktatract.shared.tools.JsonFile
 import com.unicorpdev.ktatract.shared.tools.zip.Unzipper
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.Serializable
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 /**
  * Import database from a zip file
@@ -22,7 +26,7 @@ class CollectionImporter(val context: Context) {
      * Properties
      **********************************************************************************************/
 
-    private val filesDir = context.applicationContext.filesDir
+    private val filesDir = TractRepository.get().filesDir
     private val unzipper = Unzipper(context)
 
     /***********************************************************************************************
@@ -37,59 +41,33 @@ class CollectionImporter(val context: Context) {
      * @throws FileNotFoundException if some files are missing inside the zip,
      *          so the database won't be able to be recreated
      */
-    fun unzipFile(zipUri: Uri) {
-        if (unzipper.containsFiles(zipUri, CollectionFiles.REQUIRED_FILES_IN_ZIP)) {
+    @Throws(FileNotFoundException::class)
+    fun unzipFile(zipUri: Uri, zipContentDestination: File, requiredFiles: Array<String>) {
+        val missingFiles = unzipper.filesNotContainedInZip(zipUri, requiredFiles)
+
+        if (missingFiles.isEmpty()) {
             Log.v(TAG, "Unzip file")
-            unzipper.unzip(zipUri, filesDir)
+            unzipper.unzip(zipUri, zipContentDestination)
         } else {
             Log.e(TAG, "Missing files")
-            throw FileNotFoundException(CollectionFiles.REQUIRED_FILES_IN_ZIP.joinToString())
+            throw FileNotFoundException(missingFiles.joinToString())
         }
     }
 
-    /**
-     * Import tract list from a json file
-     *
-     * @property jsonFilename name of the file that contains the tract collection.
-     * @throws FileNotFoundException if the json file doesn't exist
-     * @return list of tracts imported from the file
-     */
-    fun importTracts(jsonFilename: String = CollectionFiles.TRACT_LIST_JSON_FILENAME): List<Tract>? {
-        return importObject<List<Tract>>(jsonFilename)
+    fun getTractsFromJson(jsonFilename: String = CollectionFiles.TRACT_LIST_JSON_FILENAME): List<Tract>? {
+        return JsonFile(jsonFilename).getObject<List<Tract>>()
     }
 
-    /**
-     * Import picture list from a json file
-     *
-     * @property jsonFilename name of the file that contains the picture collection
-     * @throws FileNotFoundException if the json file doesn't exist
-     * @return list of pictures imported from the file
-     */
-    fun importPictures(
+    fun getPicturesFromJson(
         jsonFilename: String = CollectionFiles.PICTURE_LIST_JSON_FILENAME
     ): List<TractPicture>? {
-        return importObject<List<TractPicture>>(jsonFilename)
+        return JsonFile(jsonFilename).getObject<List<TractPicture>>()
     }
 
-    fun importCollections(
+    fun getCollectionsFromJson(
         jsonFilename: String = CollectionFiles.COLLECTION_LIST_JSON_FILENAME
     ): List<TractCollection>? {
-        return importObject<List<TractCollection>>(jsonFilename)
-    }
-    
-    /***********************************************************************************************
-     * Tools
-     **********************************************************************************************/
-
-    private inline fun <reified T> importObject(filename: String): T? {
-        val file = File(filesDir, filename)
-
-        if (!file.exists()) {
-            throw FileNotFoundException(filename)
-        }
-
-        val result = file.readText()
-        return result.jsonToObject()
+        return JsonFile(jsonFilename).getObject<List<TractCollection>>()
     }
 
     /**

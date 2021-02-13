@@ -73,9 +73,9 @@ class CollectionExporterViewModel: ViewModel() {
                 activity.runOnUiThread { callback?.onFailed(e) }
             }
 
-            val collections = importer.importCollections() ?: listOf()
-            val tracts = importer.importTracts() ?: listOf()
-            val pictures = importer.importPictures() ?: listOf()
+            val collections = importer.getCollectionsFromJson() ?: listOf()
+            val tracts = importer.getTractsFromJson() ?: listOf()
+            val pictures = importer.getPicturesFromJson() ?: listOf()
 
             when (method) {
                 ImportMethod.REPLACE -> {
