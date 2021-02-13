@@ -34,12 +34,18 @@ class Unzipper(context: Context) {
     }
 
     fun containsFiles(zipUri: Uri, files: Array<String>): Boolean {
-        val filenames = getZipEntriesName(zipUri)
+        val filenames = getFilesInZip(zipUri)
         val missingFiles = files.filter { !filenames.contains(it) }
 
-        Log.v(TAG, "Missing files list : ${missingFiles.joinToString()}")
-
         return missingFiles.isEmpty()
+    }
+
+    // Return the list of files from input file list that are not present inside the zip
+    fun filesNotContainedInZip(zipUri: Uri, files: Array<String>): Array<String> {
+        val filenames = getFilesInZip(zipUri)
+        val missingFiles = files.filter { !filenames.contains(it) }
+
+        return missingFiles.toTypedArray()
     }
 
     private fun unzipFileEntry(zip: ZipInputStream, entry: ZipEntry, outputDir: File) {
@@ -56,7 +62,7 @@ class Unzipper(context: Context) {
         outputStream.close()
     }
 
-    private fun getZipEntriesName(zipUri: Uri): Array<String> {
+    private fun getFilesInZip(zipUri: Uri): Array<String> {
         val filenames = mutableListOf<String>()
 
         val inputStream = contentResolver.openInputStream(zipUri)
