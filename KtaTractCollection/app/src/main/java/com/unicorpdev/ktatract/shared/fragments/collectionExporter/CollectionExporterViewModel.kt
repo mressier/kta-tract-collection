@@ -10,6 +10,7 @@ import com.unicorpdev.ktatract.database.TractRepository
 import com.unicorpdev.ktatract.models.Tract
 import com.unicorpdev.ktatract.models.TractCollection
 import com.unicorpdev.ktatract.shared.tools.collection.CollectionExporter
+import com.unicorpdev.ktatract.shared.tools.collection.CollectionFiles
 import com.unicorpdev.ktatract.shared.tools.collection.CollectionImporter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -68,7 +69,7 @@ class CollectionExporterViewModel: ViewModel() {
             val importer = CollectionImporter(activity)
 
             try {
-                importer.unzipFile(source)
+                importer.unzipFile(source, tractRepository.filesDir, CollectionFiles.REQUIRED_FILES_IN_ZIP)
             } catch (e: Error) {
                 activity.runOnUiThread { callback?.onFailed(e) }
             }

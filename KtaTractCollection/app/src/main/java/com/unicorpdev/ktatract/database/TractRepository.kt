@@ -19,9 +19,12 @@ import java.util.concurrent.Executors
 
 class TractRepository private constructor(var context: Context): RoomDatabase.Callback() {
 
+    val filesDir = context.applicationContext.filesDir
+
     /**
      * Properties
      */
+
     private var database: TractDatabase =
         Room.databaseBuilder(context.applicationContext, TractDatabase::class.java, DATABASE_NAME)
             .addCallback(this)
@@ -34,8 +37,6 @@ class TractRepository private constructor(var context: Context): RoomDatabase.Ca
     private val collectionDao = database.collectionDao()
 
     private val executor = Executors.newSingleThreadExecutor()
-
-    private val filesDir = context.applicationContext.filesDir
 
     private val localStorage: KtaTractLocalStorage by lazy {
         KtaTractLocalStorage.getInstance()
