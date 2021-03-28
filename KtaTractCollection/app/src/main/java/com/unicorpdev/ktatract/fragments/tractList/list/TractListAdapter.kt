@@ -13,10 +13,9 @@ import com.unicorpdev.ktatract.models.TractWithPicture
 import java.util.*
 
 interface TractListCallbacks {
-    fun onTractSelected(tractId: UUID)
+    fun onTractSelected(tract: TractWithPicture)
     fun onTractMoreActionsSelected(tractId: UUID)
     fun onTractToggleFavorite(tractId: UUID, isFavorite: Boolean)
-    fun onTractImageSelected(imageIndex: Int, tract: TractWithPicture)
     fun onItemCountChanged(numberOfItems: Int)
 }
 

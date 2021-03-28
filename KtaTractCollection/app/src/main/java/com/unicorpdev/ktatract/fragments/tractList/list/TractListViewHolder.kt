@@ -95,7 +95,7 @@ class TractListViewHolder(
     private fun setupListeners(tract: TractWithPicture) {
         val tractId = tract.tract.id
 
-        itemView.setOnClickListener { callbacks?.onTractSelected(tractId) }
+        itemView.setOnClickListener { callbacks?.onTractSelected(tract) }
 
         itemView.moreImageButton.setOnClickListener {
             callbacks?.onTractMoreActionsSelected(tractId)
@@ -107,7 +107,7 @@ class TractListViewHolder(
         }
 
         listView.pictureView.setOnClickListener {
-            callbacks?.onTractImageSelected(0, tract)
+            callbacks?.onTractSelected(tract)
         }
     }
 }

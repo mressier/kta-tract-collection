@@ -39,7 +39,8 @@ class AllTractsFragment :
     /**  Required interface for hosting activities **/
 
     interface Callbacks {
-        fun onTractSelected(tractId: UUID)
+        fun onEditTract(tractId: UUID)
+        fun onTractSelected(tract: TractWithPicture)
         fun onTractPictureSelected(tract: TractWithPicture, pictureIndex: Int)
         fun onAboutPageSelected()
     }
@@ -253,7 +254,7 @@ class AllTractsFragment :
 
     private fun updateTract(tractId: UUID) {
         KtaTractAnalytics.logSelectItem(SelectEvent.MODIFY_TRACT)
-        callbacks?.onTractSelected(tractId)
+        callbacks?.onEditTract(tractId)
     }
 
     private fun deleteTract(tractId: UUID) {
@@ -275,9 +276,9 @@ class AllTractsFragment :
      * Callbacks
      **********************************************************************************************/
 
-    override fun onTractSelected(tractId: UUID) {
+    override fun onTractSelected(tract: TractWithPicture) {
         requireActivity().hideKeyboard()
-        updateTract(tractId)
+        callbacks?.onTractSelected(tract)
     }
 
     override fun onTractMoreActionsSelected(tractId: UUID) {
@@ -286,18 +287,6 @@ class AllTractsFragment :
 
     override fun onTractToggleFavorite(tractId: UUID, isFavorite: Boolean) {
         viewModel.updateTractIsFavorite(tractId, isFavorite)
-    }
-
-    override fun onTractImageSelected(imageIndex: Int, tract: TractWithPicture) {
-        requireActivity().hideKeyboard()
-        if (tract.pictures.isEmpty()) {
-            callbacks?.onTractSelected(tract.tract.id)
-        } else {
-            callbacks?.onTractPictureSelected(
-                tract,
-                imageIndex
-            )
-        }
     }
 
     override fun onItemCountChanged(numberOfItems: Int) {
@@ -317,7 +306,7 @@ class AllTractsFragment :
     }
 
     override fun onTractSaved(tractId: UUID) {
-        callbacks?.onTractSelected(tractId)
+        callbacks?.onEditTract(tractId)
     }
 
     override fun onTractsSaved(tractIds: Array<UUID>) {

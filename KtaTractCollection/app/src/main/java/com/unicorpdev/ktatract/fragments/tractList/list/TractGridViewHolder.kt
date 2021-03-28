@@ -81,7 +81,7 @@ class TractGridViewHolder(
     private fun setupListeners(tract: TractWithPicture) {
         val tractId = tract.tract.id
 
-        gridView.setOnClickListener { callbacks?.onTractSelected(tractId) }
+        gridView.setOnClickListener { callbacks?.onTractSelected(tract) }
 
         gridView.moreImageButton.setOnClickListener {
             callbacks?.onTractMoreActionsSelected(tractId)
@@ -93,7 +93,7 @@ class TractGridViewHolder(
         }
 
         gridView.pictureView.setOnClickListener {
-            callbacks?.onTractImageSelected(0, tract)
+            callbacks?.onTractSelected(tract)
         }
     }
 }

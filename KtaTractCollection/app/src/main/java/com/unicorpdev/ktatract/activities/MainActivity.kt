@@ -67,9 +67,13 @@ class MainActivity : AppCompatActivity(),
      * Callbacks | TractListFragment
      **********************************************************************************************/
 
-    override fun onTractSelected(tractId: UUID) {
+    override fun onEditTract(tractId: UUID) {
         val action = HomeFragmentDirections.showTractEdit(tractId.toString())
         navController.navigate(action)
+    }
+
+    override fun onTractSelected(tract: TractWithPicture) {
+        onTractPictureSelected(tract, 0)
     }
 
     override fun onTractPictureSelected(tract: TractWithPicture, pictureIndex: Int) {
