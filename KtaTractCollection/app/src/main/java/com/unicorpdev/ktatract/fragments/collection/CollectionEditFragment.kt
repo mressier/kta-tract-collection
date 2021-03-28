@@ -30,7 +30,6 @@ class CollectionEditFragment : Fragment(), PicturesAddBottomDialogFragment.Callb
 
     private val bottomSheetDialogFragment: PicturesAddBottomDialogFragment by lazy {
         val bottomSheetDialog = PicturesAddBottomDialogFragment.newInstance()
-        bottomSheetDialog.callbacks = this
         bottomSheetDialog
     }
 
@@ -153,6 +152,7 @@ class CollectionEditFragment : Fragment(), PicturesAddBottomDialogFragment.Callb
 
     private fun setupImageViewListener() {
         collectionImageView.setOnClickListener {
+            bottomSheetDialogFragment.callbacks = this
             bottomSheetDialogFragment.show(
                 requireFragmentManager(),
                 PicturesAddBottomDialogFragment.TAG
