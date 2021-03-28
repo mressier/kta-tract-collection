@@ -50,6 +50,7 @@ class AllTractsFragment :
      **********************************************************************************************/
 
     private var callbacks: Callbacks? = null
+    var onSearch: ((String?) -> Unit)? = null
 
     /** View Models **/
 
@@ -215,11 +216,13 @@ class AllTractsFragment :
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     tractsFragment.searchText = query ?: ""
+                    onSearch?.let { it(query) }
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     tractsFragment.searchText = newText ?: ""
+                    onSearch?.let { it(newText) }
                     return true
                 }
             })

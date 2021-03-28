@@ -11,6 +11,8 @@ import com.unicorpdev.ktatract.R
 import com.unicorpdev.ktatract.fragments.tractList.AllTractsFragment
 import com.unicorpdev.ktatract.fragments.tractList.list.TractListFragment
 import com.unicorpdev.ktatract.models.TractCollection
+import kotlinx.android.synthetic.main.fragment_about_page.*
+import kotlinx.android.synthetic.main.fragment_collection_content.*
 import java.util.*
 
 class CollectionContentFragment : Fragment() {
@@ -68,6 +70,13 @@ class CollectionContentFragment : Fragment() {
             childFragmentManager.findFragmentById(R.id.headerFragment) as CollectionHeaderFragment
         listFragment =
             childFragmentManager.findFragmentById(R.id.listFragment) as AllTractsFragment
+        listFragment.onSearch = { text ->
+            val scrollPosition = collectionContentScrollView.verticalScrollbarPosition
+            if (scrollPosition == 0) {
+                val height = headerFragment.view?.height ?: 0
+                collectionContentScrollView.smoothScrollTo(0, height)
+            }
+        }
     }
 
     /***********************************************************************************************
