@@ -38,10 +38,6 @@ class TractGridViewHolder(
      */
 
     private fun setupTract(tract: Tract) {
-        val content = tract.author
-        gridView.authorText.apply {
-            text = if (content.isBlank()) { context.getString(R.string.unknown) } else { content }
-        }
         setupLikeButton(tract.isFavorite)
     }
 

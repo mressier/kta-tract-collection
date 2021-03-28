@@ -27,37 +27,22 @@
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_no_tract_photo"
                 tools:ignore="ContentDescription" />
 
-            <TextView
-                android:id="@+id/authorText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/tract_author_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/primaryColor"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/likeImageButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pictureView" />
-
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/likeImageButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/btn_desc_like_action"
+                android:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/moreImageButton"
-                app:layout_constraintTop_toBottomOf="@+id/pictureView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/ic_baseline_star_border_24" />
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -65,11 +50,10 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/more_actions"
-                app:layout_constraintBottom_toBottomOf="@+id/likeImageButton"
+                android:tint="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/likeImageButton"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
